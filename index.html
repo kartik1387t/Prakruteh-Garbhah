@@ -28,6 +28,71 @@
             alert("AUM... The journey into the heart of Bharat begins.");
             // We will link the next page here later
         }
-    </script>
-</body>
-</html>
+    // Load the GSAP animation library for a premium feel
+const script = document.createElement('script');
+script.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
+document.head.appendChild(script);
+
+let cosmicAudio = new Audio('aum_02_528hz-22432.mp3'); 
+cosmicAudio.loop = true;
+
+function startExperience() {
+    // 1. Start the Cosmic Sound (Swar Architecture)
+    cosmicAudio.volume = 0.1; // Low volume background hum
+    cosmicAudio.play();
+
+    // 2. Animate the Transition
+    gsap.to("#intro", {
+        duration: 2,
+        opacity: 0,
+        scale: 1.5,
+        onComplete: () => {
+            document.getElementById('intro').style.display = 'none';
+            showMirrorSearch();
+        }
+    });
+}
+
+function showMirrorSearch() {
+    // This creates the "Portal" search bar we discussed
+    const mainHub = document.createElement('div');
+    mainHub.id = "hub";
+    mainHub.innerHTML = `
+        <div style="padding: 20px; max-width: 600px; margin: auto;">
+            <h2 style="color: #f4a261;">Search a Global Vibe</h2>
+            <input type="text" id="searchInput" placeholder="Try 'Switzerland' or 'Venice'..." 
+                   style="width: 100%; padding: 15px; border-radius: 30px; border: 1px solid #f4a261; background: #111; color: white;">
+            <div id="results" style="margin-top: 30px; display: flex; gap: 20px;"></div>
+            
+            <div style="margin-top: 50px; border-top: 1px solid #333; padding-top: 20px; font-style: italic;">
+                <p>"Thank you for visiting Prakruteh Garbhah. If we missed anything in our hospitality, 
+                we are sorry from the heart. I ask this on behalf of all Indians."</p>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(mainHub);
+    
+    // Add logic to listen for the search
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        handleSearch(e.target.value);
+    });
+}
+
+function handleSearch(query) {
+    [span_10](start_span)[span_11](start_span)// This will eventually pull from your Google Sheet CSV[span_10](end_span)[span_11](end_span)
+    const resultsDiv = document.getElementById('results');
+    if(query.toLowerCase() === 'switzerland') {
+        resultsDiv.innerHTML = `
+            <div style="flex: 1; border: 1px solid #555; padding: 10px;">
+                <p>World: Switzerland</p>
+                <p>Price: ₹2,50,000</p>
+            </div>
+            <div style="flex: 1; border: 2px solid #f4a261; padding: 10px;">
+                <p>Bharat Twin: Gulmarg, Kashmir</p>
+                <p>Price: ₹12,000</p>
+                <button style="background: #f4a261; border: none; padding: 5px;">Add to My Yatra</button>
+            </div>
+        `;
+    }
+}
+
