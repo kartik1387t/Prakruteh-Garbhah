@@ -3,97 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prakruteh Garbhah | The Womb of Mother Nature</title>
+    <title>Prakruteh Garbha | The Womb of Mother Nature</title>
+    
+    <meta name="description" content="Prakruteh Garbha: Discover the soul of the cosmos in Bharat. Compare global destinations with their Indian twins, plan your budget Yatra, and book authentic cultural experiences.">
+    <meta name="keywords" content="Switzerland vs Gulmarg, Venice of India, Japan in India, Budget travel Bharat, Safe cultural tours India, Prakruteh Garbha">
+    <meta name="author" content="Prakruteh Garbha Team">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: 'Garamond', serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; text-align: center; }
-        .intro-container { opacity: 0; transition: opacity 3s ease-in; }
-        h1 { font-size: 3rem; letter-spacing: 5px; margin-bottom: 10px; color: #f4a261; } /* Saffron tone */
-        p { font-size: 1.2rem; font-style: italic; color: #e9c46a; }
-        .shiva-silhouette { height: 300px; margin-bottom: 20px; filter: drop-shadow(0 0 10px #f4a261); }
-        .enter-btn { margin-top: 30px; padding: 10px 25px; border: 1px solid #f4a261; background: transparent; color: #f4a261; cursor: pointer; transition: 0.3s; }
-        .enter-btn:hover { background: #f4a261; color: #000; }
+        body { background-color: #050505; color: white; font-family: 'Georgia', serif; overflow-x: hidden; }
+        
+        /* Cosmic Background */
+        .stars {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%);
+            z-index: -1; opacity: 0.8;
+        }
+        
+        /* Shiva Silhouette Effect */
+        .shiva-glow { filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.4)); }
+
+        /* Glassmorphism for Search & Cards */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: #d97706; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #111; }
     </style>
 </head>
-<body>
-    <div class="intro-container" id="intro">
-        <img src="https://cdn-icons-png.flaticon.com/512/2301/2301072.png" class="shiva-silhouette" alt="Shiva">
-        <h1>प्रकृतेः गर्भः</h1>
-        <p>Prakruteh Garbhah: The Womb of Mother Nature</p>
-        <button class="enter-btn" onclick="startExperience()">Avataran (Enter)</button>
+<body class="antialiased">
+
+    <div class="stars"></div>
+
+    <audio id="cosmicAudio" loop>
+        <source src="aum_02_528hz-22432.mp3" type="audio/mpeg">
+    </audio>
+
+    <section id="intro" class="h-screen flex flex-col items-center justify-center text-center p-6 relative z-10">
+        <div class="shiva-glow mb-8 transform transition-transform duration-1000 hover:scale-105">
+            <i class="fas fa-om text-9xl text-amber-500 opacity-90"></i>
+        </div>
+        
+        <h1 class="text-6xl md:text-8xl font-bold text-amber-500 mb-2 tracking-tighter" style="text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);">
+            अतिथि देवो भव
+        </h1>
+        <p class="text-xl md:text-2xl text-amber-200 tracking-[0.3em] uppercase mb-12">Atithi Devo Bhava</p>
+        
+        <button onclick="enterCosmos()" class="group relative px-8 py-4 bg-transparent border border-amber-500 text-amber-500 rounded-full overflow-hidden transition-all hover:bg-amber-500 hover:text-black">
+            <span class="relative z-10 font-bold tracking-widest">AVATARAN (ENTER)</span>
+        </button>
+    </section>
+
+    <div id="mainHub" class="hidden min-h-screen pb-20">
+        
+        <nav class="p-6 flex justify-between items-center glass-panel sticky top-0 z-50">
+            <div class="text-2xl font-bold text-amber-500">Prakruteh Garbha</div>
+            <div class="space-x-4 text-sm text-gray-400">
+                <span><i class="fas fa-temperature-low"></i> 24°C</span>
+                <span><i class="fas fa-moon"></i> Night Mode</span>
+            </div>
+        </nav>
+
+        <div class="container mx-auto px-4 mt-12">
+            
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-600">
+                    The World Mirrored in Bharat
+                </h2>
+                <p class="text-gray-400 mb-8">Type a destination (e.g., "Switzerland", "Venice") to find its soul in India.</p>
+                
+                <div class="max-w-2xl mx-auto relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-500 group-hover:text-amber-500 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="w-full pl-12 pr-4 py-4 rounded-full bg-zinc-900 border border-zinc-700 text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all text-lg"
+                        placeholder="Where in the world do you want to go?">
+                </div>
+            </div>
+
+            <div id="resultsArea" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20 hidden">
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-gray-500 relative overflow-hidden">
+                    <div class="absolute top-2 right-4 text-xs font-bold text-gray-500 uppercase tracking-widest">The World</div>
+                    <h3 id="worldName" class="text-3xl font-bold mb-2">Switzerland</h3>
+                    <p id="worldDesc" class="text-gray-400 italic mb-4">Snow-capped peaks & luxury...</p>
+                    <div class="text-xl text-red-400 font-mono mt-4">Est. Cost: <span id="worldPrice">₹2,50,000</span></div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-amber-500 relative overflow-hidden bg-gradient-to-br from-zinc-900 to-zinc-800">
+                    <div class="absolute top-2 right-4 text-xs font-bold text-amber-500 uppercase tracking-widest">The Mirror</div>
+                    <h3 id="bharatName" class="text-3xl font-bold mb-2 text-amber-400">Gulmarg, Kashmir</h3>
+                    <p id="bharatDesc" class="text-gray-300 italic mb-4">The Meadow of Flowers...</p>
+                    <div class="text-xl text-green-400 font-mono mt-4">Est. Cost: <span id="bharatPrice">₹12,000</span></div>
+                    
+                    <div class="mt-6 pt-6 border-t border-zinc-700">
+                        <span class="text-sm text-gray-400">You Save:</span>
+                        <span class="text-2xl font-bold text-white block">₹<span id="savings">2,38,000</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24 max-w-4xl mx-auto">
+                <a href="#" id="linkFlight" target="_blank" class="glass-panel p-6 rounded-xl text-center hover:bg-zinc-800 transition-all group">
+                    <i class="fas fa-plane text-3xl mb-3 text-blue-400 group-hover:scale-110 transition-transform"></i>
+                    <div class="font-bold text-sm">Book Flights</div>
+                </a>
+                <a href="#" id="linkHotel" target="_blank" class="glass-panel p-6 rounded-xl text-center hover:bg-zinc-800 transition-all group">
+                    <i class="fas fa-hotel text-3xl mb-3 text-purple-400 group-hover:scale-110 transition-transform"></i>
+                    <div class="font-bold text-sm">Book Stays</div>
+                </a>
+                <a href="#" id="linkTrain" target="_blank" class="glass-panel p-6 rounded-xl text-center hover:bg-zinc-800 transition-all group">
+                    <i class="fas fa-train text-3xl mb-3 text-orange-400 group-hover:scale-110 transition-transform"></i>
+                    <div class="font-bold text-sm">Trains & Bus</div>
+                </a>
+                <a href="#" id="linkVisa" target="_blank" class="glass-panel p-6 rounded-xl text-center hover:bg-zinc-800 transition-all group">
+                    <i class="fas fa-passport text-3xl mb-3 text-green-400 group-hover:scale-110 transition-transform"></i>
+                    <div class="font-bold text-sm">Visa Guide</div>
+                </a>
+            </div>
+
+        </div>
+
+        <footer class="mt-20 border-t border-zinc-800 bg-black pt-16 pb-8 text-center px-4">
+            <div class="max-w-2xl mx-auto">
+                <div class="mb-6 text-amber-500 text-4xl"><i class="fas fa-hands-praying"></i></div>
+                <p class="text-lg md:text-xl text-gray-300 italic mb-8 leading-relaxed font-light">
+                    "Thank you for visiting Prakruteh Garbha. We hope your journey through Bharat was soul-stirring. 
+                    Please visit us again! If you faced any trouble, or if we missed anything in our hospitality, 
+                    we are sorry from the heart. I ask this on behalf of all Indians."
+                </p>
+                
+                <div class="flex justify-center gap-6 mb-12">
+                    <a href="tel:112" class="px-4 py-2 bg-red-900/30 text-red-400 rounded-lg text-sm hover:bg-red-900/50">
+                        <i class="fas fa-phone-alt mr-2"></i> SOS: 112
+                    </a>
+                    <a href="tel:1800111363" class="px-4 py-2 bg-blue-900/30 text-blue-400 rounded-lg text-sm hover:bg-blue-900/50">
+                        <i class="fas fa-headset mr-2"></i> Tourist Help
+                    </a>
+                </div>
+
+                <div class="text-xs text-gray-600 space-y-2">
+                    <p>To keep our cosmic journey running, some links on this site are affiliate links.</p>
+                    <p>&copy; 2026 Prakruteh Garbha. All Rights Reserved. | <a href="#" class="hover:text-gray-400">Privacy</a> | <a href="#" class="hover:text-gray-400">Terms (13+)</a></p>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <script>
-        window.onload = () => { document.getElementById('intro').style.opacity = '1'; }
-        function startExperience() {
-            alert("AUM... The journey into the heart of Bharat begins.");
-            // We will link the next page here later
+        // --- 1. CONFIGURATION ---
+        // Your Google Sheet CSV Link
+        const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlVAIP8CCFFBC2GzFj1oBJzilZRU-47di8mza2wlLtCmLJOrPtXX9xxDyqrUfnpCrOLFrvaTeBJwsa/pub?output=csv';
+        
+        let mirrorData = [];
+        let bookingData = [];
+
+        // --- 2. INITIALIZATION ---
+        function init() {
+            // Fetch and Parse CSV Data immediately
+            Papa.parse(SHEET_URL, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    console.log("Data Loaded:", results.data);
+                    processData(results.data);
+                },
+                error: function(err) {
+                    console.error("Error loading sheet:", err);
+                    alert("Cosmic Connection Error: Could not load data.");
+                }
+            });
         }
-    </script>
-    // Load the GSAP animation library for a premium feel
-const script = document.createElement('script');
-script.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js";
-document.head.appendChild(script);
 
-let cosmicAudio = new Audio('aum_02_528hz-22432.mp3'); 
-cosmicAudio.loop = true;
+        function processData(data) {
+            // Separate data based on columns (Simple "Zero-Budget" logic)
+            // We assume if it has 'World Destination' it is a Mirror. 
+            // If it has 'Service Type' it is a Booking.
+            mirrorData = data.filter(row => row['World Destination']);
+            bookingData = data.filter(row => row['Service Type']);
 
-function startExperience() {
-    // 1. Start the Cosmic Sound (Swar Architecture)
-    cosmicAudio.volume = 0.1; // Low volume background hum
-    cosmicAudio.play();
-
-    // 2. Animate the Transition
-    gsap.to("#intro", {
-        duration: 2,
-        opacity: 0,
-        scale: 1.5,
-        onComplete: () => {
-            document.getElementById('intro').style.display = 'none';
-            showMirrorSearch();
-        }
-    });
-}
-
-function showMirrorSearch() {
-    // This creates the "Portal" search bar we discussed
-    const mainHub = document.createElement('div');
-    mainHub.id = "hub";
-    mainHub.innerHTML = `
-        <div style="padding: 20px; max-width: 600px; margin: auto;">
-            <h2 style="color: #f4a261;">Search a Global Vibe</h2>
-            <input type="text" id="searchInput" placeholder="Try 'Switzerland' or 'Venice'..." 
-                   style="width: 100%; padding: 15px; border-radius: 30px; border: 1px solid #f4a261; background: #111; color: white;">
-            <div id="results" style="margin-top: 30px; display: flex; gap: 20px;"></div>
+            console.log("Mirrors:", mirrorData.length, "Bookings:", bookingData.length);
             
-            <div style="margin-top: 50px; border-top: 1px solid #333; padding-top: 20px; font-style: italic;">
-                <p>"Thank you for visiting Prakruteh Garbhah. If we missed anything in our hospitality, 
-                we are sorry from the heart. I ask this on behalf of all Indians."</p>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(mainHub);
-    
-    // Add logic to listen for the search
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        handleSearch(e.target.value);
-    });
-}
+            // Setup Booking Links dynamically if found
+            if(bookingData.length > 0) {
+                updateBookingLink('Flight', 'linkFlight');
+                updateBookingLink('Hotel', 'linkHotel');
+                updateBookingLink('Train', 'linkTrain');
+                updateBookingLink('Visa', 'linkVisa');
+            }
+        }
 
-function handleSearch(query) {
-    [span_10](start_span)[span_11](start_span)// This will eventually pull from your Google Sheet CSV[span_10](end_span)[span_11](end_span)
-    const resultsDiv = document.getElementById('results');
-    if(query.toLowerCase() === 'switzerland') {
-        resultsDiv.innerHTML = `
-            <div style="flex: 1; border: 1px solid #555; padding: 10px;">
-                <p>World: Switzerland</p>
-                <p>Price: ₹2,50,000</p>
-            </div>
-            <div style="flex: 1; border: 2px solid #f4a261; padding: 10px;">
-                <p>Bharat Twin: Gulmarg, Kashmir</p>
-                <p>Price: ₹12,000</p>
-                <button style="background: #f4a261; border: none; padding: 5px;">Add to My Yatra</button>
-            </div>
-        `;
-    }
-}
+        function updateBookingLink(type, elementId) {
+            const service = bookingData.find(row => row['Service Type'] && row['Service Type'].includes(type));
+            if (service && service['Link']) {
+                document.getElementById(elementId).href = service['Link'];
+            }
+        }
 
+        // --- 3. ANIMATION & EXPERIENCE ---
+        function enterCosmos() {
+            // Play Audio
+            const audio = document.getElementById('cosmicAudio');
+            audio.volume = 0.2; 
+            audio.play().catch(e => console.log("Audio play failed (user interaction needed first)"));
+
+            // Animate Transition
+            gsap.to("#intro", {
+                duration: 1.5,
+                opacity: 0,
+                y: -50,
+                onComplete: () => {
+                    document.getElementById('intro').style.display = 'none';
+                    document.getElementById('mainHub').classList.remove('hidden');
+                    
+                    gsap.from("#mainHub", { duration: 1, opacity: 0, y: 50 });
+                }
+            });
+        }
+
+        // --- 4. SEARCH LOGIC ---
+        const searchInput = document.getElementById('searchInput');
+        const resultsArea = document.getElementById('resultsArea');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (query.length < 2) {
+                resultsArea.classList.add('hidden');
+                return;
+            }
+
+            // Find match in Mirror Data
+            const match = mirrorData.find(row => 
+                row['World Destination'] && row['World Destination'].toLowerCase().includes(query)
+            );
+
+            if (match) {
+                displayResult(match);
+            } else {
+                resultsArea.classList.add('hidden');
+            }
+        });
+
+        function displayResult(item) {
+            resultsArea.classList.remove('hidden');
+            
+            // Populate Cards
+            document.getElementById('worldName').textContent = item['World Destination'];
+            document.getElementById('worldDesc').textContent = item['Description'] || "A beautiful global destination.";
+            document.getElementById('worldPrice').textContent = item['Price World'] || "---";
+
+            document.getElementById('bharatName').textContent = item['Bharat Twin'];
+            document.getElementById('bharatDesc').textContent = "The Soul of " + item['World Destination'] + " in India.";
+            document.getElementById('bharatPrice').textContent = item['Price Bharat'] || "---";
+
+            // Calculate Savings (Simple numeric clean)
+            const wPrice = parseInt(item['Price World'].replace(/[^0-9]/g, '')) || 0;
+            const bPrice = parseInt(item['Price Bharat'].replace(/[^0-9]/g, '')) || 0;
+            
+            if(wPrice > 0 && bPrice > 0) {
+                document.getElementById('savings').textContent = (wPrice - bPrice).toLocaleString('en-IN');
+            } else {
+                document.getElementById('savings').textContent = "---";
+            }
+            
+            // Animation for new result
+            gsap.from("#resultsArea", { duration: 0.5, opacity: 0, scale: 0.95 });
+        }
+
+        // Start the engine
+        init();
+
+    </script>
+</body>
+</html>
