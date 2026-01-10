@@ -181,16 +181,19 @@ fetch(SHEET_URL)
   .then(csv => {
       const rows = csv.split("\n").slice(1);
       mirrorData = rows.map(row => {
-          const cols = row.split(",");
-          return {
-              world: cols[0]?.toLowerCase(),
-              bharat: cols[1]?.toLowerCase(),
-              description: cols[2],
-              experience: cols[3]?.toLowerCase(),
-              worldPrice: cols[4],
-              bharatPrice: cols[5]
-          };
-      });
+    const cols = row.split(",").map(col =>
+        col.replace(/"/g, "").trim().toLowerCase()
+    );
+
+    return {
+        world: cols[0] || "",
+        bharat: cols[1] || "",
+        description: cols[2] || "",
+        experience: cols[3] || "",
+        worldPrice: cols[4] || "",
+        bharatPrice: cols[5] || ""
+    };
+});
   });
 
 // Search logic
