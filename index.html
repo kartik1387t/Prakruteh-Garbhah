@@ -184,15 +184,16 @@ fetch(SHEET_URL)
     const cols = row.split(",").map(col =>
         col.replace(/"/g, "").trim().toLowerCase()
     );
-
-    return {
-        world: cols[0] || "",
-        bharat: cols[1] || "",
-        description: cols[2] || "",
-        experience: cols[3] || "",
-        worldPrice: cols[4] || "",
-        bharatPrice: cols[5] || ""
-    };
+return {
+    world: cols[0] || "",          // World Destination
+    country: cols[1] || "",        // Country
+    bharat: cols[2] || "",         // Bharat Twin
+    state: cols[3] || "",          // State
+    description: cols[4] || "",    // Description
+    experience: cols[5] || "",     // Vibe / Experience
+    worldPrice: cols[6] || "",     // Price World
+    bharatPrice: cols[7] || ""     // Price Bharat
+};
 });
   });
 
@@ -207,7 +208,7 @@ document.getElementById("mirrorSearch").addEventListener("input", function () {
     const matches = mirrorData.filter(item =>
         item.world.includes(query) ||
         item.bharat.includes(query) ||
-        item.experience.includes(query)
+        item.experience.toLowerCase().includes(query)
     );
 
     if (matches.length === 0) {
@@ -221,12 +222,17 @@ document.getElementById("mirrorSearch").addEventListener("input", function () {
         card.style.marginBottom = "20px";
 
         card.innerHTML = `
-            <strong>🌍 World:</strong> ${item.world}<br>
-            <strong>🇮🇳 Bharat:</strong> ${item.bharat}<br>
-            <small>${item.description}</small><br><br>
-            💰 <strong>World:</strong> ₹${item.worldPrice} |
-            <strong>Bharat:</strong> ₹${item.bharatPrice}
-        `;
+    <strong>🌍 World:</strong> ${item.world}<br>
+    <strong>🇮🇳 Bharat:</strong> ${item.bharat}, ${item.state}<br><br>
+
+    <small style="color:#ccc;">${item.description}</small><br><br>
+
+    <span style="color:#f4a261;">🏷️ ${item.experience}</span><br><br>
+
+    💰 <strong>World:</strong> ₹${item.worldPrice}
+    &nbsp; | &nbsp;
+    <strong>Bharat:</strong> ₹${item.bharatPrice}
+`;
 
         resultsDiv.appendChild(card);
     });
