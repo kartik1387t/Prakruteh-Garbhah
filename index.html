@@ -184,22 +184,35 @@
                 }
             });
         }
+function processData(data) {
+    // This logs every header found so we can see exactly what Google is sending
+    if (data.length > 0) {
+        console.log("Found these Headers in your Sheet:", Object.keys(data[0]));
+    }
 
-        function processData(data) {
-            // Separate data based on columns (Simple "Zero-Budget" logic)
-            // We assume if it has 'World Destination' it is a Mirror. 
-            // If it has 'Service Type' it is a Booking.
-            mirrorData = data.filter(row => row['World Destination']);
-            bookingData = data.filter(row => row['Service Type']);
+    // We search for rows by checking if the keys contain our keywords
+    mirrorData = data.filter(row => {
+        const keys = Object.keys(row);
+        // Look for any column that has "World" or "Bharat" in the name
+        return keys.some(k => k.includes("World") || k.includes("Bharat"));
+    });
 
-            console.log("Mirrors:", mirrorData.length, "Bookings:", bookingData.length);
-            
-            // Setup Booking Links dynamically if found
-            if(bookingData.length > 0) {
-                updateBookingLink('Flight', 'linkFlight');
-                updateBookingLink('Hotel', 'linkHotel');
-                updateBookingLink('Train', 'linkTrain');
-                updateBookingLink('Visa', 'linkVisa');
+    bookingData = data.filter(row => {
+        const keys = Object.keys(row);
+        // Look for any column that has "Service" or "Partner" in the name
+        return keys.some(k => k.includes("Service") || k.includes("Partner"));
+    });
+
+    console.log("Fixed Mirrors:", mirrorData.length, "Fixed Bookings:", bookingData.length);
+    
+    if(bookingData.length > 0) {
+        updateBookingLink('Flight', 'linkFlight');
+        updateBookingLink('Hotel', 'linkHotel');
+        updateBookingLink('Train', 'linkTrain');
+        updateBookingLink('Visa', 'linkVisa');
+    }
+}
+        
             }
         }
 
