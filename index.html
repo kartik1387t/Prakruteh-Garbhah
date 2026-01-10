@@ -185,14 +185,25 @@
             });
         }
 
-        function processData(data) {
-            // Separate data based on columns (Simple "Zero-Budget" logic)
-            // We assume if it has 'World Destination' it is a Mirror. 
-            // If it has 'Service Type' it is a Booking.
-            mirrorData = data.filter(row => row['World Destination']);
-            bookingData = data.filter(row => row['Service Type']);
+        function handleSearch(query) {
+    const resultsArea = document.getElementById('resultsArea');
+    if (!mirrorData || mirrorData.length === 0) {
+        console.log("Waiting for data to descend from the cosmos...");
+        return;
+    }
 
-            console.log("Mirrors:", mirrorData.length, "Bookings:", bookingData.length);
+    const searchQuery = query.toLowerCase().trim();
+    // Search in the 'World Destination' column of your sheet
+    const match = mirrorData.find(row => 
+        row['World Destination'] && row['World Destination'].toLowerCase().includes(searchQuery)
+    );
+
+    if (match) {
+        displayResult(match);
+    } else {
+        resultsArea.classList.add('hidden');
+    }
+}
             
             // Setup Booking Links dynamically if found
             if(bookingData.length > 0) {
