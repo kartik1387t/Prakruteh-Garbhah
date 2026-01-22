@@ -171,72 +171,17 @@
         </p>
     </footer>
 <script>
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQlVAIP8CCFFBC2GzFj1oBJzilZRU-47di8mza2wlLtCmLJOrPtXX9xxDyqrUfnpCrOLFrvaTeBJwsa/pub?output=csv";
+const BHARAT_MIRROR_CSV =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7BOsfu5CDJunvbj_NTPaZOFT23j4SREv1fxHWgcT4Y0Z0ifElDCHwQbt7LN8Xd2jfW14KAt4GtCyT/pub?gid=0&single=true&output=csv";
 
-let mirrorData = [];
+const YATRA_SERVICES_CSV =
+  "PASTE_YATRA_SERVICES_CSV_LINK_HERE";
 
-// Fetch Google Sheet CSV
-fetch(SHEET_URL)
-  .then(res => res.text())
-  .then(csv => {
-      const rows = csv.split("\n").slice(1);
-      mirrorData = rows.map(row => {
-    const cols = row.split(",").map(col =>
-        col.replace(/"/g, "").trim().toLowerCase()
-    );
-return {
-    world: cols[0] || "",          // World Destination
-    country: cols[1] || "",        // Country
-    bharat: cols[2] || "",         // Bharat Twin
-    state: cols[3] || "",          // State
-    description: cols[4] || "",    // Description
-    experience: cols[5] || "",     // Vibe / Experience
-    worldPrice: cols[6] || "",     // Price World
-    bharatPrice: cols[7] || ""     // Price Bharat
-};
-});
-  });
+const VOCAL_FOR_LOCAL_CSV =
+  "PASTE_VOCAL_FOR_LOCAL_CSV_LINK_HERE";
 
-// Search logic
-document.getElementById("mirrorSearch").addEventListener("input", function () {
-    const query = this.value.toLowerCase();
-    const resultsDiv = document.getElementById("mirrorResults");
-    resultsDiv.innerHTML = "";
-
-    if (!query) return;
-
-    const matches = mirrorData.filter(item =>
-        item.world.includes(query) ||
-        item.bharat.includes(query) ||
-        item.experience.toLowerCase().includes(query)
-    );
-
-    if (matches.length === 0) {
-        resultsDiv.innerHTML = "<p style='color:#777;'>No results found.</p>";
-        return;
-    }
-
-    matches.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.style.marginBottom = "20px";
-
-        card.innerHTML = `
-    <strong>🌍 World:</strong> ${item.world}<br>
-    <strong>🇮🇳 Bharat:</strong> ${item.bharat}, ${item.state}<br><br>
-
-    <small style="color:#ccc;">${item.description}</small><br><br>
-
-    <span style="color:#f4a261;">🏷️ ${item.experience}</span><br><br>
-
-    💰 <strong>World:</strong> ₹${item.worldPrice}
-    &nbsp; | &nbsp;
-    <strong>Bharat:</strong> ₹${item.bharatPrice}
-`;
-
-        resultsDiv.appendChild(card);
-    });
-});
+const SEO_KEYWORDS_CSV =
+  "PASTE_SEO_KEYWORDS_CSV_LINK_HERE";
 </script>
 </body>
 </html>
