@@ -171,17 +171,118 @@
         </p>
     </footer>
 <script>
+   <script>
+/* ===============================
+   CSV LINKS (LOCKED)
+================================ */
+
 const BHARAT_MIRROR_CSV =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7BOsfu5CDJunvbj_NTPaZOFT23j4SREv1fxHWgcT4Y0Z0ifElDCHwQbt7LN8Xd2jfW14KAt4GtCyT/pub?gid=0&single=true&output=csv";
 
 const YATRA_SERVICES_CSV =
-  "PASTE_YATRA_SERVICES_CSV_LINK_HERE";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7BOsfu5CDJunvbj_NTPaZOFT23j4SREv1fxHWgcT4Y0Z0ifElDCHwQbt7LN8Xd2jfW14KAt4GtCyT/pub?gid=576654578&single=true&output=csv";
 
 const VOCAL_FOR_LOCAL_CSV =
-  "PASTE_VOCAL_FOR_LOCAL_CSV_LINK_HERE";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7BOsfu5CDJunvbj_NTPaZOFT23j4SREv1fxHWgcT4Y0Z0ifElDCHwQbt7LN8Xd2jfW14KAt4GtCyT/pub?gid=923032846&single=true&output=csv";
 
 const SEO_KEYWORDS_CSV =
-  "PASTE_SEO_KEYWORDS_CSV_LINK_HERE";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7BOsfu5CDJunvbj_NTPaZOFT23j4SREv1fxHWgcT4Y0Z0ifElDCHwQbt7LN8Xd2jfW14KAt4GtCyT/pub?gid=1104622968&single=true&output=csv";
+
+    /* ===============================
+   GLOBAL DATA STORES
+================================ */
+
+let bharatMirrorData = [];
+let yatraServicesData = [];
+let vocalForLocalData = [];
+let seoKeywordsData = [];
+   
+    /* ===============================
+   CSV FETCH HELPER
+================================ */
+
+function fetchCSV(url) {
+  return fetch(url)
+    .then(res => res.text())
+    .then(csv =>
+      csv
+        .split("\n")
+        .slice(1)
+        .map(row =>
+          row.split(",").map(col =>
+            col.replace(/"/g, "").trim()
+          )
+        )
+    );
+}
+    /* ===============================
+   BHARAT MIRROR DATA
+================================ */
+
+fetchCSV(BHARAT_MIRROR_CSV).then(rows => {
+  bharatMirrorData = rows.map(cols => ({
+    world: (cols[0] || "").toLowerCase(),
+    country: cols[1] || "",
+    image: cols[2] || "",
+    bharat: (cols[3] || "").toLowerCase(),
+    state: cols[4] || "",
+    description: cols[5] || "",
+    experience: (cols[6] || "").toLowerCase(),
+    worldPrice: cols[7] || "",
+    bharatPrice: cols[8] || ""
+  }));
+
+  console.log("Bharat Mirror loaded:", bharatMirrorData.length);
+});
+    /* ===============================
+   YATRA SERVICES
+================================ */
+
+fetchCSV(YATRA_SERVICES_CSV).then(rows => {
+  yatraServicesData = rows.map(cols => ({
+    type: cols[0] || "",
+    description: cols[1] || "",
+    audience: cols[2] || "",
+    action: cols[3] || "",
+    status: cols[4] || "",
+    link: cols[5] || ""
+  }));
+
+  console.log("Yatra Services loaded:", yatraServicesData.length);
+});
+    /* ===============================
+   VOCAL FOR LOCAL
+================================ */
+
+fetchCSV(VOCAL_FOR_LOCAL_CSV).then(rows => {
+  vocalForLocalData = rows.map(cols => ({
+    appNo: cols[0] || "",
+    item: cols[1] || "",
+    category: cols[2] || "",
+    gi: cols[3] || "",
+    state: cols[4] || "",
+    district: cols[5] || "",
+    note: cols[6] || "",
+    image: cols[7] || "",
+    verify: cols[8] || ""
+  }));
+
+  console.log("Vocal For Local loaded:", vocalForLocalData.length);
+});
+    /* ===============================
+   SEO KEYWORDS
+================================ */
+
+fetchCSV(SEO_KEYWORDS_CSV).then(rows => {
+  seoKeywordsData = rows.map(cols => ({
+    keyword: cols[0] || "",
+    intent: cols[1] || "",
+    mirror: cols[2] || "",
+    audience: cols[3] || ""
+  }));
+
+  console.log("SEO Keywords loaded:", seoKeywordsData.length);
+});
 </script>
 </body>
 </html>
