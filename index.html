@@ -171,6 +171,78 @@
         </p>
     </footer>
 <script>
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7BOsfu5CDJunvbj_NTPaZOFT23j4SREv1fxHWgcT4Y0Z0ifElDCHwQbt7LN8Xd2jfW14KAt4GtCyT/pub?gid=0&single=true&output=csv";
+
+let mirrorData = [];
+
+// Fetch & parse CSV
+fetch(SHEET_URL)
+  .then(res => res.text())
+  .then(csv => {
+    const rows = csv.split("\n").slice(1);
+
+    mirrorData = rows.map(row => {
+      const cols = row.split(",").map(col =>
+        col.replace(/"/g, "").trim()
+      );
+
+      return {
+        world: (cols[0] || "").toLowerCase(),
+        country: cols[1] || "",
+        image: cols[2] || "",
+        bharat: (cols[3] || "").toLowerCase(),
+        state: cols[4] || "",
+        description: cols[5] || "",
+        experience: (cols[6] || "").toLowerCase(),
+        worldPrice: cols[7] || "",
+        bharatPrice: cols[8] || ""
+      };
+    });
+
+    console.log("Bharat Mirror Loaded:", mirrorData.length);
+  });
+
+// Search logic
+document.getElementById("mirrorSearch").addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+  const resultsDiv = document.getElementById("mirrorResults");
+  resultsDiv.innerHTML = "";
+
+  if (!query) return;
+
+  const matches = mirrorData.filter(item =>
+    item.world.includes(query) ||
+    item.bharat.includes(query) ||
+    item.experience.includes(query) ||
+    item.state.toLowerCase().includes(query)
+  );
+
+  if (matches.length === 0) {
+    resultsDiv.innerHTML = "<p style='color:#777;'>No results found.</p>";
+    return;
+  }
+
+  matches.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.marginBottom = "20px";
+
+    card.innerHTML = `
+      <strong>🌍 World:</strong> ${item.world}<br>
+      <strong>🇮🇳 Bharat:</strong> ${item.bharat}, ${item.state}<br><br>
+
+      <small style="color:#ccc;">${item.description}</small><br><br>
+
+      <span style="color:#f4a261;">🏷️ ${item.experience}</span><br><br>
+
+      💰 <strong>World:</strong> ₹${item.worldPrice}
+      &nbsp; | &nbsp;
+      <strong>Bharat:</strong> ₹${item.bharatPrice}
+    `;
+
+    resultsDiv.appendChild(card);
+  });
+});
 /* ===============================
    CSV LINKS (LOCKED)
 ================================ */
