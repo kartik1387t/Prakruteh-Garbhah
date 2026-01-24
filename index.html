@@ -171,6 +171,22 @@
         </p>
     </footer>
 <script>
+/* ===============================
+   UTILITY: FORMAT & SAVINGS
+================================ */
+
+function formatINR(value) {
+  const num = parseInt(value, 10);
+  if (isNaN(num)) return "";
+  return num.toLocaleString("en-IN");
+}
+
+function calculateSavings(worldPrice, bharatPrice) {
+  const w = parseInt(worldPrice, 10);
+  const b = parseInt(bharatPrice, 10);
+  if (isNaN(w) || isNaN(b)) return null;
+  return w - b;
+}
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7BOsfu5CDJunvbj_NTPaZOFT23j4SREv1fxHWgcT4Y0Z0ifElDCHwQbt7LN8Xd2jfW14KAt4GtCyT/pub?gid=0&single=true&output=csv";
 
 let mirrorData = [];
@@ -227,18 +243,27 @@ document.getElementById("mirrorSearch").addEventListener("input", function () {
     card.className = "card";
     card.style.marginBottom = "20px";
 
-    card.innerHTML = `
-      <strong>🌍 World:</strong> ${item.world}<br>
-      <strong>🇮🇳 Bharat:</strong> ${item.bharat}, ${item.state}<br><br>
+    const savings = calculateSavings(item.worldPrice, item.bharatPrice);
 
-      <small style="color:#ccc;">${item.description}</small><br><br>
+card.innerHTML = `
+  <strong>🌍 World:</strong> ${item.world}<br>
+  <strong>🇮🇳 Bharat:</strong> ${item.bharat}, ${item.state}<br><br>
 
-      <span style="color:#f4a261;">🏷️ ${item.experience}</span><br><br>
+  <small style="color:#ccc;">${item.description}</small><br><br>
 
-      💰 <strong>World:</strong> ₹${item.worldPrice}
-      &nbsp; | &nbsp;
-      <strong>Bharat:</strong> ₹${item.bharatPrice}
-    `;
+  <span style="color:#f4a261;">🏷️ ${item.experience}</span><br><br>
+
+  💰 <strong>World:</strong> ₹${formatINR(item.worldPrice)}
+  &nbsp; | &nbsp;
+  <strong>Bharat:</strong> ₹${formatINR(item.bharatPrice)}
+  <br><br>
+
+  ${
+    savings !== null
+      ? `<strong style="color:#2ecc71;">💚 You save ₹${formatINR(savings)}</strong>`
+      : ""
+  }
+`;
 
     resultsDiv.appendChild(card);
   });
