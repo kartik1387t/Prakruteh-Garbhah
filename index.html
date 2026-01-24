@@ -200,13 +200,14 @@ fetch(SHEET_URL)
     bharatMirrorData = rows.map(cols => ({
   world: (cols[0] || "").toLowerCase(),
   country: cols[1] || "",
-  image: cols[2] || "",                 // destination_image_link
+  image: cols[2] || "",
   bharat: (cols[3] || "").toLowerCase(),
   state: cols[4] || "",
   description: cols[5] || "",
   experience: (cols[6] || "").toLowerCase(),
-  worldPrice: cols[7] || "",             // ✅ FIXED
-  bharatPrice: cols[8] || ""             // ✅ FIXED
+  worldPrice: cols[7] || "",
+  bharatPrice: cols[8] || "",
+  mirrorWindow: cols[9] || ""
 }));
 
     console.log("Bharat Mirror Loaded:", mirrorData.length);
@@ -247,6 +248,10 @@ card.innerHTML = `
 
   <span style="color:#f4a261;">🏷️ ${item.experience}</span><br><br>
 
+${ item.mirrorWindow
+  ? `<br><em style="color:#bfa;">🪞 ${item.mirrorWindow}</em>`
+  : ""
+}
   💰 <strong>World:</strong> ₹${formatINR(item.worldPrice)}
   &nbsp; | &nbsp;
   <strong>Bharat:</strong> ₹${formatINR(item.bharatPrice)}
