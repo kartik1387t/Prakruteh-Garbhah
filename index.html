@@ -80,6 +80,23 @@
             color: #aaa;
         }
     </style>
+    /* Experience Chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.chip {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  border: 1px solid #444;
+  color: #f4a261;
+  background: rgba(244,162,97,0.08);
+  white-space: nowrap;
+}
 </head>
 
 <body>
@@ -175,6 +192,16 @@
    UTILITY: FORMAT & SAVINGS
 ================================ */
 
+    function renderExperienceChips(exp) {
+  if (!exp) return "";
+  return exp
+    .split(",")
+    .map(e => e.trim())
+    .filter(Boolean)
+    .map(e => `<span class="chip">${e}</span>`)
+    .join("");
+}
+
 function formatINR(value) {
   const num = parseInt(value, 10);
   if (isNaN(num)) return "";
@@ -221,7 +248,9 @@ document.getElementById("mirrorSearch").addEventListener("input", function () {
 
       <small style="color:#ccc;">${item.description}</small><br><br>
 
-      <span style="color:#f4a261;">🏷️ ${item.experience}</span><br>
+      <div class="chips">
+  ${renderExperienceChips(item.experience)}
+</div>
 
       ${item.bestTime ? `<span style="color:#9aa;">🪞 ${item.bestTime}</span><br><br>` : ""}
 
