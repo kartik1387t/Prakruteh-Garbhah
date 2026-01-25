@@ -156,12 +156,7 @@
     <section>
         <h2>Plan Your Yatra</h2>
 
-        <div class="card-grid">
-            <div class="card">✈️ Flights<br><small>Coming Soon</small></div>
-            <div class="card">🏨 Hotels<br><small>Coming Soon</small></div>
-            <div class="card">🚆 Trains / 🚌 Bus<br><small>Coming Soon</small></div>
-            <div class="card">🛂 Visa Assistance<br><small>Coming Soon</small></div>
-        </div>
+        <div class="card-grid" id="yatraServices"></div>
     </section>
 
     <div class="divider"></div>
@@ -310,6 +305,7 @@ function fetchCSV(url) {
         )
     );
 }
+
     /* ===============================
    BHARAT MIRROR DATA
 ================================ */
@@ -353,7 +349,32 @@ fetchCSV(BHARAT_MIRROR_CSV).then(rows => {
    YATRA SERVICES
 ================================ */
 
-fetchCSV(YATRA_SERVICES_CSV).then(rows => {
+    function renderYatraServices() {
+  const container = document.getElementById("yatraServices");
+  if (!container || yatraServicesData.length === 0) return;
+
+  container.innerHTML = "";
+
+  yatraServicesData.forEach(service => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <strong>${service.type}</strong><br><br>
+      <small style="color:#ccc;">${service.description}</small><br><br>
+      <small style="color:#9aa;">For: ${service.audience}</small><br><br>
+      ${
+        service.status.toLowerCase() === "active" && service.link
+          ? `<a href="${service.link}" target="_blank" style="color:#f4a261;">${service.action}</a>`
+          : `<span style="color:#777;">${service.status}</span>`
+      }
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+    fetchCSV(YATRA_SERVICES_CSV).then(rows => {
   yatraServicesData = rows.map(cols => ({
     type: cols[0] || "",
     description: cols[1] || "",
@@ -364,7 +385,9 @@ fetchCSV(YATRA_SERVICES_CSV).then(rows => {
   }));
 
   console.log("Yatra Services loaded:", yatraServicesData.length);
+  renderYatraServices(); // ✅ ADD THIS
 });
+    
     /* ===============================
    VOCAL FOR LOCAL
 ================================ */
