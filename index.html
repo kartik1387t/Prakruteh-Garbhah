@@ -292,10 +292,9 @@ fetchCSV(BHARAT_MIRROR_CSV).then(rows => {
     state: cols[4] || "",
     description: cols[5] || "",
     experience: (cols[6] || "").toLowerCase(),
-    worldPrice: cols[7] || "",
-    bharatPrice: cols[8] || "",
-    bestTime: cols[9] || ""
-  }));
+    bharatPrice: cols[7] || "",     // ✅ Bharat price first
+worldPrice: cols[8] || "",      // ✅ World price second
+bestTime: cols[9] || ""         // ✅ Mirror visit window
 
   console.log("Bharat Mirror loaded:", bharatMirrorData.length);
 });
