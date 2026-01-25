@@ -206,8 +206,7 @@ fetch(SHEET_URL)
   description: cols[5] || "",
   experience: (cols[6] || "").toLowerCase(),
   worldPrice: cols[7] || "",
-  bharatPrice: cols[8] || "",
-  mirrorWindow: cols[9] || ""
+  bharatPrice: cols[8] || ""
 }));
 
     console.log("Bharat Mirror Loaded:", mirrorData.length);
@@ -248,10 +247,6 @@ card.innerHTML = `
 
   <span style="color:#f4a261;">🏷️ ${item.experience}</span><br><br>
 
-${ item.mirrorWindow
-  ? `<br><em style="color:#bfa;">🪞 ${item.mirrorWindow}</em>`
-  : ""
-}
   💰 <strong>World:</strong> ₹${formatINR(item.worldPrice)}
   &nbsp; | &nbsp;
   <strong>Bharat:</strong> ₹${formatINR(item.bharatPrice)}
