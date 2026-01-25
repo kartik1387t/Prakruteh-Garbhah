@@ -187,45 +187,20 @@ function calculateSavings(worldPrice, bharatPrice) {
   if (isNaN(w) || isNaN(b)) return null;
   return w - b;
 }
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7BOsfu5CDJunvbj_NTPaZOFT23j4SREv1fxHWgcT4Y0Z0ifElDCHwQbt7LN8Xd2jfW14KAt4GtCyT/pub?gid=0&single=true&output=csv";
-
-let mirrorData = [];
-
-// Fetch & parse CSV
-fetch(SHEET_URL)
-  .then(res => res.text())
-  .then(csv => {
-    const rows = csv.split("\n").slice(1);
-
-    bharatMirrorData = rows.map(cols => ({
-  world: (cols[0] || "").toLowerCase(),
-  country: cols[1] || "",
-  image: cols[2] || "",
-  bharat: (cols[3] || "").toLowerCase(),
-  state: cols[4] || "",
-  description: cols[5] || "",
-  experience: (cols[6] || "").toLowerCase(),
-  worldPrice: cols[7] || "",
-  bharatPrice: cols[8] || "",
-  bestTime: cols[9] || ""
-}));
-
-    console.log("Bharat Mirror Loaded:", mirrorData.length);
-  });
 
 // Search logic
 document.getElementById("mirrorSearch").addEventListener("input", function () {
-  const query = this.value.toLowerCase();
+  const query = this.value.toLowerCase().trim();
   const resultsDiv = document.getElementById("mirrorResults");
   resultsDiv.innerHTML = "";
 
-  if (!query) return;
+  if (!query || bharatMirrorData.length === 0) return;
 
-  const matches = mirrorData.filter(item =>
-    item.world.includes(query) ||
-    item.bharat.includes(query) ||
-    item.experience.includes(query) ||
-    item.state.toLowerCase().includes(query)
+  const matches = bharatMirrorData.filter(item =>
+    (item.world && item.world.includes(query)) ||
+    (item.bharat && item.bharat.includes(query)) ||
+    (item.experience && item.experience.includes(query)) ||
+    (item.state && item.state.toLowerCase().includes(query))
   );
 
   if (matches.length === 0) {
@@ -240,34 +215,27 @@ document.getElementById("mirrorSearch").addEventListener("input", function () {
 
     const savings = calculateSavings(item.worldPrice, item.bharatPrice);
 
-card.innerHTML = `
-  <strong>🌍 World:</strong> ${item.world}<br>
-  <strong>🇮🇳 Bharat:</strong> ${item.bharat}, ${item.state}<br><br>
+    card.innerHTML = `
+      <strong>🌍 World:</strong> ${item.world}<br>
+      <strong>🇮🇳 Bharat:</strong> ${item.bharat}, ${item.state}<br><br>
 
-  <small style="color:#ccc;">${item.description}</small><br><br>
+      <small style="color:#ccc;">${item.description}</small><br><br>
 
-  <span style="color:#f4a261;">🏷️ ${item.experience}</span><br><br>
+      <span style="color:#f4a261;">🏷️ ${item.experience}</span><br>
 
-${ item.bestTime
-  ? `<br><span style="color:#9aa;">🗓 Best time: ${item.bestTime}</span>`
-  : ""
-}
- 
-  💰 <strong>World:</strong> ₹${formatINR(item.worldPrice)}
-  &nbsp; | &nbsp;
-  <strong>Bharat:</strong> ₹${formatINR(item.bharatPrice)}
-  <br><br>
+      ${item.bestTime ? `<span style="color:#9aa;">🪞 ${item.bestTime}</span><br><br>` : ""}
 
-  ${
-    savings !== null
-      ? `<strong style="color:#2ecc71;">💚 You save ₹${formatINR(savings)}</strong>`
-      : ""
-  }
-`;
+      💰 <strong>World:</strong> ₹${formatINR(item.worldPrice)}
+      &nbsp; | &nbsp;
+      <strong>Bharat:</strong> ₹${formatINR(item.bharatPrice)}<br><br>
+
+      ${savings !== null ? `<strong style="color:#2ecc71;">💚 You save ₹${formatINR(savings)}</strong>` : ""}
+    `;
 
     resultsDiv.appendChild(card);
   });
 });
+
 /* ===============================
    CSV LINKS (LOCKED)
 ================================ */
@@ -325,7 +293,8 @@ fetchCSV(BHARAT_MIRROR_CSV).then(rows => {
     description: cols[5] || "",
     experience: (cols[6] || "").toLowerCase(),
     worldPrice: cols[7] || "",
-    bharatPrice: cols[8] || ""
+    bharatPrice: cols[8] || "",
+    bestTime: cols[9] || ""
   }));
 
   console.log("Bharat Mirror loaded:", bharatMirrorData.length);
