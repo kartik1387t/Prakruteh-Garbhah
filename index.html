@@ -284,17 +284,37 @@ function fetchCSV(url) {
 ================================ */
 
 fetchCSV(BHARAT_MIRROR_CSV).then(rows => {
-  bharatMirrorData = rows.map(cols => ({
-    world: (cols[0] || "").toLowerCase(),
-    country: cols[1] || "",
-    image: cols[2] ||"",
-    bharat: (cols[3] || "").toLowerCase(),
-    state: cols[4] || "",
+  bharatMirrorData = rows.map(cols => {
+  const worldImage = cols[2] || "";   // Column C
+  const bharatImage = cols[7] || "";  // Column H
+
+  return {
+    // WORLD
+    world: (cols[0] || "").toLowerCase(),      // world_destination
+    country: cols[1] || "",                    // country
+
+    // BHARAT
+    bharat: (cols[3] || "").toLowerCase(),     // bharat_twin
+    state: cols[4] || "",                      // bharat_state
+
+    // CONTENT
     description: cols[5] || "",
     experience: (cols[6] || "").toLowerCase(),
+
+    // IMAGES (smart fallback)
+    image: bharatImage || worldImage,          // 🇮🇳 first, 🌍 fallback
+    worldImage,
+    bharatImage,
+
+    // PRICING
     worldPrice: cols[8] || "",
     bharatPrice: cols[9] || "",
+
+    // META
+    audience: cols[10] || "",
     bestTime: cols[11] || ""
+  };
+});
 
   console.log("Bharat Mirror loaded:", bharatMirrorData.length);
 });
