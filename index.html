@@ -209,6 +209,19 @@ function calculateSavings(worldPrice, bharatPrice) {
 }
 
 // Search logic
+
+    // SEO automation
+const seoMatch = seoKeywordsData.find(k =>
+  query.includes(k.keyword.toLowerCase())
+);
+
+if (seoMatch) {
+  setSEO(
+    `${seoMatch.keyword} | Prakruteh Garbha`,
+    `Discover how ${seoMatch.keyword} can be experienced within Bharat through ${seoMatch.mirror}. Honest, cultural, and affordable travel.`
+  );
+}
+ 
 document.getElementById("mirrorSearch").addEventListener("input", function () {
   const query = this.value.toLowerCase().trim();
   const resultsDiv = document.getElementById("mirrorResults");
@@ -454,6 +467,18 @@ fetchCSV(SEO_KEYWORDS_CSV).then(rows => {
 
   console.log("SEO Keywords loaded:", seoKeywordsData.length);
 });
+    
+    function setSEO(title, description) {
+  document.title = title;
+
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if (!metaDesc) {
+    metaDesc = document.createElement("meta");
+    metaDesc.name = "description";
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.setAttribute("content", description);
+}
 </script>
 </body>
 </html>
