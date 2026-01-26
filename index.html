@@ -294,6 +294,41 @@ const SEO_KEYWORDS_CSV =
 let bharatMirrorData = [];
 let yatraServicesData = [];
 let vocalForLocalData = [];
+    function renderVocalForLocal() {
+  const container = document.getElementById("vocalForLocal");
+  if (!container || vocalForLocalData.length === 0) return;
+
+  container.innerHTML = "";
+
+  vocalForLocalData.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <strong>${item.item}</strong><br><br>
+
+      <small style="color:#ccc;">${item.category}</small><br><br>
+
+      <small style="color:#9aa;">
+        ${item.district ? item.district + ", " : ""}${item.state}
+      </small><br><br>
+
+      ${
+        item.gi.toLowerCase() === "yes"
+          ? `<span style="color:#2ecc71;">✔ GI Tagged</span><br><br>`
+          : `<span style="color:#777;">GI status unknown</span><br><br>`
+      }
+
+      ${
+        item.verify
+          ? `<a href="${item.verify}" target="_blank" style="color:#f4a261;">Verify / Learn more</a>`
+          : `<span style="color:#777;">Verification coming soon</span>`
+      }
+    `;
+
+    container.appendChild(card);
+  });
+}
 let seoKeywordsData = [];
    
     /* ===============================
@@ -400,42 +435,6 @@ fetchCSV(BHARAT_MIRROR_CSV).then(rows => {
     /* ===============================
    VOCAL FOR LOCAL
 ================================ */
-
-    function renderVocalForLocal() {
-  const container = document.getElementById("vocalForLocal");
-  if (!container || vocalForLocalData.length === 0) return;
-
-  container.innerHTML = "";
-
-  vocalForLocalData.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    card.innerHTML = `
-      <strong>${item.item}</strong><br><br>
-
-      <small style="color:#ccc;">${item.category}</small><br><br>
-
-      <small style="color:#9aa;">
-        ${item.district ? item.district + ", " : ""}${item.state}
-      </small><br><br>
-
-      ${
-        item.gi.toLowerCase() === "yes"
-          ? `<span style="color:#2ecc71;">✔ GI Tagged</span><br><br>`
-          : `<span style="color:#777;">GI status unknown</span><br><br>`
-      }
-
-      ${
-        item.verify
-          ? `<a href="${item.verify}" target="_blank" style="color:#f4a261;">Verify / Learn more</a>`
-          : `<span style="color:#777;">Verification coming soon</span>`
-      }
-    `;
-
-    container.appendChild(card);
-  });
-}
 
     fetchCSV(VOCAL_FOR_LOCAL_CSV).then(rows => {
   vocalForLocalData = rows.map(cols => ({
