@@ -97,6 +97,51 @@
   background: rgba(244,162,97,0.08);
   white-space: nowrap;
 }
+
+        .card {
+  border-radius: 12px;
+  background: rgba(255,255,255,0.02);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.card strong {
+  font-size: 1rem;
+}
+
+.card small {
+  display: block;
+}
+
+        /* Mobile polish */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+  }
+
+  section {
+    padding: 50px 16px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+    .divider {
+  margin: 40px 0;
+    }
+}
     </style>
 
 </head>
@@ -140,10 +185,18 @@
 
         <!-- Search UI placeholder -->
         <input 
-    id="mirrorSearch"
-    type="text"
-    placeholder="Search a country, place, or vibe…"
-    style="width:100%; padding:15px; border-radius:30px; border:1px solid #f4a261; background:#000; color:#fff;"
+  id="mirrorSearch"
+  type="text"
+  placeholder="Search a country, place, or vibe…"
+  style="
+    width:100%;
+    padding:18px;
+    border-radius:30px;
+    border:1px solid #f4a261;
+    background:#000;
+    color:#fff;
+    font-size:1rem;
+  "
 >
 
         <!-- Results will render here later -->
@@ -250,12 +303,26 @@ function calculateSavings(worldPrice, bharatPrice) {
 
       ${item.bestTime ? `<span style="color:#9aa;">🪞 ${item.bestTime}</span><br><br>` : ""}
 
-      💰 <strong>World:</strong> ₹${formatINR(item.worldPrice)}
-      &nbsp; | &nbsp;
-      <strong>Bharat:</strong> ₹${formatINR(item.bharatPrice)}<br><br>
+<div style="margin-top:10px;">
+  <div style="font-size:0.9rem;">
+    🌍 World: ₹${formatINR(item.worldPrice)}
+  </div>
+  <div style="font-size:1rem; color:#f4a261;">
+    🇮🇳 Bharat: ₹${formatINR(item.bharatPrice)}
+  </div>
+</div>
 
-      ${savings !== null ? `<strong style="color:#2ecc71;">💚 You save ₹${formatINR(savings)}</strong>` : ""}
-    `;
+      <div style="
+  margin-top:12px;
+  padding:8px 12px;
+  border-radius:8px;
+  background:rgba(46,204,113,0.12);
+  color:#2ecc71;
+  font-weight:bold;
+  display:inline-block;
+">
+  💚 You save ₹${formatINR(savings)}
+</div>
 
     resultsDiv.appendChild(card);
   });
