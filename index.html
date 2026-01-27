@@ -395,7 +395,7 @@ fetchCSV(BHARAT_MIRROR_CSV).then(rows => {
 
     function renderYatraServices() {
   const container = document.getElementById("yatraServices");
-  if (!container || yatraServicesData.length === 0) return;
+  if (!container) return;
 
   container.innerHTML = "";
 
