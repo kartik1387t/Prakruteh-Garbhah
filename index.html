@@ -295,7 +295,34 @@ const SEO_KEYWORDS_CSV =
 
 let bharatMirrorData = [];
 let yatraServicesData = [];
+
+    function renderYatraServices() {
+  const container = document.getElementById("yatraServices");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  yatraServicesData.forEach(service => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <strong>${service.type}</strong><br><br>
+      <small style="color:#ccc;">${service.description}</small><br><br>
+      <small style="color:#9aa;">For: ${service.audience}</small><br><br>
+      ${
+        service.status.toLowerCase() === "active" && service.link
+          ? `<a href="${service.link}" target="_blank" style="color:#f4a261;">${service.action}</a>`
+          : `<span style="color:#777;">${service.status}</span>`
+      }
+    `;
+
+    container.appendChild(card);
+  });
+}
+
 let vocalForLocalData = [];
+   
     function renderVocalForLocal() {
   const container = document.getElementById("vocalForLocal");
   if (!container || vocalForLocalData.length === 0) return;
@@ -331,7 +358,8 @@ let vocalForLocalData = [];
     container.appendChild(card);
   });
 }
-let seoKeywordsData = [];
+
+    let seoKeywordsData = [];
    
     /* ===============================
    CSV FETCH HELPER
@@ -394,31 +422,6 @@ fetchCSV(BHARAT_MIRROR_CSV).then(rows => {
     /* ===============================
    YATRA SERVICES
 ================================ */
-
-    function renderYatraServices() {
-  const container = document.getElementById("yatraServices");
-  if (!container) return;
-
-  container.innerHTML = "";
-
-  yatraServicesData.forEach(service => {
-    const card = document.createElement("div");
-    card.className = "card";
-
-    card.innerHTML = `
-      <strong>${service.type}</strong><br><br>
-      <small style="color:#ccc;">${service.description}</small><br><br>
-      <small style="color:#9aa;">For: ${service.audience}</small><br><br>
-      ${
-        service.status.toLowerCase() === "active" && service.link
-          ? `<a href="${service.link}" target="_blank" style="color:#f4a261;">${service.action}</a>`
-          : `<span style="color:#777;">${service.status}</span>`
-      }
-    `;
-
-    container.appendChild(card);
-  });
-}
 
     fetchCSV(YATRA_SERVICES_CSV).then(rows => {
   yatraServicesData = rows.map(cols => ({
