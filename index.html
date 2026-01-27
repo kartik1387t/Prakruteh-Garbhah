@@ -191,10 +191,12 @@
     .split(",")
     .map(e => e.trim())
     .filter(Boolean)
-    .map(e => `<span class="chip">${e}</span>`)
+    .map(
+      e => `<span class="chip" data-chip="${e.toLowerCase()}">${e}</span>`
+    )
     .join("");
 }
-
+    
 function formatINR(value) {
   const num = parseInt(value, 10);
   if (isNaN(num)) return "";
@@ -478,6 +480,19 @@ fetchCSV(SEO_KEYWORDS_CSV).then(rows => {
   }
   metaDesc.setAttribute("content", description);
 }
+
+    document.addEventListener("click", function (e) {
+  if (e.target.classList.contains("chip")) {
+    const value = e.target.getAttribute("data-chip");
+    const searchInput = document.getElementById("mirrorSearch");
+
+    if (searchInput) {
+      searchInput.value = value;
+      searchInput.dispatchEvent(new Event("input"));
+      window.scrollTo({ top: searchInput.offsetTop - 50, behavior: "smooth" });
+    }
+  }
+});
 </script>
 </body>
 </html>
