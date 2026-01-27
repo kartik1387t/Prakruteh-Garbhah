@@ -484,6 +484,13 @@ fetchCSV(SEO_KEYWORDS_CSV).then(rows => {
     }
   }
 });
+
+    window.addEventListener("load", () => {
+  const searchInput = document.getElementById("mirrorSearch");
+  if (searchInput && searchInput.value.trim() !== "") {
+    searchInput.dispatchEvent(new Event("input"));
+  }
+});
 </script>
 </body>
 </html>
