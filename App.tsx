@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import CosmicIntro from './components/CosmicIntro';
-import MirrorSearch from './components/MirrorSearch';
-import LivingMap from './components/LivingMap';
-import YatraDashboard from './components/YatraDashboard';
-import Footer from './components/Footer';
-import Reveal from './components/Reveal';
-import { Compass, User, Globe } from 'lucide-react';
+import React, { useState } from "react";
+
+import CosmicIntro from "./CosmicIntro";
+import MirrorSearch from "./MirrorSearch";
+import LivingMap from "./LivingMap";
+import YatraDashboard from "./YatraDashboard";
+import Footer from "./Footer";
+import Reveal from "./Reveal";
+
+import { Compass, User, Globe } from "lucide-react";
 
 const App: React.FC = () => {
   const [showIntro, setShowIntro] = useState(true);
