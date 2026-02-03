@@ -1,3 +1,21 @@
+import { useEffect, useState } from "react";
+import { getBharatMirrorData } from "../data/bharatMirrorService";
+const [mirrors, setMirrors] = useState<any[]>([]);
+const [loading, setLoading] = useState(true);
+useEffect(() => {
+  async function loadData() {
+    try {
+      const data = await getBharatMirrorData();
+      setMirrors(data);
+    } catch (error) {
+      console.error("Failed to load Bharat Mirror data", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  loadData();
+}, []);
 import React, { useState } from 'react';
 import { Search, ArrowRight, TrendingDown, MapPin, Globe, Sparkles } from 'lucide-react';
 import { MIRROR_DATA } from '../constants';
@@ -159,3 +177,16 @@ const MirrorSearch: React.FC = () => {
 };
 
 export default MirrorSearch;
+{loading && <p>Loading mirror data...</p>}
+{!loading &&
+  mirrors.map((item, index) => (
+    <div key={index} style={{ marginBottom: "1rem" }}>
+      <strong>{item.world_destination}</strong>
+      <br />
+      Bharat Twin: {item.bharat_twin}
+      <br />
+      Cost (World): ₹{item.price_world_inr}
+      <br />
+      Cost (Bharat): ₹{item.price_bharat_inr}
+    </div>
+  ))}
