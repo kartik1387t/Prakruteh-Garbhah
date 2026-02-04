@@ -38,23 +38,21 @@ const MirrorSearch: React.FC = () => {
         </Reveal>
 
         {/* Search Bar */}
-        <Reveal delay={0.1}>
-          <div className="max-w-xl mx-auto mb-16 relative z-20">
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-saffron to-indigo rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000"></div>
-              <div className="relative flex items-center bg-cosmos-light/80 backdrop-blur-xl rounded-full p-2 border border-white/10">
-                <Search className="text-gray-400 ml-4" size={20} />
-                <input 
-                  type="text" 
-                  placeholder="Where in the world..." 
-                  className="w-full bg-transparent text-white p-3 pl-4 focus:outline-none placeholder-gray-500 font-sans"
-                  value={searchTerm}
-                  onChange={handleSearch}
-                />
-              </div>
-            </div>
-          </div>
-        </Reveal>
+        <div className="max-w-xl mx-auto mb-16 relative z-50">
+  <div className="relative group">
+    <div className="absolute -inset-1 bg-gradient-to-r from-saffron to-indigo rounded-full blur opacity-40 pointer-events-none"></div>
+
+    <div className="relative flex items-center bg-cosmos-light/80 backdrop-blur-xl rounded-full p-2 border border-white/10">
+      <input
+        type="text"
+        placeholder="Where in the world..."
+        className="w-full bg-transparent text-white p-3 pl-4 focus:outline-none placeholder-gray-500 font-sans"
+        value={searchTerm}
+        onChange={handleSearch}
+      />
+    </div>
+  </div>
+</div>
 
         {/* Results - Two Cards Layout */}
         <div className="relative min-h-[500px]">
@@ -65,7 +63,7 @@ const MirrorSearch: React.FC = () => {
               <div className="w-full md:w-[380px] group animate-slide-in-left">
                 <div className="relative bg-cosmos-light/40 border border-white/10 rounded-2xl overflow-hidden shadow-2xl hover:shadow-saffron/10 transition-all duration-500 hover:-translate-y-2 h-full">
                   <div className="h-64 overflow-hidden relative">
-                     <div className="absolute inset-0 bg-gray-900/40 z-10 group-hover:bg-transparent transition-all duration-500"></div>
+                     <div className="absolute inset-0 bg-gray-900/40 z-10 group-hover:bg-transparent transition-all duration-500 pointer-events-none"></div>
                      <img src={match.worldImage} alt={match.worldName} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-100 group-hover:scale-110" />
                      <div className="absolute top-4 left-4 z-20 bg-black/60 px-3 py-1 rounded-full border border-white/10 backdrop-blur-md">
                         <span className="text-xs font-bold text-gray-300 uppercase tracking-widest flex items-center gap-1">
@@ -107,7 +105,7 @@ const MirrorSearch: React.FC = () => {
 
                   <div className="h-64 overflow-hidden relative">
                      <img src={match.bharatImage} alt={match.bharatName} className="w-full h-full object-cover transition-all duration-700 scale-100 group-hover:scale-110" />
-                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
                      <div className="absolute top-4 left-4 z-20 bg-saffron/90 px-3 py-1 rounded-full backdrop-blur-md">
                         <span className="text-xs font-bold text-cosmos uppercase tracking-widest flex items-center gap-1">
                           <MapPin size={12} /> The Reality
