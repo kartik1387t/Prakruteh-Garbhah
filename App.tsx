@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { fetchCSVData } from "./services/csv.service";
 import CosmicIntro from './components/CosmicIntro';
 import MirrorSearch from './components/MirrorSearch';
 import LivingMap from './components/LivingMap';
