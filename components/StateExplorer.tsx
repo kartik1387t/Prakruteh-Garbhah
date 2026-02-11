@@ -506,4 +506,9 @@ const StateExplorer: React.FC<StateExplorerProps> = ({ onClose, onAddToYatra }) 
   );
 };
 
+const states = getAllStates();
+
+states.map(state => (
+  <StateCard key={state.id} state={state} />
+));
 export default StateExplorer;
