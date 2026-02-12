@@ -8,12 +8,6 @@ try {
       <App />
     </React.StrictMode>
   );
-} catch (error) {
-  document.body.innerHTML =
-    "<h1 style='color:red'>APP CRASHED</h1><pre>" +
-    error +
-    "</pre>";
-}
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
