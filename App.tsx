@@ -63,6 +63,7 @@ const App: React.FC = () => {
     root.style.setProperty('--theme-primary', theme.primary);
     root.style.setProperty('--theme-secondary', theme.secondary);
   }, [currentVibe]);
+  
 useEffect(() => {
   const testCSV = async () => {
     try {
