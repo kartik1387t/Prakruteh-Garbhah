@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { fetchCSVData } from "./services/csv.service";
 import CosmicIntro from './components/CosmicIntro';
 import MirrorSearch from './components/MirrorSearch';
 import LivingMap from './components/LivingMap';
@@ -53,7 +54,8 @@ const App: React.FC = () => {
   // Yatra Planner State
   const [yatraItems, setYatraItems] = useState<YatraItem[]>([]);
   const [scenicPreview, setScenicPreview] = useState<string | null>(null);
-
+  const [csvPreview, setCsvPreview] = useState<string>('');
+  
   // Update CSS Variables for True Color Atmosphere
   useEffect(() => {
     const theme = VIBE_THEMES[currentVibe] || VIBE_THEMES['nature'];
@@ -61,7 +63,19 @@ const App: React.FC = () => {
     root.style.setProperty('--theme-primary', theme.primary);
     root.style.setProperty('--theme-secondary', theme.secondary);
   }, [currentVibe]);
+useEffect(() => {
+  const testCSV = async () => {
+    try {
+      const data = await fetchCSVData();
+      setCsvPreview(data.slice(0, 500)); // show only first 500 characters
+    } catch (error) {
+      setCsvPreview("ERROR FETCHING CSV");
+    }
+  };
 
+  testCSV();
+}, []);
+  
   // --- Handlers ---
 
   const handleLogin = (profile: UserProfile) => {
@@ -393,6 +407,11 @@ const App: React.FC = () => {
 
         </>
       )}
+      {csvPreview && (
+  <div className="fixed bottom-4 left-4 right-4 bg-black text-green-400 text-xs p-4 rounded-lg z-[9999] max-h-40 overflow-auto">
+    <pre>{csvPreview}</pre>
+  </div>
+)}
     </div>
   );
 };
