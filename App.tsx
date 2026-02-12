@@ -54,7 +54,8 @@ const App: React.FC = () => {
   // Yatra Planner State
   const [yatraItems, setYatraItems] = useState<YatraItem[]>([]);
   const [scenicPreview, setScenicPreview] = useState<string | null>(null);
-const [csvPreview, setCsvPreview] = useState<string>('');
+  const [csvPreview, setCsvPreview] = useState<string>('');
+  
   // Update CSS Variables for True Color Atmosphere
   useEffect(() => {
     const theme = VIBE_THEMES[currentVibe] || VIBE_THEMES['nature'];
