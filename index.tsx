@@ -1,6 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
+try {
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+} catch (error) {
+  document.body.innerHTML =
+    "<h1 style='color:red'>APP CRASHED</h1><pre>" +
+    error +
+    "</pre>";
+}
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
