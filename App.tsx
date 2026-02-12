@@ -54,7 +54,6 @@ const App: React.FC = () => {
   // Yatra Planner State
   const [yatraItems, setYatraItems] = useState<YatraItem[]>([]);
   const [scenicPreview, setScenicPreview] = useState<string | null>(null);
-  const [csvPreview, setCsvPreview] = useState<string>('');
   
   // Update CSS Variables for True Color Atmosphere
   useEffect(() => {
@@ -63,19 +62,6 @@ const App: React.FC = () => {
     root.style.setProperty('--theme-primary', theme.primary);
     root.style.setProperty('--theme-secondary', theme.secondary);
   }, [currentVibe]);
-  
-useEffect(() => {
-  const testCSV = async () => {
-    try {
-      const data = await fetchCSVData();
-      setCsvPreview(data.slice(0, 500)); // show only first 500 characters
-    } catch (error) {
-      setCsvPreview("ERROR FETCHING CSV");
-    }
-  };
-
-  testCSV();
-}, []);
   
   // --- Handlers ---
 
