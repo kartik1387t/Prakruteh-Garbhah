@@ -54,7 +54,6 @@ const App: React.FC = () => {
   // Yatra Planner State
   const [yatraItems, setYatraItems] = useState<YatraItem[]>([]);
   const [scenicPreview, setScenicPreview] = useState<string | null>(null);
-  const [csvPreview, setCsvPreview] = useState<string>('');
   
   // Update CSS Variables for True Color Atmosphere
   useEffect(() => {
@@ -406,9 +405,6 @@ useEffect(() => {
 
         </>
       )}
-      {csvPreview && (
-  <div className="fixed bottom-4 left-4 right-4 bg-black text-green-400 text-xs p-4 rounded-lg z-[9999] max-h-40 overflow-auto">
-    <pre>{csvPreview}</pre>
   </div>
 )}
     </div>
