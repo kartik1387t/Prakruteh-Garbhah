@@ -179,19 +179,37 @@ const [loading, setLoading] = useState(true);
           </div>
 
         </div>
-      ) : (
-        <div className="flex-1 flex flex-col items-center justify-center relative">
-           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-           <Globe size={64} className="text-gray-700 mb-6 animate-float" />
-           <h3 className="text-2xl font-serif text-gray-500 mb-2">The Cosmos Awaits</h3>
-           <p className="text-gray-600 text-sm">Search a global destination to find its soul in Bharat.</p>
-        </div>
-      )}
-      {loading && <p className="text-white">Loading Mirror Data...</p>}
+      <div className="flex-1 relative">
 
-{!loading && mirrorData.length === 0 && (
-  <p className="text-red-400">No data loaded</p>
-)}
+  {/* RESULT PANEL */}
+  <div
+    className={`absolute inset-0 transition-opacity duration-300 ${
+      match ? "opacity-100" : "opacity-0 pointer-events-none"
+    }`}
+  >
+    {match && (
+      <div className="flex flex-col md:flex-row h-full">
+        {/* Keep your entire existing result layout here */}
+      </div>
+    )}
+  </div>
+
+  {/* EMPTY STATE PANEL */}
+  <div
+    className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-300 ${
+      match ? "opacity-0 pointer-events-none" : "opacity-100"
+    }`}
+  >
+    <Globe size={64} className="text-gray-700 mb-6 animate-float" />
+    <h3 className="text-2xl font-serif text-gray-500 mb-2">
+      The Cosmos Awaits
+    </h3>
+    <p className="text-gray-600 text-sm">
+      Search a global destination to find its soul in Bharat.
+    </p>
+  </div>
+
+</div>
     </section>
   );
 };
