@@ -1,8 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { fetchMirrorData } from "../src/services/csv.service";
 import { Search, ArrowRight, TrendingDown, MapPin, Globe, Sparkles, PiggyBank, Plane, Hotel, Volume2 } from 'lucide-react';
-import { MIRROR_DATA } from '../constants';
-import { MirrorLocation } from '../types';
+useEffect(() => {
+  const loadData = async () => {
+    try {
+      const rawData = await fetchMirrorData();
+
+      const transformed = rawData.map((item: any) => {
+        const worldPrice = Number(item["World Price"]) || 0;
+        const bharatPrice = Number(item["Bharat Price"]) || 0;
+
+        return {
+          worldName: item["World Destination"] || "",
+          bharatName: item["Bharat Destination"] || "",
+          worldPrice,
+          bharatPrice,
+          savings: worldPrice - bharatPrice,
+          description: item["Description"] || "",
+          experience: item["Experience"] || "",
+          mirrorVisitWindow: item["Mirror Visit Window"] || "",
+          worldImage: item["World Image"] || "",
+          bharatImage: item["Bharat Image"] || "",
+          tags: item["Tags"]
+            ? item["Tags"].split(",").map((t: string) => t.trim())
+            : []
+        };
+      });
+
+      setMirrorData(transformed);
+    } catch (error) {
+      console.error("Mirror CSV Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadData();
+}, []);
 import Reveal from './Reveal';
 
 interface MirrorSearchProps {
@@ -125,8 +159,16 @@ const [loading, setLoading] = useState(true);
                 <p className="text-gray-300 text-sm mb-6 italic border-l-2 border-saffron pl-4 max-w-md">
                    "{match.description}"
                 </p>
-                
-                <div className="flex items-end justify-between border-t border-white/10 pt-6">
+                <div className="mb-4 text-xs text-gray-400 space-y-1">
+  {match.experience && (
+    <p><span className="text-saffron font-bold">Experience:</span> {match.experience}</p>
+  )}
+  {match.bestTime && (
+    <p><span className="text-saffron font-bold">Best Time:</span> {match.bestTime}</p>
+  )}
+</div>
+               
+               <div className="flex items-end justify-between border-t border-white/10 pt-6">
                    <div>
                       <span className="text-gray-400 text-xs uppercase">Real Cost</span>
                       <div className="text-3xl text-green-400 font-mono font-bold">
