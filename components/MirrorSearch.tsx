@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { fetchMirrorData } from "../src/services/csv.service";
 import { Search, ArrowRight, TrendingDown, MapPin, Globe, Sparkles, PiggyBank, Plane, Hotel, Volume2 } from 'lucide-react';
 import { MIRROR_DATA } from '../constants';
 import { MirrorLocation } from '../types';
@@ -11,6 +12,20 @@ interface MirrorSearchProps {
 const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [match, setMatch] = useState<MirrorLocation | null>(null);
+  useEffect(() => {
+  const loadData = async () => {
+    try {
+      const data = await fetchMirrorData();
+      setMirrorData(data);
+    } catch (error) {
+      console.error("Mirror CSV Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  loadData();
+}, []);
   
   useEffect(() => {
     if (externalTerm) {
