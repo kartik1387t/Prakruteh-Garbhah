@@ -12,6 +12,9 @@ interface MirrorSearchProps {
 const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [match, setMatch] = useState<MirrorLocation | null>(null);
+  const [mirrorData, setMirrorData] = useState<any[]>([]);
+const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
   const loadData = async () => {
     try {
@@ -36,7 +39,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
 
   const performSearch = (term: string) => {
     if (term.length > 2) {
-      const found = MIRROR_DATA.find(item => 
+      const found = mirrordata.find(item => 
         item.worldName.toLowerCase().includes(term.toLowerCase()) || 
         item.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
       );
