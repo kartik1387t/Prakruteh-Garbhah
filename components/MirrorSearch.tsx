@@ -50,21 +50,6 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
 const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-  const loadData = async () => {
-    try {
-      const data = await fetchMirrorData();
-      setMirrorData(data);
-    } catch (error) {
-      console.error("Mirror CSV Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  loadData();
-}, []);
-  
-  useEffect(() => {
     if (externalTerm) {
       setSearchTerm(externalTerm);
       performSearch(externalTerm);
@@ -72,16 +57,20 @@ const [loading, setLoading] = useState(true);
   }, [externalTerm]);
 
   const performSearch = (term: string) => {
-    if (term.length > 2) {
-      const found = mirrordata.find(item => 
-        item.worldName.toLowerCase().includes(term.toLowerCase()) || 
-        item.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
-      );
-      setMatch(found || null);
-    } else {
-      setMatch(null);
-    }
-  };
+  if (term.length > 2 && mirrorData.length > 0) {
+    const found = mirrorData.find(item =>
+      item.worldName.toLowerCase().includes(term.toLowerCase()) ||
+      item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
+      item.tags.some(tag =>
+        tag.toLowerCase().includes(term.toLowerCase())
+      )
+    );
+
+    setMatch(found || null);
+  } else {
+    setMatch(null);
+  }
+};
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
@@ -163,8 +152,8 @@ const [loading, setLoading] = useState(true);
   {match.experience && (
     <p><span className="text-saffron font-bold">Experience:</span> {match.experience}</p>
   )}
-  {match.bestTime && (
-    <p><span className="text-saffron font-bold">Best Time:</span> {match.bestTime}</p>
+  {match.mirrorVisitWindow && (
+    <p><span className="text-saffron font-bold">Best Time:</span> {match.mirrorVisitWindow}</p>
   )}
 </div>
                
