@@ -146,6 +146,11 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
            <p className="text-gray-600 text-sm">Search a global destination to find its soul in Bharat.</p>
         </div>
       )}
+      {loading && <p className="text-white">Loading Mirror Data...</p>}
+
+{!loading && mirrorData.length === 0 && (
+  <p className="text-red-400">No data loaded</p>
+)}
     </section>
   );
 };
