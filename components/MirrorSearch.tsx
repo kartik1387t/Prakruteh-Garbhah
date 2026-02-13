@@ -14,6 +14,14 @@ const [mirrorData, setMirrorData] = useState<any[]>([]);
 const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+  const delay = setTimeout(() => {
+    performSearch(searchTerm);
+  }, 300);
+
+  return () => clearTimeout(delay);
+}, [searchTerm]);
+
+  useEffect(() => {
   const loadData = async () => {
     try {
       const rawData = await fetchMirrorData();
@@ -74,9 +82,8 @@ const [loading, setLoading] = useState(true);
 };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    performSearch(term);
+  setSearchTerm(e.target.value);
+};
   };
 
   const formatCurrency = (amount: number) => {
