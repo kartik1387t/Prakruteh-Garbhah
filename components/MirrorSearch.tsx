@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { fetchMirrorData } from "../src/services/csv.service";
 import { Search, ArrowRight, TrendingDown, MapPin, Globe, Sparkles, PiggyBank, Plane, Hotel, Volume2 } from 'lucide-react';
-useEffect(() => {
+import Reveal from './Reveal';
+
+interface MirrorSearchProps {
+  externalTerm?: string;
+}
+
+const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+const [match, setMatch] = useState<MirrorLocation | null>(null);
+const [mirrorData, setMirrorData] = useState<any[]>([]);
+const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
   const loadData = async () => {
     try {
       const rawData = await fetchMirrorData();
@@ -37,18 +49,7 @@ useEffect(() => {
 
   loadData();
 }, []);
-import Reveal from './Reveal';
-
-interface MirrorSearchProps {
-  externalTerm?: string;
-}
-
-const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [match, setMatch] = useState<MirrorLocation | null>(null);
-  const [mirrorData, setMirrorData] = useState<any[]>([]);
-const [loading, setLoading] = useState(true);
-  
+ 
   useEffect(() => {
     if (externalTerm) {
       setSearchTerm(externalTerm);
