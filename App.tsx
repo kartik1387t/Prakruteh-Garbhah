@@ -30,13 +30,148 @@ import { Season, YatraItem, VibeType, UserProfile } from './types';
 // Define slide types
 type SlideType = 'home' | 'mirror' | 'map' | 'dashboard' | 'explore_states';
 
+// --- Extracted Components for Navigation (Moved OUTSIDE App to prevent re-renders) ---
+
+interface SmartSearchBarProps {
+  searchTerm: string;
+  onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  userProfile: UserProfile | null;
+  onJoinClick: () => void;
+  onDashboardClick: () => void;
+}
+
+const SmartSearchBar: React.FC<SmartSearchBarProps> = ({ searchTerm, onSearch, userProfile, onJoinClick, onDashboardClick }) => (
+  <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-lg px-4">
+    <div className="relative group">
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-saffron via-white to-indigo rounded-full blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
+      <div className="relative flex items-center bg-black/60 backdrop-blur-xl rounded-full border border-white/10 shadow-2xl">
+         <Search className="ml-4 text-saffron" size={20} />
+      
+         <input 
+           type="text" 
+           placeholder="Search a country, a vibe..." 
+           className="w-full bg-transparent text-white px-4 py-3 focus:outline-none font-sans text-sm placeholder-gray-400"
+           value={searchTerm}
+           onChange={onSearch}
+         />
+    
+         <button className="p-2 hover:bg-white/10 rounded-full transition-colors mx-1" title="Voice Search">
+            <Mic size={18} className="text-gray-400 group-hover:text-white" />
+         </button>
+         <div className="w-px h-6 bg-white/10 mx-1"></div>
+         {/* Auth Button in Search Bar */}
+         <button 
+           onClick={() => userProfile ? onDashboardClick() : onJoinClick()}
+           className="px-3 py-1 flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-white transition-colors"
+         >
+            {userProfile ? (
+              <div className="w-6 h-6 rounded-full bg-saffron text-black flex items-center justify-center font-serif">
+                 {userProfile.name.charAt(0)}
+              </div>
+            ) : (
+              <>
+                 <User size={14} /> Join
+              </>
+            )}
+         </button>
+      </div>
+    </div>
+  </div>
+);
+
+interface UniversalNavOrbProps {
+  navOpen: boolean;
+  setNavOpen: (open: boolean) => void;
+  toggleSlide: (slide: SlideType) => void;
+}
+
+const UniversalNavOrb: React.FC<UniversalNavOrbProps> = ({ navOpen, setNavOpen, toggleSlide }) => (
+  <div className="fixed bottom-32 left-8 z-50">
+     {/* Radial Menu Items */}
+     <div className={`absolute bottom-2 left-2 transition-all duration-300 ${navOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        {/* Mirror */}
+        <button 
+           onClick={() => toggleSlide('mirror')}
+           className={`absolute transition-all duration-300 w-12 h-12 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center hover:bg-saffron hover:text-black hover:scale-110 shadow-lg ${navOpen ? '-translate-y-32 translate-x-0' : 'translate-y-0 translate-x-0'}`}
+           title="Mirror Search"
+        >
+           <Globe size={20} />
+        </button>
+        
+        {/* Map */}
+        <button 
+           onClick={() => toggleSlide('map')}
+           className={`absolute transition-all duration-300 w-12 h-12 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center hover:bg-saffron hover:text-black hover:scale-110 shadow-lg ${navOpen ? '-translate-y-24 translate-x-24' : 'translate-y-0 translate-x-0'}`}
+           title="Manchitra"
+        >
+           <MapIcon size={20} />
+        </button>
+
+        {/* Dashboard */}
+        <button 
+           onClick={() => toggleSlide('dashboard')}
+           className={`absolute transition-all duration-300 w-12 h-12 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center hover:bg-saffron hover:text-black hover:scale-110 shadow-lg ${navOpen ? 'translate-y-0 translate-x-32' : 'translate-y-0 translate-x-0'}`}
+           title="Yatra Dashboard"
+        >
+           <PieChart size={20} />
+        </button>
+
+         {/* Placeholder: Anubhav */}
+         <button 
+           className={`absolute transition-all duration-300 w-10 h-10 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center text-gray-500 hover:text-white shadow-lg ${navOpen ? '-translate-y-10 translate-x-[7.5rem]' : 'translate-y-0 translate-x-0'}`}
+           title="Anubhav (Coming Soon)"
+        >
+           <Sparkles size={16} />
+        </button>
+     </div>
+
+     {/* The Orb Button (Dharma Chakra) */}
+     <button 
+       onClick={() => setNavOpen(!navOpen)}
+       className={`relative w-16 h-16 rounded-full bg-gradient-to-tr from-cosmos to-black border-2 border-saffron/50 shadow-[0_0_30px_rgba(255,153,51,0.4)] flex items-center justify-center transition-transform duration-500 z-50 ${navOpen ? 'rotate-180 scale-110' : 'rotate-0 hover:scale-105'}`}
+     >
+        <Aperture className={`text-saffron transition-all duration-500 ${navOpen ? 'rotate-180' : ''}`} size={32} />
+     </button>
+     
+     <div className={`absolute top-full mt-2 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-saffron transition-opacity duration-300 ${navOpen ? 'opacity-0' : 'opacity-80'}`}>
+        Menu
+     </div>
+  </div>
+);
+
+interface SideAccessPanelProps {
+  toggleSlide: (slide: SlideType) => void;
+  activeSlide: SlideType | null;
+}
+
+const SideAccessPanel: React.FC<SideAccessPanelProps> = ({ toggleSlide, activeSlide }) => (
+  <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-8 pr-4">
+     {['States', 'Culture', 'Food', 'Festivals', 'Safety'].map((item) => (
+       <div 
+          key={item} 
+          className="group flex items-center justify-end gap-4 cursor-pointer"
+          onClick={() => {
+            if (item === 'States') toggleSlide('explore_states');
+          }}
+       >
+          <span className="text-xs uppercase tracking-widest text-white/50 group-hover:text-saffron transition-colors opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 duration-300">
+             {item}
+          </span>
+          <div className={`w-1 h-8 bg-white/20 rounded-full group-hover:bg-saffron group-hover:h-12 transition-all duration-300 ${activeSlide === 'explore_states' && item === 'States' ? 'bg-saffron h-12' : ''}`}></div>
+       </div>
+     ))}
+  </div>
+);
+
+// --- Main App Component ---
+
 const App: React.FC = () => {
   // --- Global State ---
   const [showIntro, setShowIntro] = useState(true);
   const [activeSlide, setActiveSlide] = useState<SlideType | null>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  
+
   // User Profile State
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
 
@@ -122,118 +257,6 @@ const App: React.FC = () => {
     setNavOpen(false); // Close radial menu after selection
   };
 
-  // --- Components for Navigation ---
-
-  const SmartSearchBar = () => (
-    <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-lg px-4">
-      <div className="relative group">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-saffron via-white to-indigo rounded-full blur opacity-30 group-hover:opacity-60 transition duration-500"></div>
-        <div className="relative flex items-center bg-black/60 backdrop-blur-xl rounded-full border border-white/10 shadow-2xl">
-           <Search className="ml-4 text-saffron" size={20} />
-           <input 
-             type="text" 
-             placeholder="Search a country, a vibe..." 
-             className="w-full bg-transparent text-white px-4 py-3 focus:outline-none font-sans text-sm placeholder-gray-400"
-             value={globalSearchTerm}
-             onChange={handleSmartSearch}
-           />
-           <button className="p-2 hover:bg-white/10 rounded-full transition-colors mx-1" title="Voice Search">
-              <Mic size={18} className="text-gray-400 group-hover:text-white" />
-           </button>
-           <div className="w-px h-6 bg-white/10 mx-1"></div>
-           {/* Auth Button in Search Bar */}
-           <button 
-             onClick={() => userProfile ? toggleSlide('dashboard') : setShowAuthModal(true)}
-             className="px-3 py-1 flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-white transition-colors"
-           >
-              {userProfile ? (
-                <div className="w-6 h-6 rounded-full bg-saffron text-black flex items-center justify-center font-serif">
-                   {userProfile.name.charAt(0)}
-                </div>
-              ) : (
-                <>
-                  <User size={14} /> Join
-                </>
-              )}
-           </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const UniversalNavOrb = () => (
-    <div className="fixed bottom-32 left-8 z-50">
-       {/* Radial Menu Items */}
-       <div className={`absolute bottom-2 left-2 transition-all duration-300 ${navOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-          {/* Mirror */}
-          <button 
-             onClick={() => toggleSlide('mirror')}
-             className={`absolute transition-all duration-300 w-12 h-12 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center hover:bg-saffron hover:text-black hover:scale-110 shadow-lg ${navOpen ? '-translate-y-32 translate-x-0' : 'translate-y-0 translate-x-0'}`}
-             title="Mirror Search"
-          >
-             <Globe size={20} />
-          </button>
-          
-          {/* Map */}
-          <button 
-             onClick={() => toggleSlide('map')}
-             className={`absolute transition-all duration-300 w-12 h-12 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center hover:bg-saffron hover:text-black hover:scale-110 shadow-lg ${navOpen ? '-translate-y-24 translate-x-24' : 'translate-y-0 translate-x-0'}`}
-             title="Manchitra"
-          >
-             <MapIcon size={20} />
-          </button>
-
-          {/* Dashboard */}
-          <button 
-             onClick={() => toggleSlide('dashboard')}
-             className={`absolute transition-all duration-300 w-12 h-12 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center hover:bg-saffron hover:text-black hover:scale-110 shadow-lg ${navOpen ? 'translate-y-0 translate-x-32' : 'translate-y-0 translate-x-0'}`}
-             title="Yatra Dashboard"
-          >
-             <PieChart size={20} />
-          </button>
-
-           {/* Placeholder: Anubhav */}
-           <button 
-             className={`absolute transition-all duration-300 w-10 h-10 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center text-gray-500 hover:text-white shadow-lg ${navOpen ? '-translate-y-10 translate-x-[7.5rem]' : 'translate-y-0 translate-x-0'}`}
-             title="Anubhav (Coming Soon)"
-          >
-             <Sparkles size={16} />
-          </button>
-       </div>
-
-       {/* The Orb Button (Dharma Chakra) */}
-       <button 
-         onClick={() => setNavOpen(!navOpen)}
-         className={`relative w-16 h-16 rounded-full bg-gradient-to-tr from-cosmos to-black border-2 border-saffron/50 shadow-[0_0_30px_rgba(255,153,51,0.4)] flex items-center justify-center transition-transform duration-500 z-50 ${navOpen ? 'rotate-180 scale-110' : 'rotate-0 hover:scale-105'}`}
-       >
-          <Aperture className={`text-saffron transition-all duration-500 ${navOpen ? 'rotate-180' : ''}`} size={32} />
-       </button>
-       
-       <div className={`absolute top-full mt-2 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-widest text-saffron transition-opacity duration-300 ${navOpen ? 'opacity-0' : 'opacity-80'}`}>
-          Menu
-       </div>
-    </div>
-  );
-
-  const SideAccessPanel = () => (
-    <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col gap-8 pr-4">
-       {['States', 'Culture', 'Food', 'Festivals', 'Safety'].map((item) => (
-         <div 
-            key={item} 
-            className="group flex items-center justify-end gap-4 cursor-pointer"
-            onClick={() => {
-              if (item === 'States') toggleSlide('explore_states');
-            }}
-         >
-            <span className="text-xs uppercase tracking-widest text-white/50 group-hover:text-saffron transition-colors opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 duration-300">
-               {item}
-            </span>
-            <div className={`w-1 h-8 bg-white/20 rounded-full group-hover:bg-saffron group-hover:h-12 transition-all duration-300 ${activeSlide === 'explore_states' && item === 'States' ? 'bg-saffron h-12' : ''}`}></div>
-         </div>
-       ))}
-    </div>
-  );
-
   return (
     <div className="h-screen w-screen overflow-hidden text-white font-sans relative transition-all duration-1000">
       
@@ -295,9 +318,22 @@ const App: React.FC = () => {
       ) : (
         <>
           {/* 4. Global Navigation Elements */}
-          <SmartSearchBar />
-          <UniversalNavOrb />
-          <SideAccessPanel />
+          <SmartSearchBar 
+             searchTerm={globalSearchTerm}
+             onSearch={handleSmartSearch}
+             userProfile={userProfile}
+             onJoinClick={() => setShowAuthModal(true)}
+             onDashboardClick={() => toggleSlide('dashboard')}
+          />
+          <UniversalNavOrb 
+             navOpen={navOpen}
+             setNavOpen={setNavOpen}
+             toggleSlide={toggleSlide}
+          />
+          <SideAccessPanel 
+             toggleSlide={toggleSlide}
+             activeSlide={activeSlide}
+          />
 
           {/* 5. Branding (Top Left - Simplified) */}
           <div className="fixed top-8 left-8 z-40 hidden md:block">
@@ -310,7 +346,7 @@ const App: React.FC = () => {
              {/* Mirror Search Slide */}
              <div className={`absolute inset-0 md:inset-10 bg-cosmos/95 md:bg-cosmos/90 glass-card md:rounded-3xl overflow-y-auto pointer-events-auto flex flex-col ${activeSlide === 'mirror' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                  <button onClick={closeSlide} className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition-colors z-50">
-                    <X size={24} />
+                   <X size={24} />
                  </button>
                  <div className="flex-1 mt-16 md:mt-0">
                    <MirrorSearch externalTerm={mirrorSearchProp} />
