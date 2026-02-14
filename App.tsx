@@ -308,7 +308,7 @@ const App: React.FC = () => {
           <main className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center p-0 md:p-6 lg:p-12">
              
              {/* Mirror Search Slide */}
-             <div className={`absolute inset-0 md:inset-10 bg-cosmos/95 md:bg-cosmos/90 glass-card md:rounded-3xl overflow-y-auto pointer-events-auto slide-panel flex flex-col ${activeSlide === 'mirror' ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95 pointer-events-none'}`}>
+             <div className={`absolute inset-0 md:inset-10 bg-cosmos/95 md:bg-cosmos/90 glass-card md:rounded-3xl overflow-y-auto pointer-events-auto flex flex-col ${activeSlide === 'mirror' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                  <button onClick={closeSlide} className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition-colors z-50">
                     <X size={24} />
                  </button>
