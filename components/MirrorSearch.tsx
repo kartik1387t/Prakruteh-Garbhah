@@ -48,18 +48,23 @@ const [loading, setLoading] = useState(true);
   loadData();
 }, []);
 
- const found = mirrorData.find(item =>
-  item.worldName.toLowerCase().includes(term.toLowerCase()) ||
-  item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
-  item.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
-);
-      setMatch(found || null);
-    } else {
-      setMatch(null);
-    }
-  };
+ const performSearch = (term: string) => {
+  if (term.length > 2) {
+    const found = mirrorData.find(item =>
+      item.worldName.toLowerCase().includes(term.toLowerCase()) ||
+      item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
+      item.tags.some(tag =>
+        tag.toLowerCase().includes(term.toLowerCase())
+      )
+    );
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMatch(found || null);
+  } else {
+    setMatch(null);
+  }
+};
+
+   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     setSearchTerm(term);
     performSearch(term);
