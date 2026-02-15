@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ArrowRight, TrendingDown, MapPin, Globe, Sparkles, PiggyBank, Plane, Hotel, Volume2 } from 'lucide-react';
-import { mirrordata } from '../constants';
+import { fetchMirrorData } from '../src/services/csv.service';
 import { MirrorLocation } from '../types';
 import Reveal from './Reveal';
 
@@ -11,32 +11,31 @@ interface MirrorSearchProps {
 const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [match, setMatch] = useState<MirrorLocation | null>(null);
+  const [mirrorData, setMirrorData] = useState<MirrorLocation[]>([]);
+const [loading, setLoading] = useState(true);
   
   useEffect(() => {
   const loadData = async () => {
     try {
       const rawData = await fetchMirrorData();
 
-      const transformed = rawData.map((item: any) => {
-        const worldPrice = Number(item["World Price"]) || 0;
-        const bharatPrice = Number(item["Bharat Price"]) || 0;
-
-        return {
-          worldName: item["World Destination"] || "",
-          bharatName: item["Bharat Destination"] || "",
-          worldPrice,
-          bharatPrice,
-          savings: worldPrice - bharatPrice,
-          description: item["Description"] || "",
-          experience: item["Experience"] || "",
-          mirrorVisitWindow: item["Mirror Visit Window"] || "",
-          worldImage: item["World Image"] || "",
-          bharatImage: item["Bharat Image"] || "",
-          tags: item["Tags"]
-            ? item["Tags"].split(",").map((t: string) => t.trim())
-            : []
-        };
-      });
+      const transformed = rawData.map((item: any) => ({
+        worldName: item["World Destination"] || "",
+        bharatName: item["Bharat Destination"] || "",
+        worldPrice: Number(item["World Price"]) || 0,
+        bharatPrice: Number(item["Bharat Price"]) || 0,
+        savings:
+          (Number(item["World Price"]) || 0) -
+          (Number(item["Bharat Price"]) || 0),
+        description: item["Description"] || "",
+        experience: item["Experience"] || "",
+        mirrorVisitWindow: item["Mirror Visit Window"] || "",
+        worldImage: item["World Image"] || "",
+        bharatImage: item["Bharat Image"] || "",
+        tags: item["Tags"]
+          ? item["Tags"].split(",").map((t: string) => t.trim())
+          : []
+      }));
 
       setMirrorData(transformed);
     } catch (error) {
@@ -49,12 +48,11 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
   loadData();
 }, []);
 
-  const performSearch = (term: string) => {
-    if (term.length > 2) {
-      const found = mirrordata.find(item => 
-        item.worldName.toLowerCase().includes(term.toLowerCase()) || 
-        item.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
-      );
+ const found = mirrorData.find(item =>
+  item.worldName.toLowerCase().includes(term.toLowerCase()) ||
+  item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
+  item.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
+);
       setMatch(found || null);
     } else {
       setMatch(null);
