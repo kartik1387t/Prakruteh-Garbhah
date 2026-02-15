@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ArrowRight, TrendingDown, MapPin, Globe, Sparkles, PiggyBank, Plane, Hotel, Volume2 } from 'lucide-react';
-import { MIRROR_DATA } from '../constants';
+import { mirrordata } from '../constants';
 import { MirrorLocation } from '../types';
 import Reveal from './Reveal';
 
@@ -13,15 +13,45 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
   const [match, setMatch] = useState<MirrorLocation | null>(null);
   
   useEffect(() => {
-    if (externalTerm) {
-      setSearchTerm(externalTerm);
-      performSearch(externalTerm);
+  const loadData = async () => {
+    try {
+      const rawData = await fetchMirrorData();
+
+      const transformed = rawData.map((item: any) => {
+        const worldPrice = Number(item["World Price"]) || 0;
+        const bharatPrice = Number(item["Bharat Price"]) || 0;
+
+        return {
+          worldName: item["World Destination"] || "",
+          bharatName: item["Bharat Destination"] || "",
+          worldPrice,
+          bharatPrice,
+          savings: worldPrice - bharatPrice,
+          description: item["Description"] || "",
+          experience: item["Experience"] || "",
+          mirrorVisitWindow: item["Mirror Visit Window"] || "",
+          worldImage: item["World Image"] || "",
+          bharatImage: item["Bharat Image"] || "",
+          tags: item["Tags"]
+            ? item["Tags"].split(",").map((t: string) => t.trim())
+            : []
+        };
+      });
+
+      setMirrorData(transformed);
+    } catch (error) {
+      console.error("Mirror CSV Error:", error);
+    } finally {
+      setLoading(false);
     }
-  }, [externalTerm]);
+  };
+
+  loadData();
+}, []);
 
   const performSearch = (term: string) => {
     if (term.length > 2) {
-      const found = MIRROR_DATA.find(item => 
+      const found = mirrordata.find(item => 
         item.worldName.toLowerCase().includes(term.toLowerCase()) || 
         item.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
       );
