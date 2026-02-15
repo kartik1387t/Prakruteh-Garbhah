@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ArrowRight, TrendingDown, MapPin, Globe, Sparkles, PiggyBank, Plane, Hotel, Volume2 } from 'lucide-react';
+import { Search, ArrowRight, Globe, MapPin, Sparkles } from 'lucide-react';
 import { fetchMirrorData } from '../src/services/csv.service';
 import { MirrorLocation } from '../types';
-import Reveal from './Reveal';
 
 interface MirrorSearchProps {
   externalTerm?: string;
@@ -12,72 +11,75 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [match, setMatch] = useState<MirrorLocation | null>(null);
   const [mirrorData, setMirrorData] = useState<MirrorLocation[]>([]);
-const [loading, setLoading] = useState(true);
-  
+  const [loading, setLoading] = useState(true);
+
+  // 1. Load CSV Data on Mount
   useEffect(() => {
-  const loadData = async () => {
-    try {
-      const rawData = await fetchMirrorData();
+    const loadData = async () => {
+      try {
+        const rawData = await fetchMirrorData();
+        const transformed = rawData.map((item: any) => ({
+          worldName: item["World Destination"] || "",
+          bharatName: item["Bharat Destination"] || "",
+          worldPrice: Number(item["World Price"]) || 0,
+          bharatPrice: Number(item["Bharat Price"]) || 0,
+          savings: (Number(item["World Price"]) || 0) - (Number(item["Bharat Price"]) || 0),
+          description: item["Description"] || "",
+          experience: item["Experience"] || "",
+          mirrorVisitWindow: item["Mirror Visit Window"] || "",
+          worldImage: item["World Image"] || "",
+          bharatImage: item["Bharat Image"] || "",
+          tags: item["Tags"] ? item["Tags"].split(",").map((t: string) => t.trim()) : []
+        }));
+        setMirrorData(transformed);
+      } catch (error) {
+        console.error("Mirror CSV Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
 
-      const transformed = rawData.map((item: any) => ({
-        worldName: item["World Destination"] || "",
-        bharatName: item["Bharat Destination"] || "",
-        worldPrice: Number(item["World Price"]) || 0,
-        bharatPrice: Number(item["Bharat Price"]) || 0,
-        savings:
-          (Number(item["World Price"]) || 0) -
-          (Number(item["Bharat Price"]) || 0),
-        description: item["Description"] || "",
-        experience: item["Experience"] || "",
-        mirrorVisitWindow: item["Mirror Visit Window"] || "",
-        worldImage: item["World Image"] || "",
-        bharatImage: item["Bharat Image"] || "",
-        tags: item["Tags"]
-          ? item["Tags"].split(",").map((t: string) => t.trim())
-          : []
-      }));
+  // 2. Sync with Global Search Bar
+  useEffect(() => {
+    if (externalTerm) {
+      setSearchTerm(externalTerm);
+      performSearch(externalTerm);
+    }
+  }, [externalTerm, mirrorData]); // Added mirrorData as dependency to ensure it searches once data arrives
 
-      setMirrorData(transformed);
-    } catch (error) {
-      console.error("Mirror CSV Error:", error);
-    } finally {
-      setLoading(false);
+  // 3. Search Logic
+  const performSearch = (term: string) => {
+    if (term.length > 2 && mirrorData.length > 0) {
+      const found = mirrorData.find(item =>
+        item.worldName.toLowerCase().includes(term.toLowerCase()) ||
+        item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
+        item.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
+      );
+      setMatch(found || null);
+    } else {
+      setMatch(null);
     }
   };
 
-  loadData();
-}, []);
-
- const performSearch = (term: string) => {
-  if (term.length > 2) {
-    const found = mirrorData.find(item =>
-      item.worldName.toLowerCase().includes(term.toLowerCase()) ||
-      item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
-      item.tags.some(tag =>
-        tag.toLowerCase().includes(term.toLowerCase())
-      )
-    );
-
-    setMatch(found || null);
-  } else {
-    setMatch(null);
-  }
-};
-
-   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     setSearchTerm(term);
     performSearch(term);
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumSignificantDigits: 3 }).format(amount);
+    return new Intl.NumberFormat('en-IN', { 
+      style: 'currency', 
+      currency: 'INR', 
+      maximumSignificantDigits: 3 
+    }).format(amount);
   };
 
   return (
     <section className="h-full flex flex-col w-full relative overflow-hidden" id="mirror-search">
-      
-      {/* Search Input (Floating Top) */}
+      {/* Search Input */}
       <div className="absolute top-0 left-0 right-0 z-30 p-6 flex justify-center bg-gradient-to-b from-black/80 to-transparent">
         <div className="relative group w-full max-w-xl">
           <div className="absolute -inset-1 bg-gradient-to-r from-saffron to-indigo rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000"></div>
@@ -94,14 +96,16 @@ const [loading, setLoading] = useState(true);
         </div>
       </div>
 
-      {match ? (
+      {loading ? (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-saffron"></div>
+        </div>
+      ) : match ? (
         <div className="flex-1 flex flex-col md:flex-row h-full">
-          
-          {/* Left Panel: Global (Desaturated) */}
+          {/* Left Panel: Global */}
           <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
-             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors z-10"></div>
+             <div className="absolute inset-0 bg-black/40 z-10"></div>
              <img src={match.worldImage} alt={match.worldName} className="w-full h-full object-cover transition-transform duration-[20s] scale-110 group-hover:scale-100" />
-             
              <div className="absolute bottom-10 left-10 right-10 z-20">
                 <div className="flex items-center gap-2 text-gray-300 mb-2 uppercase tracking-widest text-xs font-bold">
                    <Globe size={14} /> The Illusion
@@ -113,7 +117,7 @@ const [loading, setLoading] = useState(true);
              </div>
           </div>
 
-          {/* Vertical Divider / Connection */}
+          {/* Divider */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
              <div className="w-16 h-16 rounded-full bg-black/80 backdrop-blur-md border border-saffron flex items-center justify-center shadow-[0_0_40px_rgba(255,153,51,0.6)] animate-pulse-slow">
                 <Sparkles className="text-saffron" size={28} />
@@ -124,14 +128,10 @@ const [loading, setLoading] = useState(true);
              </div>
           </div>
 
-          {/* Right Panel: Bharat (True Color) */}
+          {/* Right Panel: Bharat */}
           <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden">
-             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
              <img src={match.bharatImage} alt={match.bharatName} className="w-full h-full object-cover animate-pan-slow" />
-             
-             {/* Atmosphere Tint Overlay */}
-             <div className="absolute inset-0 bg-saffron/10 mix-blend-overlay pointer-events-none"></div>
-
+             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
              <div className="absolute bottom-10 left-10 right-10 z-20">
                 <div className="flex items-center gap-2 text-saffron mb-2 uppercase tracking-widest text-xs font-bold">
                    <MapPin size={14} /> The Reality
@@ -140,7 +140,6 @@ const [loading, setLoading] = useState(true);
                 <p className="text-gray-300 text-sm mb-6 italic border-l-2 border-saffron pl-4 max-w-md">
                    "{match.description}"
                 </p>
-                
                 <div className="flex items-end justify-between border-t border-white/10 pt-6">
                    <div>
                       <span className="text-gray-400 text-xs uppercase">Real Cost</span>
@@ -154,11 +153,9 @@ const [loading, setLoading] = useState(true);
                 </div>
              </div>
           </div>
-
         </div>
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center relative">
-           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
            <Globe size={64} className="text-gray-700 mb-6 animate-float" />
            <h3 className="text-2xl font-serif text-gray-500 mb-2">The Cosmos Awaits</h3>
            <p className="text-gray-600 text-sm">Search a global destination to find its soul in Bharat.</p>
