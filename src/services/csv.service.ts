@@ -1,7 +1,7 @@
 import Papa from 'papaparse';
 
 // 1. Replace with your "Publish to Web" CSV link
-const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/YOUR_ID_HERE/pub?output=csv";
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS7BOsfu5CDJunvbj_NTPaZOFT23j4SREv1fxHWgcT4Y0Z0ifElDCHwQbt7LN8Xd2jfW14KAt4GtCyT/pub?gid=0&single=true&output=csv";
 
 export const fetchMirrorData = async (): Promise<any[]> => {
   return new Promise((resolve, reject) => {
