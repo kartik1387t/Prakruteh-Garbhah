@@ -66,8 +66,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
   item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
   item.country.toLowerCase().includes(term.toLowerCase()) ||
   item.tags.some(tag =>
-    tag.toLowerCase().includes(term.toLowerCase())
-  )
+    tag.toLowerCase().includes(term.toLowerCase()))
 );
       setMatch(found || null);
     } else {
