@@ -60,19 +60,23 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
     }
   }, [externalTerm, mirrorData]); // Added mirrorData as dependency to ensure it searches once data arrives
 
-  // 3. Search Logic
-  const found = mirrorData.find(item =>
-  item.worldName.toLowerCase().includes(term.toLowerCase()) ||
-  item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
-  item.country.toLowerCase().includes(term.toLowerCase()) ||
-  item.tags.some(tag =>
-    tag.toLowerCase().includes(term.toLowerCase()))
-);
-      setMatch(found || null);
-    } else {
-      setMatch(null);
-    }
-  };
+// 3. Search Logic
+const performSearch = (term: string) => {
+  if (term.length > 2) {
+    const found = mirrorData.find(item =>
+      item.worldName.toLowerCase().includes(term.toLowerCase()) ||
+      item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
+      item.country.toLowerCase().includes(term.toLowerCase()) ||
+      item.tags.some(tag =>
+        tag.toLowerCase().includes(term.toLowerCase())
+      )
+    );
+
+    setMatch(found || null);
+  } else {
+    setMatch(null);
+  }
+};
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
