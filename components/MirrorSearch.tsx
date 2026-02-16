@@ -15,31 +15,42 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
 
   // 1. Load CSV Data on Mount
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const rawData = await fetchMirrorData();
-        const transformed = rawData.map((item: any) => ({
-          worldName: item["World Destination"] || "",
-          bharatName: item["Bharat Destination"] || "",
-          worldPrice: Number(item["World Price"]) || 0,
-          bharatPrice: Number(item["Bharat Price"]) || 0,
-          savings: (Number(item["World Price"]) || 0) - (Number(item["Bharat Price"]) || 0),
-          description: item["Description"] || "",
-          experience: item["Experience"] || "",
-          mirrorVisitWindow: item["Mirror Visit Window"] || "",
-          worldImage: item["World Image"] || "",
-          bharatImage: item["Bharat Image"] || "",
-          tags: item["Tags"] ? item["Tags"].split(",").map((t: string) => t.trim()) : []
-        }));
-        setMirrorData(transformed);
-      } catch (error) {
-        console.error("Mirror CSV Error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
-  }, []);
+  const loadData = async () => {
+    try {
+      const rawData = await fetchMirrorData();
+
+      const transformed = rawData.map((item: any) => {
+        const worldPrice = Number(item.price_world_inr) || 0;
+        const bharatPrice = Number(item.price_bharat_inr) || 0;
+
+        return {
+          worldName: item.world_destination || "",
+          country: item.country || "",
+          worldImage: item.destination_image_link || "",
+          bharatName: item.bharat_twin || "",
+          bharatState: item.bharat_state || "",
+          description: item.description || "",
+          experience: item.experience || "",
+          bharatImage: item.image_link || "",
+          worldPrice,
+          bharatPrice,
+          savings: worldPrice - bharatPrice,
+          targetAudience: item.target_audience || "",
+          mirrorVisitWindow: item.mirror_visit_window || "",
+          tags: item.target_audience
+            ? item.target_audience.split(",").map((t: string) => t.trim())
+            : []
+        };
+      });
+
+      setMirrorData(transformed);
+    } catch (error) {
+      console.error("Mirror CSV Error:", error);
+    }
+  };
+
+  loadData();
+}, []);
 
   // 2. Sync with Global Search Bar
   useEffect(() => {
@@ -50,13 +61,14 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
   }, [externalTerm, mirrorData]); // Added mirrorData as dependency to ensure it searches once data arrives
 
   // 3. Search Logic
-  const performSearch = (term: string) => {
-    if (term.length > 2 && mirrorData.length > 0) {
-      const found = mirrorData.find(item =>
-        item.worldName.toLowerCase().includes(term.toLowerCase()) ||
-        item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
-        item.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
-      );
+  const found = mirrorData.find(item =>
+  item.worldName.toLowerCase().includes(term.toLowerCase()) ||
+  item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
+  item.country.toLowerCase().includes(term.toLowerCase()) ||
+  item.tags.some(tag =>
+    tag.toLowerCase().includes(term.toLowerCase())
+  )
+);
       setMatch(found || null);
     } else {
       setMatch(null);
