@@ -95,7 +95,7 @@ const performSearch = (term: string) => {
   };
 
   return (
-    <section className="h-full flex flex-col w-full relative overflow-hidden" id="mirror-search">
+    <section className="min-h-screen flex flex-col w-full relative overflow-y-auto"> id="mirror-search">
       {/* Search Input */}
       <div className="absolute top-0 left-0 right-0 z-30 p-6 flex justify-center bg-gradient-to-b from-black/80 to-transparent">
         <div className="relative group w-full max-w-xl">
@@ -154,24 +154,21 @@ const performSearch = (term: string) => {
                    <MapPin size={14} /> The Reality
                 </div>
                 <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">{match.bharatName}</h2>
-               <div className="mt-4 space-y-2 text-sm text-gray-300">
+                <div className="mt-4 space-y-2 text-sm text-gray-300">
 
-  {/* Bharat State */}
   <p>
     <span className="text-saffron font-semibold">State:</span>{" "}
-    {match.bharatState}
+    {match.bharatState || "Not Available"}
   </p>
 
-  {/* Bharat Price */}
   <p>
     <span className="text-saffron font-semibold">Price:</span>{" "}
-    ₹{match.bharatPrice.toLocaleString("en-IN")}
+    ₹{match.bharatPrice?.toLocaleString("en-IN") || "0"}
   </p>
 
-  {/* Visit Window */}
   <p>
     <span className="text-saffron font-semibold">Best Time:</span>{" "}
-    {match.mirrorVisitWindow}
+    {match.mirrorVisitWindow || "Not Specified"}
   </p>
 
 </div>
