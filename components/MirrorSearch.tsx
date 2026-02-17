@@ -5,9 +5,10 @@ import { MirrorLocation } from '../types';
 
 interface MirrorSearchProps {
   externalTerm?: string;
+  setIsSearchActive?: (value: boolean) => void;
 }
 
-const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
+const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '', setIsSearchActive }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [match, setMatch] = useState<MirrorLocation | null>(null);
   const [mirrorData, setMirrorData] = useState<MirrorLocation[]>([]);
@@ -81,10 +82,15 @@ const performSearch = (term: string) => {
 };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    performSearch(term);
-  };
+  const term = e.target.value;
+  setSearchTerm(term);
+
+  if (setIsSearchActive) {
+    setIsSearchActive(term.length > 0);
+  }
+
+  performSearch(term);
+};
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-IN', { 
