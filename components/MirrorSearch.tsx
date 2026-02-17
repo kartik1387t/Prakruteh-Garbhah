@@ -113,14 +113,11 @@ const performSearch = (term: string) => {
         </div>
       </div>
 
-      {loading && (
+{loading ? (
   <div className="flex-1 flex items-center justify-center">
-    <Loader />
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-saffron"></div>
   </div>
-)}
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-saffron"></div>
-        </div>
-      ) : match ? (
+) : match ? (
         <div className="flex-1 flex flex-col md:flex-row h-full">
           {/* Left Panel: Global */}
           <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
