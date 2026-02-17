@@ -14,7 +14,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
   const [loading, setLoading] = useState(true);
 
   // 1. Load CSV Data on Mount
-  useEffect(() => {
+useEffect(() => {
   const loadData = async () => {
     try {
       const rawData = await fetchMirrorData();
@@ -46,6 +46,8 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '' }) => {
       setMirrorData(transformed);
     } catch (error) {
       console.error("Mirror CSV Error:", error);
+    } finally {
+      setLoading(false);   //
     }
   };
 
@@ -111,8 +113,11 @@ const performSearch = (term: string) => {
         </div>
       </div>
 
-      {loading ? (
-        <div className="flex-1 flex items-center justify-center">
+      {loading && (
+  <div className="flex-1 flex items-center justify-center">
+    <Loader />
+  </div>
+)}
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-saffron"></div>
         </div>
       ) : match ? (
