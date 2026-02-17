@@ -118,7 +118,7 @@ const performSearch = (term: string) => {
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-saffron"></div>
   </div>
 ) : match ? (
-        <div className="flex-1 flex flex-col md:flex-row h-full">
+        <div className="relative flex-1 flex flex-col md:flex-row h-full">
           {/* Left Panel: Global */}
           <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
              <div className="absolute inset-0 bg-black/40 z-10"></div>
@@ -147,10 +147,16 @@ const performSearch = (term: string) => {
              <div className="w-16 h-16 rounded-full bg-black/80 backdrop-blur-md border border-saffron flex items-center justify-center shadow-[0_0_40px_rgba(255,153,51,0.6)] animate-pulse-slow">
                 <Sparkles className="text-saffron" size={28} />
              </div>
-             <div className="mt-4 bg-black/80 px-4 py-2 rounded-full border border-white/20 text-center backdrop-blur-md">
-                <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Reflection Found</p>
-                <p className="text-sm text-green-400 font-bold">Save {formatCurrency(match.savings)}</p>
-             </div>
+             <div className="absolute top-6 right-6 z-40">
+  <div className="bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg">
+    <p className="text-xs text-gray-400 uppercase tracking-wider">
+      Reflection Found
+    </p>
+    <p className="text-green-400 font-semibold">
+      Save ₹{match.savings.toLocaleString("en-IN")}
+    </p>
+  </div>
+</div>
           </div>
 
           {/* Right Panel: Bharat */}
