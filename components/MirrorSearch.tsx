@@ -95,7 +95,7 @@ const performSearch = (term: string) => {
   };
 
   return (
-    <section className="min-h-screen flex flex-col w-full relative overflow-y-auto"> id="mirror-search">
+    <section className="min-h-screen flex flex-col w-full relative overflow-y-auto" id="mirror-search">
       {/* Search Input */}
       <div className="absolute top-0 left-0 right-0 z-30 p-6 flex justify-center bg-gradient-to-b from-black/80 to-transparent">
         <div className="relative group w-full max-w-xl">
@@ -122,7 +122,15 @@ const performSearch = (term: string) => {
           {/* Left Panel: Global */}
           <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
              <div className="absolute inset-0 bg-black/40 z-10"></div>
-             <img src={match.worldImage} alt={match.worldName} className="w-full h-full object-cover transition-transform duration-[20s] scale-110 group-hover:scale-100" />
+             <img
+  src={match.worldImage}
+  alt={match.worldName}
+  className="w-full h-full object-cover"
+  onError={(e) => {
+    (e.target as HTMLImageElement).src =
+      "https://via.placeholder.com/800x600?text=Image+Unavailable";
+  }}
+/>
              <div className="absolute bottom-10 left-10 right-10 z-20">
                 <div className="flex items-center gap-2 text-gray-300 mb-2 uppercase tracking-widest text-xs font-bold">
                    <Globe size={14} /> The Illusion
@@ -147,7 +155,15 @@ const performSearch = (term: string) => {
 
           {/* Right Panel: Bharat */}
           <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden">
-             <img src={match.bharatImage} alt={match.bharatName} className="w-full h-full object-cover animate-pan-slow" />
+             <img
+  src={match.worldImage}
+  alt={match.worldName}
+  className="w-full h-full object-cover"
+  onError={(e) => {
+    (e.target as HTMLImageElement).src =
+      "https://via.placeholder.com/800x600?text=Image+Unavailable";
+  }}
+/>
              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
              <div className="absolute bottom-10 left-10 right-10 z-20">
                 <div className="flex items-center gap-2 text-saffron mb-2 uppercase tracking-widest text-xs font-bold">
