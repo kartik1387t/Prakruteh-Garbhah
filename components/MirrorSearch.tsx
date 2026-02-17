@@ -154,7 +154,28 @@ const performSearch = (term: string) => {
                    <MapPin size={14} /> The Reality
                 </div>
                 <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">{match.bharatName}</h2>
-                <p className="text-gray-300 text-sm mb-6 italic border-l-2 border-saffron pl-4 max-w-md">
+               <div className="mt-4 space-y-2 text-sm text-gray-300">
+
+  {/* Bharat State */}
+  <p>
+    <span className="text-saffron font-semibold">State:</span>{" "}
+    {match.bharatState}
+  </p>
+
+  {/* Bharat Price */}
+  <p>
+    <span className="text-saffron font-semibold">Price:</span>{" "}
+    ₹{match.bharatPrice.toLocaleString("en-IN")}
+  </p>
+
+  {/* Visit Window */}
+  <p>
+    <span className="text-saffron font-semibold">Best Time:</span>{" "}
+    {match.mirrorVisitWindow}
+  </p>
+
+</div>
+               <p className="text-gray-300 text-sm mb-6 italic border-l-2 border-saffron pl-4 max-w-md">
                    "{match.description}"
                 </p>
                 <div className="flex items-end justify-between border-t border-white/10 pt-6">
