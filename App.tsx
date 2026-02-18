@@ -286,29 +286,29 @@ const App: React.FC = () => {
       )}
       
       {/* 2. Global Persistent Features (Planner, Safety, Audio, AI Guide) */}
-      {!showIntro && (
-        <>
-          <YatraPlanner 
-             items={yatraItems} 
-             onRemove={handleRemoveFromYatra} 
-             onScenicHover={setScenicPreview}
-          />
-          <SafetyDashboard />
-          <BharatAIGuide 
-             user={userProfile} 
-             currentContext={{
-                state: activeSlide === 'explore_states' ? 'Rajasthan' : undefined, // Context mocking
-                vibe: currentVibe
-             }}
-          />
-          <SwarRangPlayer 
-             isMuted={isMuted} 
-             onToggleMute={() => setIsMuted(!isMuted)} 
-             onTintChange={setAtmosphereTint}
-             primaryColor={VIBE_THEMES[currentVibe].primary} 
-          />
-        </>
-      )}
+      {!showIntro && activeSlide !== 'mirror' && (
+  <>
+    <YatraPlanner 
+       items={yatraItems} 
+       onRemove={handleRemoveFromYatra} 
+       onScenicHover={setScenicPreview}
+    />
+    <SafetyDashboard />
+    <BharatAIGuide 
+       user={userProfile} 
+       currentContext={{
+          state: activeSlide === 'explore_states' ? 'Rajasthan' : undefined,
+          vibe: currentVibe
+       }}
+    />
+    <SwarRangPlayer 
+       isMuted={isMuted} 
+       onToggleMute={() => setIsMuted(!isMuted)} 
+       onTintChange={setAtmosphereTint}
+       primaryColor={VIBE_THEMES[currentVibe].primary} 
+    />
+  </>
+)}
 
       {/* 3. Intro Overlay */}
       {showIntro ? (
