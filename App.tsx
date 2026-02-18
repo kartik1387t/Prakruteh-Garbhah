@@ -325,20 +325,28 @@ const App: React.FC = () => {
              onJoinClick={() => setShowAuthModal(true)}
              onDashboardClick={() => toggleSlide('dashboard')}
           />
-          <UniversalNavOrb 
-             navOpen={navOpen}
-             setNavOpen={setNavOpen}
-             toggleSlide={toggleSlide}
-          />
-          <SideAccessPanel 
-             toggleSlide={toggleSlide}
-             activeSlide={activeSlide}
-          />
+          {activeSlide !== 'mirror' && (
+  <UniversalNavOrb 
+     navOpen={navOpen}
+     setNavOpen={setNavOpen}
+     toggleSlide={toggleSlide}
+  />
+)}
+          {activeSlide !== 'mirror' && (
+  <SideAccessPanel 
+     toggleSlide={toggleSlide}
+     activeSlide={activeSlide}
+  />
+)}
 
           {/* 5. Branding (Top Left - Simplified) */}
-          <div className="fixed top-8 left-8 z-40 hidden md:block">
-             <h1 className="font-serif font-bold text-lg text-white/80 tracking-wide">Prakruteh Garbhah</h1>
-          </div>
+          {activeSlide !== 'mirror' && (
+  <div className="fixed top-8 left-8 z-40 hidden md:block">
+     <h1 className="font-serif font-bold text-lg text-white/80 tracking-wide">
+        Prakruteh Garbhah
+     </h1>
+  </div>
+)}
 
           {/* 6. Slide Panels (Overlays) */}
           <main className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center p-0 md:p-6 lg:p-12">
