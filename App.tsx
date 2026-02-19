@@ -224,8 +224,6 @@ const App: React.FC = () => {
   const handleSmartSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
   const term = e.target.value;
   setGlobalSearchTerm(term);
-
-  // 👇 ADD THIS
   setIsSearching(term.length > 0);
 
   const lowerTerm = term.toLowerCase();
@@ -243,8 +241,6 @@ const App: React.FC = () => {
      setMirrorSearchProp(term);
   }
 };
-    // Simple Intent Recognition
-    const lowerTerm = term.toLowerCase();
 
     // 1. "Snow" or "Winter" intent -> Update Map
     if (lowerTerm.includes('snow') || lowerTerm.includes('winter') || lowerTerm.includes('kashmir')) {
