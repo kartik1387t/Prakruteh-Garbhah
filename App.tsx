@@ -270,7 +270,7 @@ const App: React.FC = () => {
   const toggleSlide = (slide: SlideType) => {
     setActiveSlide(activeSlide === slide ? null : slide);
     setNavOpen(false); // Close radial menu after selection
-  };
+  }
 
   return (
     <div className="h-screen w-screen overflow-hidden text-white font-sans relative transition-all duration-1000">
