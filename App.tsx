@@ -177,6 +177,7 @@ const App: React.FC = () => {
 
   // Smart Search State
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
   const [mirrorSearchProp, setMirrorSearchProp] = useState('');
 
   // Map Context State
@@ -221,9 +222,27 @@ const App: React.FC = () => {
   };
 
   const handleSmartSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value;
-    setGlobalSearchTerm(term);
+  const term = e.target.value;
+  setGlobalSearchTerm(term);
 
+  // 👇 ADD THIS
+  setIsSearching(term.length > 0);
+
+  const lowerTerm = term.toLowerCase();
+
+  if (lowerTerm.includes('snow') || lowerTerm.includes('winter') || lowerTerm.includes('kashmir')) {
+     setCurrentSeason('winter');
+     setCurrentVibe('nature');
+     if (activeSlide !== 'map') setActiveSlide('map');
+  }
+  else if (lowerTerm.includes('budget') || lowerTerm.includes('cost') || lowerTerm.includes('price')) {
+     setActiveSlide('dashboard');
+  }
+  else if (term.length > 2) {
+     if (activeSlide !== 'mirror') setActiveSlide('mirror');
+     setMirrorSearchProp(term);
+  }
+};
     // Simple Intent Recognition
     const lowerTerm = term.toLowerCase();
 
@@ -286,8 +305,8 @@ const App: React.FC = () => {
       )}
       
       {/* 2. Global Persistent Features (Planner, Safety, Audio, AI Guide) */}
-      {!showIntro && (
-        <>
+      {!showIntro && !isSearching && (
+  <>
           <YatraPlanner 
              items={yatraItems} 
              onRemove={handleRemoveFromYatra} 
@@ -325,15 +344,20 @@ const App: React.FC = () => {
              onJoinClick={() => setShowAuthModal(true)}
              onDashboardClick={() => toggleSlide('dashboard')}
           />
-          <UniversalNavOrb 
-             navOpen={navOpen}
-             setNavOpen={setNavOpen}
-             toggleSlide={toggleSlide}
-          />
-          <SideAccessPanel 
-             toggleSlide={toggleSlide}
-             activeSlide={activeSlide}
-          />
+          {!isSearching && (
+  <>
+    <UniversalNavOrb 
+      navOpen={navOpen}
+      setNavOpen={setNavOpen}
+      toggleSlide={toggleSlide}
+    />
+
+    <SideAccessPanel 
+      toggleSlide={toggleSlide}
+      activeSlide={activeSlide}
+    />
+  </>
+)}
 
           {/* 5. Branding (Top Left - Simplified) */}
           <div className="fixed top-8 left-8 z-40 hidden md:block">
