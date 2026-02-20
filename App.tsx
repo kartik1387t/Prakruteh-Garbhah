@@ -177,7 +177,6 @@ const App: React.FC = () => {
 
   // Smart Search State
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
   const [mirrorSearchProp, setMirrorSearchProp] = useState('');
 
   // Map Context State
@@ -222,25 +221,11 @@ const App: React.FC = () => {
   };
 
   const handleSmartSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const term = e.target.value;
-  setGlobalSearchTerm(term);
-  setIsSearching(term.length > 0);
+    const term = e.target.value;
+    setGlobalSearchTerm(term);
 
-  const lowerTerm = term.toLowerCase();
-
-  if (lowerTerm.includes('snow') || lowerTerm.includes('winter') || lowerTerm.includes('kashmir')) {
-     setCurrentSeason('winter');
-     setCurrentVibe('nature');
-     if (activeSlide !== 'map') setActiveSlide('map');
-  }
-  else if (lowerTerm.includes('budget') || lowerTerm.includes('cost') || lowerTerm.includes('price')) {
-     setActiveSlide('dashboard');
-  }
-  else if (term.length > 2) {
-     if (activeSlide !== 'mirror') setActiveSlide('mirror');
-     setMirrorSearchProp(term);
-  }
-};
+    // Simple Intent Recognition
+    const lowerTerm = term.toLowerCase();
 
     // 1. "Snow" or "Winter" intent -> Update Map
     if (lowerTerm.includes('snow') || lowerTerm.includes('winter') || lowerTerm.includes('kashmir')) {
@@ -270,7 +255,7 @@ const App: React.FC = () => {
   const toggleSlide = (slide: SlideType) => {
     setActiveSlide(activeSlide === slide ? null : slide);
     setNavOpen(false); // Close radial menu after selection
-  }
+  };
 
   return (
     <div className="h-screen w-screen overflow-hidden text-white font-sans relative transition-all duration-1000">
@@ -301,8 +286,8 @@ const App: React.FC = () => {
       )}
       
       {/* 2. Global Persistent Features (Planner, Safety, Audio, AI Guide) */}
-      {!showIntro && !isSearching && (
-  <>
+      {!showIntro && (
+        <>
           <YatraPlanner 
              items={yatraItems} 
              onRemove={handleRemoveFromYatra} 
@@ -340,20 +325,15 @@ const App: React.FC = () => {
              onJoinClick={() => setShowAuthModal(true)}
              onDashboardClick={() => toggleSlide('dashboard')}
           />
-          {!isSearching && (
-  <>
-    <UniversalNavOrb 
-      navOpen={navOpen}
-      setNavOpen={setNavOpen}
-      toggleSlide={toggleSlide}
-    />
-
-    <SideAccessPanel 
-      toggleSlide={toggleSlide}
-      activeSlide={activeSlide}
-    />
-  </>
-)}
+          <UniversalNavOrb 
+             navOpen={navOpen}
+             setNavOpen={setNavOpen}
+             toggleSlide={toggleSlide}
+          />
+          <SideAccessPanel 
+             toggleSlide={toggleSlide}
+             activeSlide={activeSlide}
+          />
 
           {/* 5. Branding (Top Left - Simplified) */}
           <div className="fixed top-8 left-8 z-40 hidden md:block">
@@ -451,5 +431,6 @@ const App: React.FC = () => {
       )}
     </div>
   );
+};
 
 export default App;
