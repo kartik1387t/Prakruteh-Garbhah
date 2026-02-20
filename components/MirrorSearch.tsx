@@ -104,7 +104,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   };
 
   return (
-    <section className="min-h-screen flex flex-col w-full relative overflow-y-auto" id="mirror-search">
+    <section className="min-h-screen flex flex-col w-full relative overflow-x-hidden" id="mirror-search">
       
       {/* Search Input */}
       <div className="absolute top-0 left-0 right-0 z-30 p-6 flex justify-center bg-gradient-to-b from-black/80 to-transparent">
@@ -128,10 +128,10 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-saffron"></div>
         </div>
       ) : match ? (
-        <div className="relative flex-1 flex flex-col md:flex-row h-full">
+        <div className="relative flex flex-col md:flex-row min-h-screen">
 
           {/* Left Panel */}
-          <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
+          <div className="w-full md:w-1/2 relative min-h-[50vh] md:min-h-screen overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
             <div className="absolute inset-0 bg-black/40 z-10"></div>
             <img
               src={match.worldImage}
@@ -154,11 +154,17 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
           </div>
 
           {/* Divider */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
+          <div className="absolute 
+  top-[55%] md:top-1/2 
+  left-1/2 -translate-x-1/2 -translate-y-1/2 
+  z-20 
+  flex flex-col items-center 
+  pointer-events-none
+">
             <div className="w-16 h-16 rounded-full bg-black/80 backdrop-blur-md border border-saffron flex items-center justify-center shadow-[0_0_40px_rgba(255,153,51,0.6)] animate-pulse-slow">
               <Sparkles className="text-saffron" size={28} />
             </div>
-            <div className="bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg mt-3">
+            <div className="bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg mt-3 max-w-[90vw] text-center">
               <p className="text-xs text-gray-400 uppercase tracking-wider">
                 Reflection Found
               </p>
