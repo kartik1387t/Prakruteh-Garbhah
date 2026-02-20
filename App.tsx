@@ -244,29 +244,6 @@ const App: React.FC = () => {
   }
 };
 
-    // Simple Intent Recognition
-    const lowerTerm = term.toLowerCase();
-
-    // 1. "Snow" or "Winter" intent -> Update Map
-    if (lowerTerm.includes('snow') || lowerTerm.includes('winter') || lowerTerm.includes('kashmir')) {
-       setCurrentSeason('winter');
-       setCurrentVibe('nature'); // Default to nature/mountain
-       // Optionally open map if not open
-       if (activeSlide !== 'map') setActiveSlide('map');
-    }
-    // 2. "Budget" intent -> Open Dashboard
-    else if (lowerTerm.includes('budget') || lowerTerm.includes('cost') || lowerTerm.includes('price')) {
-       setActiveSlide('dashboard');
-    }
-    // 3. Mirror Search intent (default fallback for place names)
-    else if (term.length > 2) {
-       // Check if it matches our data or general country names
-       // For this demo, we assume any other typing is for mirror search
-       if (activeSlide !== 'mirror') setActiveSlide('mirror');
-       setMirrorSearchProp(term);
-    }
-  };
-
   const closeSlide = () => {
     setActiveSlide(null);
     setNavOpen(false);
