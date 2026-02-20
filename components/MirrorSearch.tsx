@@ -152,7 +152,6 @@ const performSearch = (term: string) => {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
              <div className="w-16 h-16 rounded-full bg-black/80 backdrop-blur-md border border-saffron flex items-center justify-center shadow-[0_0_40px_rgba(255,153,51,0.6)] animate-pulse-slow">
                 <Sparkles className="text-saffron" size={28} />
-             </div>
   <div className="bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg">
     <p className="text-xs text-gray-400 uppercase tracking-wider">
       Reflection Found
@@ -167,7 +166,6 @@ const performSearch = (term: string) => {
           {/* Right Panel: Bharat */}
           <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden">
             <div className="absolute top-6 right-6 z-40">
-  <div className="bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg">
     <p className="text-xs text-gray-400 uppercase tracking-wider">
       Reflection Found
     </p>
