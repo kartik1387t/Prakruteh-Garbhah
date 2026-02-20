@@ -152,20 +152,13 @@ const performSearch = (term: string) => {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
              <div className="w-16 h-16 rounded-full bg-black/80 backdrop-blur-md border border-saffron flex items-center justify-center shadow-[0_0_40px_rgba(255,153,51,0.6)] animate-pulse-slow">
                 <Sparkles className="text-saffron" size={28} />
-  <div className="bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg">
-    <p className="text-xs text-gray-400 uppercase tracking-wider">
-      Reflection Found
-    </p>
-    <p className="text-green-400 font-semibold">
-      Save ₹{match.savings.toLocaleString("en-IN")}
-    </p>
-  </div>
-</div>
           </div>
 
           {/* Right Panel: Bharat */}
-          <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden">
-            <div className="absolute top-6 right-6 z-40">
+<div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden">
+
+  {/* Save Badge */}
+  <div className="absolute top-6 right-6 z-40 bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg">
     <p className="text-xs text-gray-400 uppercase tracking-wider">
       Reflection Found
     </p>
@@ -173,57 +166,68 @@ const performSearch = (term: string) => {
       Save ₹{match.savings.toLocaleString("en-IN")}
     </p>
   </div>
+
+  {/* Image */}
+  <img
+    src={match.bharatImage}
+    alt={match.bharatName}
+    className="w-full h-full object-cover"
+    onError={(e) => {
+      (e.target as HTMLImageElement).src =
+        "https://via.placeholder.com/800x600?text=Image+Unavailable";
+    }}
+  />
+
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/50 z-10"></div>
+
+  {/* Content */}
+  <div className="absolute bottom-10 left-10 right-10 z-20">
+    <div className="flex items-center gap-2 text-saffron mb-2 uppercase tracking-widest text-xs font-bold">
+      <MapPin size={14} /> The Reality
+    </div>
+
+    <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">
+      {match.bharatName}
+    </h2>
+
+    <div className="mt-4 space-y-2 text-sm text-gray-300">
+      <p>
+        <span className="text-saffron font-semibold">State:</span>{" "}
+        {match.bharatState || "Not Available"}
+      </p>
+
+      <p>
+        <span className="text-saffron font-semibold">Price:</span>{" "}
+        ₹{match.bharatPrice?.toLocaleString("en-IN") || "0"}
+      </p>
+
+      <p>
+        <span className="text-saffron font-semibold">Best Time:</span>{" "}
+        {match.mirrorVisitWindow || "Not Specified"}
+      </p>
+    </div>
+
+    <div className="mt-6"></div>
+
+    <p className="text-gray-300 text-sm mb-6 italic border-l-2 border-saffron pl-4 max-w-md">
+      "{match.description}"
+    </p>
+
+    <div className="flex items-end justify-between border-t border-white/10 pt-6">
+      <div>
+        <span className="text-gray-400 text-xs uppercase">Real Cost</span>
+        <div className="text-3xl text-green-400 font-mono font-bold">
+          {formatCurrency(match.bharatPrice)}
+        </div>
+      </div>
+
+      <button className="px-8 py-3 bg-saffron hover:bg-orange-600 text-black font-bold uppercase tracking-widest rounded-sm transition-colors flex items-center gap-2 shadow-lg shadow-saffron/20">
+        Plan Yatra <ArrowRight size={16} />
+      </button>
+    </div>
+  </div>
 </div>
-             <img
-  src={match.bharatImage}
-  alt={match.bharatName}
-  className="w-full h-full object-cover"
-  onError={(e) => {
-    (e.target as HTMLImageElement).src =
-      "https://via.placeholder.com/800x600?text=Image+Unavailable";
-  }}
-/>
-             <div className="absolute inset-0 bg-black/50 z-10"></div>
-             <div className="absolute bottom-10 left-10 right-10 z-20">
-                <div className="flex items-center gap-2 text-saffron mb-2 uppercase tracking-widest text-xs font-bold">
-                   <MapPin size={14} /> The Reality
-                </div>
-                <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">{match.bharatName}</h2>
-                <div className="mt-4 space-y-2 text-sm text-gray-300">
-
-  <p>
-    <span className="text-saffron font-semibold">State:</span>{" "}
-    {match.bharatState || "Not Available"}
-  </p>
-
-  <p>
-    <span className="text-saffron font-semibold">Price:</span>{" "}
-    ₹{match.bharatPrice?.toLocaleString("en-IN") || "0"}
-  </p>
-
-  <p>
-    <span className="text-saffron font-semibold">Best Time:</span>{" "}
-    {match.mirrorVisitWindow || "Not Specified"}
-  </p>
-
-</div>
-               <div className="mt-6"></div>
-               <p className="text-gray-300 text-sm mb-6 italic border-l-2 border-saffron pl-4 max-w-md">
-                   "{match.description}"
-                </p>
-                <div className="flex items-end justify-between border-t border-white/10 pt-6">
-                   <div>
-                      <span className="text-gray-400 text-xs uppercase">Real Cost</span>
-                      <div className="text-3xl text-green-400 font-mono font-bold">
-                         {formatCurrency(match.bharatPrice)}
-                      </div>
-                   </div>
-                   <button className="px-8 py-3 bg-saffron hover:bg-orange-600 text-black font-bold uppercase tracking-widest rounded-sm transition-colors flex items-center gap-2 shadow-lg shadow-saffron/20">
-                      Plan Yatra <ArrowRight size={16} />
-                   </button>
-                </div>
-             </div>
-          </div>
         </div>
       ) : (
         <div className="flex-1 flex flex-col items-center justify-center relative">
