@@ -65,7 +65,7 @@ useEffect(() => {
 
 // 3. Search Logic
 const performSearch = (term: string) => {
-  if (term.length > 2) {
+  if (term.length > 2 && mirrorData.length > 0) {
     const found = mirrorData.find(item =>
       item.worldName.toLowerCase().includes(term.toLowerCase()) ||
       item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
@@ -153,7 +153,6 @@ const performSearch = (term: string) => {
              <div className="w-16 h-16 rounded-full bg-black/80 backdrop-blur-md border border-saffron flex items-center justify-center shadow-[0_0_40px_rgba(255,153,51,0.6)] animate-pulse-slow">
                 <Sparkles className="text-saffron" size={28} />
              </div>
-             <div className="absolute top-6 right-6 z-40">
   <div className="bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg">
     <p className="text-xs text-gray-400 uppercase tracking-wider">
       Reflection Found
@@ -167,16 +166,26 @@ const performSearch = (term: string) => {
 
           {/* Right Panel: Bharat */}
           <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden">
+            <div className="absolute top-6 right-6 z-40">
+  <div className="bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg">
+    <p className="text-xs text-gray-400 uppercase tracking-wider">
+      Reflection Found
+    </p>
+    <p className="text-green-400 font-semibold">
+      Save ₹{match.savings.toLocaleString("en-IN")}
+    </p>
+  </div>
+</div>
              <img
-  src={match.worldImage}
-  alt={match.worldName}
+  src={match.bharatImage}
+  alt={match.bharatName}
   className="w-full h-full object-cover"
   onError={(e) => {
     (e.target as HTMLImageElement).src =
       "https://via.placeholder.com/800x600?text=Image+Unavailable";
   }}
 />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
+             <div className="absolute inset-0 bg-black/50 z-10"></div>
              <div className="absolute bottom-10 left-10 right-10 z-20">
                 <div className="flex items-center gap-2 text-saffron mb-2 uppercase tracking-widest text-xs font-bold">
                    <MapPin size={14} /> The Reality
@@ -200,6 +209,7 @@ const performSearch = (term: string) => {
   </p>
 
 </div>
+               <div className="mt-6"></div>
                <p className="text-gray-300 text-sm mb-6 italic border-l-2 border-saffron pl-4 max-w-md">
                    "{match.description}"
                 </p>
