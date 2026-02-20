@@ -8,17 +8,21 @@ interface MirrorSearchProps {
   setIsSearchActive?: (value: boolean) => void;
 }
 
-const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '', setIsSearchActive }) => {
+const MirrorSearch: React.FC<MirrorSearchProps> = ({
+  externalTerm = '',
+  setIsSearchActive
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [match, setMatch] = useState<MirrorLocation | null>(null);
   const [mirrorData, setMirrorData] = useState<MirrorLocation[]>([]);
   const [loading, setLoading] = useState(true);
 
-  [span_0](start_span)// 1. Load CSV Data on Mount [cite: 291-295]
+  // Load CSV Data
   useEffect(() => {
     const loadData = async () => {
       try {
         const rawData = await fetchMirrorData();
+
         const transformed = rawData.map((item: any) => {
           const worldPrice = Number(item.price_world_inr) || 0;
           const bharatPrice = Number(item.price_bharat_inr) || 0;
@@ -42,6 +46,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '', setIsSea
               : []
           };
         });
+
         setMirrorData(transformed);
       } catch (error) {
         console.error("Mirror CSV Error:", error);
@@ -49,25 +54,11 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '', setIsSea
         setLoading(false);
       }
     };
+
     loadData();
   }, []);
 
-  [cite_start]// 3. Search Logic [cite: 297-298]
-  const performSearch = (term: string) => {
-    if (term.length > 2 && mirrorData.length > 0) {
-      const found = mirrorData.find(item =>
-        item.worldName.toLowerCase().includes(term.toLowerCase()) ||
-        item.bharatName.toLowerCase().includes(term.toLowerCase()) ||
-        item.country.toLowerCase().includes(term.toLowerCase()) ||
-        item.tags.some(tag => tag.toLowerCase().includes(term.toLowerCase()))
-      );
-      setMatch(found || null);
-    } else {
-      setMatch(null);
-    }
-  };
-
-  [cite_start]// 2. Sync with Global Search Bar[span_0](end_span)
+  // Sync external search
   useEffect(() => {
     if (externalTerm) {
       setSearchTerm(externalTerm);
@@ -75,34 +66,55 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '', setIsSea
     }
   }, [externalTerm, mirrorData]);
 
+  // Search logic
+  const performSearch = (term: string) => {
+    if (term.length > 2 && mirrorData.length > 0) {
+      const found = mirrorData.find(item =>
+        item.worldName?.toLowerCase().includes(term.toLowerCase()) ||
+        item.bharatName?.toLowerCase().includes(term.toLowerCase()) ||
+        item.country?.toLowerCase().includes(term.toLowerCase()) ||
+        item.tags?.some(tag =>
+          tag.toLowerCase().includes(term.toLowerCase())
+        )
+      );
+
+      setMatch(found || null);
+    } else {
+      setMatch(null);
+    }
+  };
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     setSearchTerm(term);
+
     if (setIsSearchActive) {
       setIsSearchActive(term.length > 0);
     }
+
     performSearch(term);
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-IN', { 
-      style: 'currency', 
-      currency: 'INR', 
-      maximumSignificantDigits: 3 
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumSignificantDigits: 3
     }).format(amount);
   };
 
   return (
     <section className="min-h-screen flex flex-col w-full relative overflow-y-auto" id="mirror-search">
+      
       {/* Search Input */}
-      <div className="sticky top-0 left-0 right-0 z-30 p-6 flex justify-center bg-gradient-to-b from-black/80 to-transparent">
+      <div className="absolute top-0 left-0 right-0 z-30 p-6 flex justify-center bg-gradient-to-b from-black/80 to-transparent">
         <div className="relative group w-full max-w-xl">
           <div className="absolute -inset-1 bg-gradient-to-r from-saffron to-indigo rounded-full blur opacity-40 group-hover:opacity-75 transition duration-1000"></div>
           <div className="relative flex items-center bg-cosmos-light/90 backdrop-blur-xl rounded-full p-2 border border-white/10">
             <Search className="text-gray-400 ml-4" size={20} />
-            <input 
-              type="text" 
-              placeholder="Where in the world... (e.g. Venice, Alps)" 
+            <input
+              type="text"
+              placeholder="Where in the world... (e.g. Venice, Alps)"
               className="w-full bg-transparent text-white p-3 pl-4 focus:outline-none placeholder-gray-500 font-sans"
               value={searchTerm}
               onChange={handleSearch}
@@ -116,81 +128,95 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({ externalTerm = '', setIsSea
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-saffron"></div>
         </div>
       ) : match ? (
-        <div className="relative flex-1 flex flex-col md:flex-row min-h-screen">
-          {/* Left Panel: Global */}
-          <div className="w-full md:w-1/2 relative h-[50vh] md:h-auto overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
-             <div className="absolute inset-0 bg-black/40 z-10"></div>
-             <img
-                src={match.worldImage}
-                alt={match.worldName}
-                className="w-full h-full object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).src = "https://via.placeholder.com/800x600?text=Image+Unavailable"; }}
-              />
-             <div className="absolute bottom-10 left-10 right-10 z-20">
-                <div className="flex items-center gap-2 text-gray-300 mb-2 uppercase tracking-widest text-xs font-bold">
-                   <Globe size={14} /> The Illusion
-                </div>
-                <h2 className="text-4xl md:text-5xl font-serif text-white mb-2">{match.worldName}</h2>
-                <div className="text-xl text-gray-300 font-mono line-through opacity-70">
-                   {formatCurrency(match.worldPrice)}
-                </div>
-             </div>
+        <div className="relative flex-1 flex flex-col md:flex-row h-full">
+
+          {/* Left Panel */}
+          <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
+            <div className="absolute inset-0 bg-black/40 z-10"></div>
+            <img
+              src={match.worldImage}
+              alt={match.worldName}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src =
+                  "https://via.placeholder.com/800x600?text=Image+Unavailable";
+              }}
+            />
+            <div className="absolute bottom-10 left-10 right-10 z-20">
+              <div className="flex items-center gap-2 text-gray-300 mb-2 uppercase tracking-widest text-xs font-bold">
+                <Globe size={14} /> The Illusion
+              </div>
+              <h2 className="text-4xl md:text-5xl font-serif text-white mb-2">{match.worldName}</h2>
+              <div className="text-xl text-gray-300 font-mono line-through opacity-70">
+                {formatCurrency(match.worldPrice)}
+              </div>
+            </div>
           </div>
 
-          {/* Center Sparkle Badge */}
+          {/* Divider */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
-             <div className="w-16 h-16 rounded-full bg-black/80 backdrop-blur-md border border-saffron flex items-center justify-center shadow-[0_0_40px_rgba(255,153,51,0.6)] animate-pulse-slow">
-                <Sparkles className="text-saffron" size={28} />
-             </div>
-             <div className="mt-4 bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg text-center">
-               <p className="text-[10px] text-gray-400 uppercase tracking-wider">Reflection Found</p>
-               <p className="text-green-400 font-bold">Save ₹{match.savings.toLocaleString("en-IN")}</p>
-             </div>
+            <div className="w-16 h-16 rounded-full bg-black/80 backdrop-blur-md border border-saffron flex items-center justify-center shadow-[0_0_40px_rgba(255,153,51,0.6)] animate-pulse-slow">
+              <Sparkles className="text-saffron" size={28} />
+            </div>
+            <div className="bg-black/85 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg mt-3">
+              <p className="text-xs text-gray-400 uppercase tracking-wider">
+                Reflection Found
+              </p>
+              <p className="text-green-400 font-semibold">
+                Save ₹{match.savings.toLocaleString("en-IN")}
+              </p>
+            </div>
           </div>
 
-          {/* Right Panel: Bharat */}
-          <div className="w-full md:w-1/2 relative h-[50vh] md:h-auto overflow-hidden">
-             <img
-                src={match.bharatImage}
-                alt={match.bharatName}
-                className="w-full h-full object-cover"
-                onError={(e) => { (e.target as HTMLImageElement).src = "https://via.placeholder.com/800x600?text=Image+Unavailable"; }}
-              />
-             <div className="absolute inset-0 bg-black/50 z-10"></div>
-             <div className="absolute bottom-10 left-10 right-10 z-20">
-                <div className="flex items-center gap-2 text-saffron mb-2 uppercase tracking-widest text-xs font-bold">
-                   <MapPin size={14} /> The Reality
-                </div>
-                <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 leading-tight">{match.bharatName}</h2>
-                
-                <div className="mt-4 space-y-1 text-sm text-gray-300">
-                  <p><span className="text-saffron font-semibold">State:</span> {match.bharatState || "Not Available"}</p>
-                  <p><span className="text-saffron font-semibold">Best Time:</span> {match.mirrorVisitWindow || "Not Specified"}</p>
+          {/* Right Panel */}
+          <div className="w-full md:w-1/2 relative h-1/2 md:h-full overflow-hidden">
+            <img
+              src={match.bharatImage}
+              alt={match.bharatName}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src =
+                  "https://via.placeholder.com/800x600?text=Image+Unavailable";
+              }}
+            />
+            <div className="absolute inset-0 bg-black/50 z-10"></div>
+
+            <div className="absolute bottom-10 left-10 right-10 z-20">
+              <div className="flex items-center gap-2 text-saffron mb-2 uppercase tracking-widest text-xs font-bold">
+                <MapPin size={14} /> The Reality
+              </div>
+
+              <h2 className="text-4xl md:text-5xl font-serif text-white mb-4">
+                {match.bharatName}
+              </h2>
+
+              <p className="text-gray-300 text-sm mb-6 italic border-l-2 border-saffron pl-4 max-w-md">
+                "{match.description}"
+              </p>
+
+              <div className="flex items-end justify-between border-t border-white/10 pt-6">
+                <div>
+                  <span className="text-gray-400 text-xs uppercase">Real Cost</span>
+                  <div className="text-3xl text-green-400 font-mono font-bold">
+                    {formatCurrency(match.bharatPrice)}
+                  </div>
                 </div>
 
-                <p className="text-gray-300 text-sm my-6 italic border-l-2 border-saffron pl-4 max-w-md">
-                   "{match.description}"
-                </p>
-
-                <div className="flex items-end justify-between border-t border-white/10 pt-6">
-                   <div>
-                      <span className="text-gray-400 text-xs uppercase">Real Cost</span>
-                      <div className="text-3xl text-green-400 font-mono font-bold">
-                         {formatCurrency(match.bharatPrice)}
-                      </div>
-                   </div>
-                   <button className="px-8 py-3 bg-saffron hover:bg-orange-600 text-black font-bold uppercase tracking-widest rounded-sm transition-colors flex items-center gap-2 shadow-lg shadow-saffron/20">
-                      Plan Yatra <ArrowRight size={16} />
-                   </button>
-                </div>
-             </div>
+                <button className="px-8 py-3 bg-saffron hover:bg-orange-600 text-black font-bold uppercase tracking-widest rounded-sm flex items-center gap-2">
+                  Plan Yatra <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
           </div>
+
         </div>
       ) : (
-        <div className="flex-1 flex flex-col items-center justify-center relative min-h-[60vh]">
-           <Globe size={64} className="text-gray-700 mb-6 animate-float" />
-           <h3 className="text-2xl font-serif text-gray-500 mb-2">The Cosmos Awaits</h3>
-           <p className="text-gray-600 text-sm">Search a global destination to find its soul in Bharat.</p>
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <Globe size={64} className="text-gray-700 mb-6 animate-float" />
+          <h3 className="text-2xl font-serif text-gray-500 mb-2">The Cosmos Awaits</h3>
+          <p className="text-gray-600 text-sm">
+            Search a global destination to find its soul in Bharat.
+          </p>
         </div>
       )}
     </section>
