@@ -350,7 +350,7 @@ const App: React.FC = () => {
                  <button onClick={closeSlide} className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition-colors z-50">
                    <X size={24} />
                  </button>
-                 <div className="flex-1 mt-16 md:mt-0">
+                 <div className="mt-16 md:mt-0">
                    <MirrorSearch externalTerm={mirrorSearchProp} />
                  </div>
              </div>
