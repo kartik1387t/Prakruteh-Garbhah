@@ -255,7 +255,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="h-screen w-screen overflow-hidden text-white font-sans relative transition-all duration-1000">
+    <div className="min-h-screen w-full overflow-x-hidden text-white font-sans relative transition-all duration-1000">
       
       {/* 1. Global Background */}
       {!showIntro && <CosmicBackground />}
