@@ -179,7 +179,23 @@ const App: React.FC = () => {
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [mirrorSearchProp, setMirrorSearchProp] = useState('');
+useEffect(() => {
+  const handlePopState = () => {
+    if (activeSlide) {
+      closeSlide();
+      setGlobalSearchTerm('');
+      setMirrorSearchProp('');
+      setIsSearching(false);
+    }
+  };
 
+  window.addEventListener('popstate', handlePopState);
+
+  return () => {
+    window.removeEventListener('popstate', handlePopState);
+  };
+}, [activeSlide]);
+  
   // Map Context State
   const [currentSeason, setCurrentSeason] = useState<Season>('spring');
   const [currentVibe, setCurrentVibe] = useState<VibeType>('nature');
@@ -238,9 +254,12 @@ const App: React.FC = () => {
   else if (lowerTerm.includes('budget') || lowerTerm.includes('cost') || lowerTerm.includes('price')) {
      setActiveSlide('dashboard');
   }
-  else if (term.length > 2) {
-     if (activeSlide !== 'mirror') setActiveSlide('mirror');
-     setMirrorSearchProp(term);
+  if (term.length > 2) {
+  if (activeSlide !== 'mirror') {
+    setActiveSlide('mirror');
+    window.history.pushState({ slide: 'mirror' }, '');
+  }
+  setMirrorSearchProp(term);
   }
 };
 
@@ -250,7 +269,12 @@ const App: React.FC = () => {
   };
 
   const toggleSlide = (slide: SlideType) => {
-    setActiveSlide(activeSlide === slide ? null : slide);
+    if (activeSlide === slide) {
+  setActiveSlide(null);
+} else {
+  setActiveSlide(slide);
+  window.history.pushState({ slide }, '');
+    }
     setNavOpen(false); // Close radial menu after selection
   };
 
