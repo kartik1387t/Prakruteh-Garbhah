@@ -104,7 +104,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   };
 
   return (
-    <section className="min-h-screen flex flex-col w-full relative overflow-x-hidden" id="mirror-search">
+    <section className="w-full relative overflow-x-hidden" id="mirror-search">
       
       {/* Search Input */}
       <div className="absolute top-0 left-0 right-0 z-30 p-6 flex justify-center bg-gradient-to-b from-black/80 to-transparent">
@@ -128,10 +128,10 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-saffron"></div>
         </div>
       ) : match ? (
-        <div className="relative flex flex-col md:flex-row min-h-screen">
+        <div className="relative flex flex-col md:flex-row">
 
           {/* Left Panel */}
-          <div className="w-full md:w-1/2 relative min-h-[50vh] md:min-h-screen overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
+          <div className="w-full md:w-1/2 relative min-h-[60vh] md:min-h-screen overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
             <div className="absolute inset-0 bg-black/40 z-10"></div>
             <img
               src={match.worldImage}
@@ -142,7 +142,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
                   "https://via.placeholder.com/800x600?text=Image+Unavailable";
               }}
             />
-            <div className="absolute bottom-10 left-10 right-10 z-20">
+            <div className="relative p-10 z-20">
               <div className="flex items-center gap-2 text-gray-300 mb-2 uppercase tracking-widest text-xs font-bold">
                 <Globe size={14} /> The Illusion
               </div>
