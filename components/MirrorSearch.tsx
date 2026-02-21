@@ -131,7 +131,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
         <div className="relative flex flex-col md:flex-row">
 
           {/* Left Panel */}
-          <div className="w-full md:w-1/2 relative min-h-[70vh] md:min-h-screen overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
+          <div className="w-full md:w-1/2 relative min-h-[40vh] md:min-h-screen overflow-hidden grayscale hover:grayscale-[50%] transition-all duration-1000 group">
             <div className="absolute inset-0 bg-black/40 z-10"></div>
             <img
               src={match.worldImage}
@@ -181,7 +181,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
 </div> 
           
           {/* Right Panel */}
-          <div className="w-full md:w-1/2 relative min-h-[60vh] md:min-h-screen overflow-hidden">
+          <div className="w-full md:w-1/2 relative min-h-[40vh] md:min-h-screen overflow-hidden">
             <img
               src={match.bharatImage}
               alt={match.bharatName}
