@@ -343,10 +343,10 @@ const App: React.FC = () => {
           </div>
 
           {/* 6. Slide Panels (Overlays) */}
-          <main className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center p-0 md:p-6 lg:p-12">
+          <main className="relative z-30 w-full min-h-screen p-0 md:p-6 lg:p-12">
              
              {/* Mirror Search Slide */}
-             <div className={`absolute inset-0 md:inset-10 bg-cosmos/95 md:bg-cosmos/90 glass-card md:rounded-3xl overflow-y-auto pointer-events-auto flex flex-col ${activeSlide === 'mirror' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+             <div className={`relative w-full min-h-screen md:min-h-[80vh] md:rounded-3xl bg-cosmos/95 md:bg-cosmos/90 glass-card overflow-y-auto pointer-events-auto flex flex-col ${activeSlide === 'mirror' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
                  <button onClick={closeSlide} className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition-colors z-50">
                    <X size={24} />
                  </button>
