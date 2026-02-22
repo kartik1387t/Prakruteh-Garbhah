@@ -91,7 +91,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
     }).format(amount);
 
   return (
-    <section className="w-full relative">
+    <section className="w-full relative pb-20">
 
       {/* Search Bar */}
       <div className="sticky top-0 z-40 p-6 bg-gradient-to-b from-black/80 to-transparent">
@@ -121,7 +121,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
             <img
               src={match.worldImage}
               alt={match.worldName}
-              className="w-full h-[60vh] md:h-screen object-cover"
+              className="w-full h-[60vh] md:h-[80vh] object-cover"
             />
             <div className="absolute inset-0 bg-black/60"></div>
 
@@ -149,7 +149,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
             <img
               src={match.bharatImage}
               alt={match.bharatName}
-              className="w-full h-[60vh] md:h-screen object-cover"
+              className="w-full h-[60vh] md:h-[80vh] object-cover"
             />
             <div className="absolute inset-0 bg-black/70"></div>
 
@@ -191,7 +191,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
           </div>
 
           {/* Reflection Badge */}
-          <div className="fixed top-32 right-6 z-50 pointer-events-none">
+          <div className="absolute top-32 right-6 z-50 pointer-events-none">
             <div className="bg-black/85 px-4 py-2 rounded-xl shadow-lg text-center">
               <p className="text-xs text-gray-400 uppercase">
                 Reflection Found
