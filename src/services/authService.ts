@@ -60,7 +60,7 @@ export const authService = {
         .eq('id', userId)
         .single();
       
-      if (error) return null;
+      if (error) throw error;
       
       // Map DB snake_case to frontend camelCase types
       return {
