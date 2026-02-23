@@ -10,7 +10,7 @@ export const storageService = {
     return data;
   },
 
-  getPublicUrl(bucket: 'avatars' | 'posts', path: string) {
+  getPublicUrl(bucket: 'profile-images' | 'posts', path: string) {
     const { data } = supabase.storage
       .from(bucket)
       .getPublicUrl(path);
