@@ -13,7 +13,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
   const [email, setEmail] = useState('');
   const [vibe, setVibe] = useState<VibeType>('nature');
 
-    const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   if (!email) return;
@@ -26,20 +26,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
     alert(error.message || "Failed to send magic link");
   }
 };
-    if (name && email) {
-      const newProfile: UserProfile = {
-        name,
-        email,
-        vibe,
-        currency: 'INR',
-        totalBudget: 50000,
-        spent: 0,
-        level: 1,
-        badges: []
-      };
-      onLogin(newProfile);
-    }
-  };
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
