@@ -2,52 +2,27 @@ import { supabase } from '../lib/supabaseClient';
 import { USE_BACKEND_API, API_BASE_URL } from './config';
 import { UserProfile } from '../types';
 
-export const authService = {
-  async signUp(email: string, password: string, fullName: string) {
-    if (USE_BACKEND_API) {
-      const res = await fetch(`${API_BASE_URL}/auth/signup`, {
-        method: 'POST',
-        body: JSON.stringify({ email, password, fullName }),
-      });
-      return res.json();
-    } else {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { full_name: fullName },
-        },
-      });
-      if (error) throw error;
-      return data;
+export const sendMagicLink = async (email: string) => {
+  return await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: window.location.origin
     }
-  },
+  });
+};
 
-  async signIn(email: string, password: string) {
-    if (USE_BACKEND_API) {
-      const res = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        body: JSON.stringify({ email, password }),
-      });
-      return res.json();
-    } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-      return data;
-    }
-  },
+export const signOutUser = async () => {
+  return await supabase.auth.signOut();
+};
+const handleMint = async () => {
+  const { error } = await sendMagicLink(email);
 
-  async signOut() {
-    if (USE_BACKEND_API) {
-      await fetch(`${API_BASE_URL}/auth/logout`, { method: 'POST' });
-    } else {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-    }
-  },
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Check your email to complete your Yatra.");
+  }
+};
 
   async getUserProfile(userId: string): Promise<UserProfile | null> {
     if (USE_BACKEND_API) {
