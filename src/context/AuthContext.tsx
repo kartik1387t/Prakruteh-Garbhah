@@ -8,8 +8,8 @@ interface AuthContextType {
   session: Session | null;
   userProfile: UserProfile | null;
   loading: boolean;
-  sendMagicLink: authService.sendMagicLink
   sendMagicLink: typeof authService.sendMagicLink;
+  signOut: typeof authService.signOut;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -54,14 +54,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      session, 
-      userProfile, 
-      loading, 
-      signIn: authService.signIn, 
-      signUp: authService.signUp, 
-      signOut: authService.signOut 
-    }}>
+<AuthContext.Provider value={{ 
+  session, 
+  userProfile, 
+  loading, 
+  sendMagicLink: authService.sendMagicLink,
+  signOut: authService.signOut
+}}>
       {children}
     </AuthContext.Provider>
   );
