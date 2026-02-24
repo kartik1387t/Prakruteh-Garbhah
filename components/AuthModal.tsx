@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { User, Mail, Sparkles, Mountain, Waves, PawPrint, Tent, ArrowRight } from 'lucide-react';
 import { UserProfile, VibeType } from '../types';
+import { sendMagicLink } from '../src/services/authService';
 
 interface AuthModalProps {
   onLogin: (profile: UserProfile) => void;
@@ -12,8 +13,19 @@ const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
   const [email, setEmail] = useState('');
   const [vibe, setVibe] = useState<VibeType>('nature');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!email) return;
+
+  try {
+    await sendMagicLink(email);
+    alert("Check your email to complete your Yatra ✨");
+    onClose();
+  } catch (error: any) {
+    alert(error.message || "Failed to send magic link");
+  }
+};
     if (name && email) {
       const newProfile: UserProfile = {
         name,
