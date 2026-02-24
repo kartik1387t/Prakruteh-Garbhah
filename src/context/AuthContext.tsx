@@ -8,9 +8,8 @@ interface AuthContextType {
   session: Session | null;
   userProfile: UserProfile | null;
   loading: boolean;
-  signIn: typeof authService.signIn;
-  signUp: typeof authService.signUp;
-  signOut: typeof authService.signOut;
+  sendMagicLink: authService.sendMagicLink
+  sendMagicLink: typeof authService.sendMagicLink;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
