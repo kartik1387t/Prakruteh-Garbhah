@@ -1,24 +1,20 @@
 import { supabase } from '../lib/supabaseClient';
-import { UserProfile } from '../types';
 
 export const authService = {
-
-  // 🔹 Send Magic Link
   async sendMagicLink(email: string) {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: window.location.origin,
+        // Redirects user back to your site after they click the link
+        emailRedirectTo: window.location.origin, 
       },
     });
 
-    if (error) {
-      console.error('Magic link error:', error.message);
-      throw error;
-    }
-
+    if (error) throw error;
     return data;
   },
+  // ... (keep other existing methods like signOut and getUserProfile)
+};
 
   // 🔹 Sign Out
   async signOut() {
