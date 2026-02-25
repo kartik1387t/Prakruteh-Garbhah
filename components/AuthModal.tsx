@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { User, Mail, Sparkles, Waves, PawPrint, Tent, ArrowRight, Loader, AlertCircle } from 'lucide-react';
 import { VibeType } from '../types';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../src/context/AuthContext';
 
 interface AuthModalProps {
   onClose: () => void;
