@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Season, YatraItem, VibeType, UserProfile } from './types';
-import { useAuth } from './src/context/AuthContext';
 import CosmicIntro from './components/CosmicIntro';
 import MirrorSearch from './components/MirrorSearch';
 import LivingMap from './components/LivingMap';
@@ -27,6 +25,10 @@ import {
   Menu,
   User
 } from 'lucide-react';
+import { Season, YatraItem, VibeType, UserProfile } from './types';
+
+// Define slide types
+type SlideType = 'home' | 'mirror' | 'map' | 'dashboard' | 'explore_states';
 
 // --- Extracted Components for Navigation (Moved OUTSIDE App to prevent re-renders) ---
 
@@ -170,26 +172,20 @@ const App: React.FC = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
+  // User Profile State
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
   // Smart Search State
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [mirrorSearchProp, setMirrorSearchProp] = useState('');
 useEffect(() => {
   const handlePopState = () => {
-
-    // Close slide first
     if (activeSlide) {
       closeSlide();
       setGlobalSearchTerm('');
       setMirrorSearchProp('');
       setIsSearching(false);
-      return;
-    }
-
-    // Close auth modal if open
-    if (showAuthModal) {
-      setShowAuthModal(false);
-      return;
     }
   };
 
@@ -198,7 +194,7 @@ useEffect(() => {
   return () => {
     window.removeEventListener('popstate', handlePopState);
   };
-}, [activeSlide, showAuthModal]);
+}, [activeSlide]);
   
   // Map Context State
   const [currentSeason, setCurrentSeason] = useState<Season>('spring');
@@ -206,10 +202,6 @@ useEffect(() => {
   const [isMuted, setIsMuted] = useState(true);
   const [atmosphereTint, setAtmosphereTint] = useState<'summer' | 'monsoon' | 'winter' | 'none'>('none');
 
-  const { userProfile } = useAuth();
-// Define slide types
-type SlideType = 'home' | 'mirror' | 'map' | 'dashboard' | 'explore_states';
-  
   // Yatra Planner State
   const [yatraItems, setYatraItems] = useState<YatraItem[]>([]);
   const [scenicPreview, setScenicPreview] = useState<string | null>(null);
@@ -351,10 +343,7 @@ type SlideType = 'home' | 'mirror' | 'map' | 'dashboard' | 'explore_states';
              searchTerm={globalSearchTerm}
              onSearch={handleSmartSearch}
              userProfile={userProfile}
-             onJoinClick={() => {
-  setShowAuthModal(true);
-  window.history.pushState({ modal: 'auth' }, '');
-}}
+             onJoinClick={() => setShowAuthModal(true)}
              onDashboardClick={() => toggleSlide('dashboard')}
           />
           {!isSearching && (
