@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Season, YatraItem, VibeType, UserProfile } from './types';
+import { useAuth } from './src/context/AuthContext';
 import CosmicIntro from './components/CosmicIntro';
 import MirrorSearch from './components/MirrorSearch';
 import LivingMap from './components/LivingMap';
@@ -25,12 +27,6 @@ import {
   Menu,
   User
 } from 'lucide-react';
-import { Season, YatraItem, VibeType, UserProfile } from './types';
-import { useAuth } from './src/context/AuthContext';
-
-const { userProfile } = useAuth();
-// Define slide types
-type SlideType = 'home' | 'mirror' | 'map' | 'dashboard' | 'explore_states';
 
 // --- Extracted Components for Navigation (Moved OUTSIDE App to prevent re-renders) ---
 
@@ -210,6 +206,10 @@ useEffect(() => {
   const [isMuted, setIsMuted] = useState(true);
   const [atmosphereTint, setAtmosphereTint] = useState<'summer' | 'monsoon' | 'winter' | 'none'>('none');
 
+  const { userProfile } = useAuth();
+// Define slide types
+type SlideType = 'home' | 'mirror' | 'map' | 'dashboard' | 'explore_states';
+  
   // Yatra Planner State
   const [yatraItems, setYatraItems] = useState<YatraItem[]>([]);
   const [scenicPreview, setScenicPreview] = useState<string | null>(null);
