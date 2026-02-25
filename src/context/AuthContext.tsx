@@ -18,7 +18,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-
+  const fetchProfile = async (userId: string) => {
+    try {
+      const profile = await authService.getUserProfile(userId);
+      setUserProfile(profile);
+    } catch (err) {
+      console.error('Error loading profile', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
   useEffect(() => {
     // 1. Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -41,17 +51,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     return () => subscription.unsubscribe();
   }, []);
-
-  const fetchProfile = async (userId: string) => {
-    try {
-      const profile = await authService.getUserProfile(userId);
-      setUserProfile(profile);
-    } catch (err) {
-      console.error('Error loading profile', err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
 <AuthContext.Provider value={{ 
