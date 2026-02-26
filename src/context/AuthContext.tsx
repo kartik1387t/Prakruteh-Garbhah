@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../lib/supabase';
 import { authService } from '../services/authService';
 import { UserProfile } from '../types';
 import { Session } from '@supabase/supabase-js';
@@ -18,22 +18,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const fetchProfile = async (userId: string) => {
-    try {
-      const profile = await authService.getUserProfile(userId);
-      setUserProfile(profile);
-    } catch (err) {
-      console.error('Error loading profile', err);
-    } finally {
-      setLoading(false);
+const fetchProfile = async (userId: string, email?: string) => {
+  try {
+    const { data, error } = await supabase
+      .from("users_profile")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (error || !data) {
+      // Profile does not exist → create it
+      const { data: newProfile, error: insertError } = await supabase
+        .from("users_profile")
+        .insert({
+          id: userId,
+          name: email?.split("@")[0] || "Traveler",
+          traveler_vibe: "Nature"
+        })
+        .select()
+        .single();
+
+      if (!insertError) {
+        setUserProfile(newProfile);
+      }
+    } else {
+      setUserProfile(data);
     }
-  };
+  } catch (err) {
+    console.error("Error loading profile", err);
+  } finally {
+    setLoading(false);
+  }
+};
   
   useEffect(() => {
     // 1. Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      if (session) fetchProfile(session.user.id);
+      if (session) fetchProfile(session.user.id, session.user.email);
       else setLoading(false);
     });
 
@@ -42,7 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (session) fetchProfile(session.user.id);
+      if (session) fetchProfile(session.user.id, session.user.email);
       else {
         setUserProfile(null);
         setLoading(false);
