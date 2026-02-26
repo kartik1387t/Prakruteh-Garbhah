@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supabase } from '../src/lib/supabase';
+import { supabase } from '../src/lib/supabaseClient';
 import { User, Mail, Sparkles, Mountain, Waves, PawPrint, Tent, ArrowRight } from 'lucide-react';
 import { UserProfile, VibeType } from '../types';
 
