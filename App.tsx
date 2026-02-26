@@ -240,11 +240,6 @@ useEffect(() => {
 
   // --- Handlers ---
 
-  const handleLogin = (profile: UserProfile) => {
-    setUserProfile(profile);
-    setShowAuthModal(false);
-    setCurrentVibe(profile.vibe); // Sync app vibe with user profile
-  };
   const createUserProfile = (user: any) => {
   const profile: UserProfile = {
     name: user.user_metadata?.name || 'Yatri',
@@ -480,9 +475,8 @@ useEffect(() => {
           {/* Auth Modal Overlay */}
           {showAuthModal && (
             <AuthModal 
-              onLogin={handleLogin} 
-              onClose={() => setShowAuthModal(false)} 
-            />
+  onClose={() => setShowAuthModal(false)} 
+/>
           )}
 
           {/* Hint text when no slide is active */}
