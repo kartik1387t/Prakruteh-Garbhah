@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from './src/context/AuthContext';
 import CosmicIntro from './components/CosmicIntro';
 import MirrorSearch from './components/MirrorSearch';
 import LivingMap from './components/LivingMap';
@@ -11,7 +12,6 @@ import SafetyDashboard from './components/SafetyDashboard';
 import AuthModal from './components/AuthModal';
 import SwarRangPlayer from './components/SwarRangPlayer';
 import BharatAIGuide from './components/BharatAIGuide';
-import { supabase } from './src/lib/supabaseClient';
 import { VIBE_THEMES } from './constants';
 import { 
   Aperture, // Using for Dharma Chakra / Universal Orb
@@ -174,31 +174,8 @@ const App: React.FC = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   // User Profile State
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-useEffect(() => {
-  // Get existing session on refresh
-  supabase.auth.getSession().then(({ data }) => {
-    if (data.session?.user) {
-      createUserProfile(data.session.user);
-    }
-  });
+  const { userProfile } = useAuth();
 
-  // Listen for login/logout
-  const { data: listener } = supabase.auth.onAuthStateChange(
-    (_event, session) => {
-      if (session?.user) {
-        createUserProfile(session.user);
-      } else {
-        setUserProfile(null);
-      }
-    }
-  );
-
-  return () => {
-    listener.subscription.unsubscribe();
-  };
-}, []);
-  
   // Smart Search State
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -240,24 +217,10 @@ useEffect(() => {
 
   // --- Handlers ---
 
-  const createUserProfile = (user: any) => {
-  const profile: UserProfile = {
-    name: user.user_metadata?.name || 'Yatri',
-    email: user.email,
-    vibe: 'nature',
-    currency: 'INR',
-    totalBudget: 50000,
-    spent: 0,
-    level: 1,
-    badges: []
-  };
+  const { signOut } = useAuth();
 
-  setUserProfile(profile);
-};
-
-  const handleLogout = async () => {
-  await supabase.auth.signOut();
-  setUserProfile(null);
+const handleLogout = async () => {
+  await signOut();
 };
 
   const handleAddToYatra = (item: YatraItem) => {
