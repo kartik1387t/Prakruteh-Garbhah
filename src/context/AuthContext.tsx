@@ -21,32 +21,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [authMode, setAuthMode] = useState<"signup" | "signin">("signup");
 const fetchProfile = async (userId: string, email?: string) => {
   try {
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("users_profile")
       .select("*")
       .eq("id", userId)
       .single();
 
-    if (error || !data) {
-      // Profile does not exist → create it
-      const { data: newProfile, error: insertError } = await supabase
+    if (!data) {
+      const storedName = localStorage.getItem("temp_name");
+      const storedVibe = localStorage.getItem("temp_vibe");
+
+      const { data: newProfile } = await supabase
         .from("users_profile")
         .insert({
           id: userId,
-          name: email?.split("@")[0] || "Traveler",
-          traveler_vibe: "Nature"
+          name: storedName || email?.split("@")[0],
+          traveler_vibe: storedVibe || "Nature",
+          email: email,
+          profile_image_url: null
         })
         .select()
         .single();
 
-      if (!insertError) {
-        setUserProfile(newProfile);
-      }
+      setUserProfile(newProfile);
+
+      localStorage.removeItem("temp_name");
+      localStorage.removeItem("temp_vibe");
+
     } else {
       setUserProfile(data);
     }
+
   } catch (err) {
-    console.error("Error loading profile", err);
+    console.error(err);
   } finally {
     setLoading(false);
   }
