@@ -11,7 +11,7 @@ import SafetyDashboard from './components/SafetyDashboard';
 import AuthModal from './components/AuthModal';
 import SwarRangPlayer from './components/SwarRangPlayer';
 import BharatAIGuide from './components/BharatAIGuide';
-import { supabase } from './src/lib/supabase';
+import { supabase } from './src/lib/supabaseClient';
 import { VIBE_THEMES } from './constants';
 import { 
   Aperture, // Using for Dharma Chakra / Universal Orb
