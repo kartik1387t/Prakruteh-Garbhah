@@ -18,6 +18,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authMode, setAuthMode] = useState<"signup" | "signin">("signup");
 const fetchProfile = async (userId: string, email?: string) => {
   try {
     const { data, error } = await supabase
