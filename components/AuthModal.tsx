@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { supabase } from '../src/lib/supabase';
 import { User, Mail, Sparkles, Mountain, Waves, PawPrint, Tent, ArrowRight } from 'lucide-react';
 import { UserProfile, VibeType } from '../types';
 
@@ -10,24 +11,31 @@ interface AuthModalProps {
 const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
   const [vibe, setVibe] = useState<VibeType>('nature');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (name && email) {
-      const newProfile: UserProfile = {
-        name,
-        email,
-        vibe,
-        currency: 'INR',
-        totalBudget: 50000,
-        spent: 0,
-        level: 1,
-        badges: []
-      };
-      onLogin(newProfile);
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!email) return;
+
+  setLoading(true);
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: window.location.origin
     }
-  };
+  });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert('Magic link sent! Check your email.');
+  }
+
+  setLoading(false);
+};
 
   return (
     <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -47,7 +55,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
                 <User className="absolute left-3 top-3 text-gray-500 group-focus-within:text-saffron transition-colors" size={20} />
                 <input 
                   type="text" 
-                  placeholder="Full Name" 
+                  placeholder="Full Name"
                   required
                   className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 text-white focus:outline-none focus:border-saffron transition-colors"
                   value={name}
@@ -58,8 +66,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
                 <Mail className="absolute left-3 top-3 text-gray-500 group-focus-within:text-saffron transition-colors" size={20} />
                 <input 
                   type="email" 
-                  placeholder="Email Address" 
-                  required
+                  placeholder="Email Address"
                   className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 text-white focus:outline-none focus:border-saffron transition-colors"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -90,9 +97,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
             </div>
 
             <button 
-              type="submit"
-              className="w-full py-4 bg-gradient-to-r from-saffron to-orange-600 text-black font-bold uppercase tracking-widest rounded-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-[0_0_20px_rgba(255,153,51,0.3)]"
-            >
+  type="submit"
+  disabled={loading}
+  className="..."
+>
+  {loading ? 'Sending...' : 'Send Magic Link'} <ArrowRight size={18} />
+</button>
               Mint Yatra Card <ArrowRight size={18} />
             </button>
           </form>
