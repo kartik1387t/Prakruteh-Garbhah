@@ -3,7 +3,10 @@ import { supabase } from '../src/lib/supabase';
 import { User, Mail, Sparkles, Mountain, Waves, PawPrint, Tent, ArrowRight } from 'lucide-react';
 import { UserProfile, VibeType } from '../types';
 
-const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
+interface AuthModalProps {
+  onClose: () => void;
+}
+const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
