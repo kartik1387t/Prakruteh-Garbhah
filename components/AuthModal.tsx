@@ -3,11 +3,6 @@ import { supabase } from '../src/lib/supabase';
 import { User, Mail, Sparkles, Mountain, Waves, PawPrint, Tent, ArrowRight } from 'lucide-react';
 import { UserProfile, VibeType } from '../types';
 
-interface AuthModalProps {
-  onLogin: (profile: UserProfile) => void;
-  onClose: () => void;
-}
-
 const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -67,6 +62,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
                 <input 
                   type="email" 
                   placeholder="Email Address"
+                  required
                   className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 text-white focus:outline-none focus:border-saffron transition-colors"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -95,16 +91,15 @@ const AuthModal: React.FC<AuthModalProps> = ({ onLogin, onClose }) => {
                 ))}
               </div>
             </div>
-
             <button 
   type="submit"
   disabled={loading}
-  className="..."
+  className="w-full py-4 bg-gradient-to-r from-saffron to-orange-600 text-black font-bold uppercase tracking-widest rounded-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all shadow-[0_0_20px_rgba(255,153,51,0.3)]"
 >
-  {loading ? 'Sending...' : 'Send Magic Link'} <ArrowRight size={18} />
+  {loading ? 'Sending...' : 'Send Magic Link'}
+  <ArrowRight size={18} />
 </button>
-              Mint Yatra Card <ArrowRight size={18} />
-            </button>
+
           </form>
         </div>
 
