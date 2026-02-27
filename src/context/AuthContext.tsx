@@ -19,68 +19,81 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [authMode, setAuthMode] = useState<"signup" | "signin">("signup");
-const fetchProfile = async (userId: string, email?: string) => {
+const fetchOrCreateProfile = async (user: any) => {
   try {
-    const { data } = await supabase
+    setLoading(true);
+
+    // 1️⃣ Try to fetch profile
+    const { data: existingProfile, error } = await supabase
       .from("users_profile")
       .select("*")
-      .eq("id", userId)
+      .eq("id", user.id)
       .single();
 
-    if (!data) {
-      const storedName = localStorage.getItem("temp_name");
-      const storedVibe = localStorage.getItem("temp_vibe");
-
-      const { data: newProfile } = await supabase
-        .from("users_profile")
-        .insert({
-          id: userId,
-          name: storedName || email?.split("@")[0],
-          traveler_vibe: storedVibe || "Nature",
-          email: email,
-          profile_image_url: null
-        })
-        .select()
-        .single();
-
-      setUserProfile(newProfile);
-
-      localStorage.removeItem("temp_name");
-      localStorage.removeItem("temp_vibe");
-
-    } else {
-      setUserProfile(data);
+    if (existingProfile) {
+      setUserProfile(existingProfile);
+      return;
     }
 
+    // 2️⃣ First time user → create profile
+    const tempName = localStorage.getItem("temp_name");
+    const tempVibe = localStorage.getItem("temp_vibe");
+
+    const newProfileData = {
+      id: user.id,
+      email: user.email,
+      name: tempName || user.email?.split("@")[0] || "Yatri",
+      traveler_vibe: tempVibe || "Nature",
+      profile_image_url: user.user_metadata?.avatar_url || null,
+    };
+
+    const { data: newProfile, error: insertError } = await supabase
+      .from("users_profile")
+      .insert(newProfileData)
+      .select()
+      .single();
+
+    if (insertError) throw insertError;
+
+    setUserProfile(newProfile);
+
+    // Clean temp storage
+    localStorage.removeItem("temp_name");
+    localStorage.removeItem("temp_vibe");
+
   } catch (err) {
-    console.error(err);
+    console.error("Profile Error:", err);
   } finally {
     setLoading(false);
   }
 };
   
   useEffect(() => {
-    // 1. Check active session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session) fetchProfile(session.user.id, session.user.email);
-      else setLoading(false);
-    });
+  // 1️⃣ Check existing session
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    setSession(session);
 
-    // 2. Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    if (session?.user) {
+      fetchOrCreateProfile(session.user);
+    } else {
+      setLoading(false);
+    }
+  });
+
+  // 2️⃣ Listen for auth changes
+  const { data: { subscription } } =
+    supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      if (session) fetchProfile(session.user.id, session.user.email);
-      else {
+
+      if (session?.user) {
+        fetchOrCreateProfile(session.user);
+      } else {
         setUserProfile(null);
-        setLoading(false);
       }
     });
 
-    return () => subscription.unsubscribe();
-  }, []);
+  return () => subscription.unsubscribe();
+}, []);
 
   return (
 <AuthContext.Provider value={{ 
