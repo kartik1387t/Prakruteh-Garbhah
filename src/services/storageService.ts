@@ -1,20 +1,21 @@
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from "../lib/supabaseClient";
 
 export const storageService = {
-  async uploadImage(bucket: 'avatars' | 'posts', file: File, path: string) {
-    const { data, error } = await supabase.storage
-      .from(bucket)
-      .upload(path, file, { upsert: true });
+  async uploadProfileImage(userId: string, file: File) {
+    const filePath = `${userId}/avatar.png`;
+
+    const { error } = await supabase.storage
+      .from("profile-images")
+      .upload(filePath, file, {
+        upsert: true,
+      });
 
     if (error) throw error;
-    return data;
-  },
 
-  getPublicUrl(bucket: 'profile-images' | 'posts', path: string) {
     const { data } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(path);
-    
+      .from("profile-images")
+      .getPublicUrl(filePath);
+
     return data.publicUrl;
-  }
+  },
 };
