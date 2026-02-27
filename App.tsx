@@ -427,8 +427,7 @@ const handleLogout = async () => {
                       user={userProfile} 
                       onLoginRequest={() => { closeSlide(); setShowAuthModal(true); }}
                       onLogout={handleLogout}
-                      onUpdateBudget={(b) => setUserProfile(prev => prev ? {...prev, totalBudget: b} : null)}
-                    />
+                      onUpdateBudget={() => {}}
                     <Footer />
                  </div>
              </div>
