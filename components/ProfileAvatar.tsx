@@ -36,7 +36,7 @@ const ProfileAvatar: React.FC = () => {
     }
   };
 
-  if (!userProfile) return null;
+  if (!userProfile || !userProfile.id) return null;
 
   return (
     <div className="flex flex-col items-center gap-3">
