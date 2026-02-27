@@ -5,17 +5,22 @@ export const authService = {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: window.location.origin
-      }
+        emailRedirectTo: window.location.origin,
+      },
     });
 
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
   },
 
   async signOut() {
     const { error } = await supabase.auth.signOut();
-    if (error) throw error;
-  }
+
+    if (error) {
+      throw error;
+    }
+  },
 };
 
     // Map DB fields if needed (adjust if your DB uses snake_case)
