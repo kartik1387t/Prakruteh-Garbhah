@@ -22,20 +22,3 @@ export const authService = {
     }
   },
 };
-
-    // Map DB fields if needed (adjust if your DB uses snake_case)
-    const profile: UserProfile = {
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      vibe: data.vibe,
-      currency: data.currency,
-      totalBudget: data.total_budget ?? 0,
-      spent: data.spent ?? 0,
-      level: data.level ?? 1,
-      badges: data.badges ?? [],
-    };
-
-    return profile;
-  },
-};
