@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supabase } from '../src/lib/supabaseClient';
+import { useAuth } from '../src/context/AuthContext';
 import { User, Mail, Sparkles, Mountain, Waves, PawPrint, Tent, ArrowRight } from 'lucide-react';
 import { UserProfile, VibeType } from '../types';
 
@@ -12,27 +12,29 @@ const AuthModal: React.FC<AuthModalProps> = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
   const [vibe, setVibe] = useState<VibeType>('nature');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const { sendMagicLink } = useAuth();
+
+const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   if (!email) return;
 
   setLoading(true);
 
-  const { error } = await supabase.auth.signInWithOtp({
-    email,
-    options: {
-      emailRedirectTo: window.location.origin
-    }
-  });
+  try {
+    // Store temporary onboarding data
+    localStorage.setItem("temp_name", name);
+    localStorage.setItem("temp_vibe", vibe);
 
-  if (error) {
-    alert(error.message);
-  } else {
-    alert('Magic link sent! Check your email.');
+    await sendMagicLink(email);
+
+    alert("Magic link sent! Check your email.");
+    onClose();
+  } catch (error: any) {
+    alert(error.message || "Something went wrong");
+  } finally {
+    setLoading(false);
   }
-
-  setLoading(false);
 };
 
   return (
