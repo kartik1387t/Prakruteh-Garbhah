@@ -113,6 +113,7 @@ const fetchProfile = async (userId: string, email?: string) => {
     {children}
   </AuthContext.Provider>
 );
+};
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
