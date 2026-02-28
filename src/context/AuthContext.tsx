@@ -77,7 +77,7 @@ const fetchProfile = async (userId: string, email?: string) => {
     setSession(session);
 
     if (session?.user) {
-      fetchOrCreateProfile(session.user);
+      fetchProfile(session.user.id, session.user.email);
     } else {
       setLoading(false);
     }
@@ -89,7 +89,7 @@ const fetchProfile = async (userId: string, email?: string) => {
       setSession(session);
 
       if (session?.user) {
-        fetchOrCreateProfile(session.user);
+        fetchProfile(session.user.id, session.user.email);
       } else {
         setUserProfile(null);
       }
