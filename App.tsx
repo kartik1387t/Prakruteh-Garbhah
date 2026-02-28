@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './src/context/AuthContext';
+import OnboardingModal from './components/OnboardingModal';
 import CosmicIntro from './components/CosmicIntro';
 import MirrorSearch from './components/MirrorSearch';
 import LivingMap from './components/LivingMap';
@@ -172,7 +173,8 @@ const App: React.FC = () => {
   const [activeSlide, setActiveSlide] = useState<SlideType | null>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-
+  const { needsOnboarding } = useAuth();
+  
   // User Profile State
   const { userProfile } = useAuth();
 
@@ -439,6 +441,7 @@ const handleLogout = async () => {
             <AuthModal 
   onClose={() => setShowAuthModal(false)} 
 />
+          {needsOnboarding && <OnboardingModal />}
           )}
 
           {/* Hint text when no slide is active */}
