@@ -441,8 +441,8 @@ const handleLogout = async () => {
             <AuthModal 
   onClose={() => setShowAuthModal(false)} 
 />
-          {needsOnboarding && <OnboardingModal />}
           )}
+          {needsOnboarding && <OnboardingModal />}
 
           {/* Hint text when no slide is active */}
           {!activeSlide && (
