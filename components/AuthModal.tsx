@@ -22,12 +22,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   setLoading(true);
 
   try {
-    // Store temporary onboarding data
-    localStorage.setItem("temp_name", name);
-    localStorage.setItem("temp_vibe", vibe);
-
     await sendMagicLink(email);
-
     alert("Magic link sent! Check your email.");
     onClose();
   } catch (error: any) {
@@ -36,7 +31,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     setLoading(false);
   }
 };
-
+  
   return (
     <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
       <div className="bg-cosmos border border-white/20 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden relative animate-fade-in">
