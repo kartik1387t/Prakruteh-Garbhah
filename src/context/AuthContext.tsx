@@ -50,7 +50,11 @@ const fetchProfile = async (userId: string, email?: string) => {
   }
 };
 
-  const completeOnboarding = async (name: string, vibe: string) => {
+  const completeOnboarding = async (
+  name: string,
+  vibe: string,
+  imageUrl?: string | null
+) => {
   if (!session?.user) return;
 
   const { data, error } = await supabase
@@ -60,8 +64,8 @@ const fetchProfile = async (userId: string, email?: string) => {
       email: session.user.email,
       name,
       traveler_vibe: vibe,
-      profile_image_url: session.user.user_metadata?.avatar_url || null,
-    })
+      profile_image_url: imageUrl || null,
+})
     .select()
     .single();
 
