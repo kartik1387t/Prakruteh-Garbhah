@@ -8,6 +8,8 @@ interface AuthContextType {
   session: Session | null;
   userProfile: UserProfile | null;
   loading: boolean;
+  needsOnboarding: boolean;
+  completeOnboarding: (name: string, vibe: string) => Promise<void>;
   sendMagicLink: typeof authService.sendMagicLink;
   signOut: typeof authService.signOut;
 }
@@ -95,22 +97,22 @@ const fetchProfile = async (userId: string, email?: string) => {
 
   return () => subscription.unsubscribe();
 }, []);
-<AuthContext.Provider value={{ 
-  session,
-  userProfile,
-  loading,
-  needsOnboarding,
-  completeOnboarding,
-  sendMagicLink: authService.sendMagicLink,
-  signOut: authService.signOut
-}}>
-  
-  return (
 
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  return (
+  <AuthContext.Provider
+    value={{
+      session,
+      userProfile,
+      loading,
+      needsOnboarding,
+      completeOnboarding,
+      sendMagicLink: authService.sendMagicLink,
+      signOut: authService.signOut,
+    }}
+  >
+    {children}
+  </AuthContext.Provider>
+);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
