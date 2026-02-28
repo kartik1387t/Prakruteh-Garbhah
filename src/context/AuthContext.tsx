@@ -19,6 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [authMode, setAuthMode] = useState<"signup" | "signin">("signup");
+  const [needsOnboarding, setNeedsOnboarding] = useState(false);
 const fetchProfile = async (userId: string, email?: string) => {
   try {
     setLoading(true);
@@ -27,40 +28,45 @@ const fetchProfile = async (userId: string, email?: string) => {
       .from("users_profile")
       .select("*")
       .eq("id", userId)
-      .maybeSingle(); // 🔥 IMPORTANT CHANGE
+      .maybeSingle();
 
     if (error) throw error;
 
     if (!data) {
-      const storedName = localStorage.getItem("temp_name");
-      const storedVibe = localStorage.getItem("temp_vibe");
-
-      const { data: newProfile, error: insertError } = await supabase
-        .from("users_profile")
-        .insert({
-          id: userId,
-          email: email,
-          name: storedName || email?.split("@")[0] || "Yatri",
-          traveler_vibe: storedVibe || "Nature",
-          profile_image_url: null,
-        })
-        .select()
-        .single();
-
-      if (insertError) throw insertError;
-
-      setUserProfile(newProfile);
-
-      localStorage.removeItem("temp_name");
-      localStorage.removeItem("temp_vibe");
-    } else {
-      setUserProfile(data);
+      // 🔥 First time login
+      setNeedsOnboarding(true);
+      return;
     }
+
+    setUserProfile(data);
+    setNeedsOnboarding(false);
+
   } catch (err) {
     console.error("Auth error:", err);
   } finally {
     setLoading(false);
   }
+};
+
+  const completeOnboarding = async (name: string, vibe: string) => {
+  if (!session?.user) return;
+
+  const { data, error } = await supabase
+    .from("users_profile")
+    .insert({
+      id: session.user.id,
+      email: session.user.email,
+      name,
+      traveler_vibe: vibe,
+      profile_image_url: session.user.user_metadata?.avatar_url || null,
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  setUserProfile(data);
+  setNeedsOnboarding(false);
 };
   
   useEffect(() => {
@@ -89,15 +95,18 @@ const fetchProfile = async (userId: string, email?: string) => {
 
   return () => subscription.unsubscribe();
 }, []);
-
-  return (
 <AuthContext.Provider value={{ 
-  session, 
-  userProfile, 
-  loading, 
+  session,
+  userProfile,
+  loading,
+  needsOnboarding,
+  completeOnboarding,
   sendMagicLink: authService.sendMagicLink,
   signOut: authService.signOut
 }}>
+  
+  return (
+
       {children}
     </AuthContext.Provider>
   );
