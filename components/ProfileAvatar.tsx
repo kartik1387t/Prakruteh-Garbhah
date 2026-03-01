@@ -33,7 +33,7 @@ const ProfileAvatar: React.FC = () => {
     } catch (err: any) {
   console.error(err);
   alert(err.message || "Upload failed");
-    }
+    };
     } finally {
       setUploading(false);
     }
@@ -49,7 +49,7 @@ const ProfileAvatar: React.FC = () => {
           `https://ui-avatars.com/api/?name=${userProfile.name}`
         }
         alt="Avatar"
-        className="w-28 h-28 rounded-full object-cover border border-saffron/50 cursor-pointer"
+        className="w-10 h-10 sm:w-24 sm:h-24"-full object-cover border border-saffron/50 cursor-pointer"
         onClick={() => setShowEdit(!showEdit)}
       />
 
