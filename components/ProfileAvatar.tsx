@@ -5,7 +5,7 @@ import { supabase } from "../src/lib/supabaseClient";
 import { Pencil } from "lucide-react";
 
 const ProfileAvatar: React.FC = () => {
-  const { userProfile } = useAuth();
+  const { userProfile, updateProfileImage } = useAuth();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [showEdit, setShowEdit] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -29,7 +29,7 @@ const ProfileAvatar: React.FC = () => {
         .update({ profile_image_url: publicUrl })
         .eq("id", userProfile.id);
 
-      window.location.reload();
+      updateProfileImage(publicUrl);
     } catch (err: any) {
       console.error(err);
       alert(err.message || "Upload failed");
