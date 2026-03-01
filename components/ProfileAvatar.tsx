@@ -13,35 +13,33 @@ const ProfileAvatar: React.FC = () => {
   if (!userProfile) return null;
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  try {
-    if (!e.target.files) return;
+    try {
+      if (!e.target.files) return;
 
-    setUploading(true);
-    const file = e.target.files[0];
+      setUploading(true);
+      const file = e.target.files[0];
 
-    const publicUrl = await storageService.uploadProfileImage(
-      userProfile.id,
-      file
-    );
+      const publicUrl = await storageService.uploadProfileImage(
+        userProfile.id,
+        file
+      );
 
-    await supabase
-      .from("users_profile")
-      .update({ profile_image_url: publicUrl })
-      .eq("id", userProfile.id);
+      await supabase
+        .from("users_profile")
+        .update({ profile_image_url: publicUrl })
+        .eq("id", userProfile.id);
 
-    window.location.reload(); // improve later
-  } catch (err: any) {
-    console.error(err);
-    alert(err.message || "Upload failed");
-  } finally {
-    setUploading(false);
-  }
-};
+      window.location.reload();
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
-    <div className="relative w-28 h-28">
-
-      {/* Avatar */}
+    <div className="relative w-10 h-10 sm:w-24 sm:h-24">
       <img
         src={
           userProfile.profile_image_url ||
@@ -52,21 +50,19 @@ const ProfileAvatar: React.FC = () => {
         onClick={() => setShowEdit(!showEdit)}
       />
 
-      {/* Edit Button Overlay */}
       {showEdit && (
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="absolute bottom-1 right-1 bg-saffron p-2 rounded-full shadow-lg"
+          className="absolute bottom-0 right-0 bg-saffron p-1 rounded-full shadow-lg"
         >
           {uploading ? (
             <span className="text-xs">...</span>
           ) : (
-            <Pencil size={14} className="text-black" />
+            <Pencil size={12} className="text-black" />
           )}
         </button>
       )}
 
-      {/* Hidden File Input */}
       <input
         type="file"
         accept="image/*"
@@ -74,7 +70,6 @@ const ProfileAvatar: React.FC = () => {
         ref={fileInputRef}
         onChange={handleUpload}
       />
-
     </div>
   );
 };
