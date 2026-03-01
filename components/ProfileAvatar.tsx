@@ -64,13 +64,21 @@ const ProfileAvatar: React.FC = () => {
     `https://ui-avatars.com/api/?name=${userProfile.name}`
   }
   alt="Avatar"
-  className="w-24 h-24 rounded-full object-cover border border-saffron/50"
+  className="w-24 h-24 rounded-full object-cover border border-saffron/50 cursor-pointer"
+  onClick={() => fileInputRef.current?.click()} // single tap
   onContextMenu={(e) => {
-    e.preventDefault();
-    fileInputRef.current?.click();
+    e.preventDefault(); // prevent browser menu
+    fileInputRef.current?.click(); // long press
   }}
 />
 
+<input
+  type="file"
+  accept="image/*"
+  hidden
+  ref={fileInputRef}
+  onChange={handleUpload}
+/>
       {showOption && (
         <div className="text-center">
           <button
