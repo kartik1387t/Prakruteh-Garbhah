@@ -11,7 +11,7 @@ const OnboardingModal: React.FC = () => {
 const { session } = useAuth();
 const [preview, setPreview] = useState<string | null>(null);
 const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   setLoading(true);
