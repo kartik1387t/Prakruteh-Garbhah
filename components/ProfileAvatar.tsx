@@ -59,18 +59,17 @@ const ProfileAvatar: React.FC = () => {
     <div className="flex flex-col items-center gap-3">
 
       <img
-        src={
-          userProfile.profile_image_url ||
-          `https://ui-avatars.com/api/?name=${userProfile.name}`
-        }
-        alt="Avatar"
-        className="w-24 h-24 rounded-full object-cover border border-saffron/50"
-        onMouseDown={startPress}
-        onMouseUp={cancelPress}
-        onMouseLeave={cancelPress}
-        onTouchStart={startPress}
-        onTouchEnd={cancelPress}
-      />
+  src={
+    userProfile.profile_image_url ||
+    `https://ui-avatars.com/api/?name=${userProfile.name}`
+  }
+  alt="Avatar"
+  className="w-24 h-24 rounded-full object-cover border border-saffron/50"
+  onContextMenu={(e) => {
+    e.preventDefault();
+    fileInputRef.current?.click();
+  }}
+/>
 
       {showOption && (
         <div className="text-center">
