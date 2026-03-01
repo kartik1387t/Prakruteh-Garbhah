@@ -12,6 +12,7 @@ interface AuthContextType {
   completeOnboarding: (name: string, vibe: string) => Promise<void>;
   sendMagicLink: typeof authService.sendMagicLink;
   signOut: typeof authService.signOut;
+  updateProfileImage: (url: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,6 +23,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [authMode, setAuthMode] = useState<"signup" | "signin">("signup");
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
+  const updateProfileImage = (url: string) => {
+  setUserProfile((prev) =>
+    prev ? { ...prev, profile_image_url: url } : prev
+  );
+};
+  
 const fetchProfile = async (userId: string, email?: string) => {
   try {
     setLoading(true);
@@ -112,6 +119,7 @@ const fetchProfile = async (userId: string, email?: string) => {
       completeOnboarding,
       sendMagicLink: authService.sendMagicLink,
       signOut: authService.signOut,
+      updateProfileImage,
     }}
   >
     {children}
