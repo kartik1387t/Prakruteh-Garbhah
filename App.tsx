@@ -68,8 +68,8 @@ const SmartSearchBar: React.FC<SmartSearchBarProps> = ({ searchTerm, onSearch, u
            className="px-3 py-1 flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-white transition-colors"
          >
             {userProfile ? (
-              {userProfile && <ProfileAvatar />}
-            ) : (
+  <ProfileAvatar />
+) : (
               <>
                  <User size={14} /> Join
               </>
