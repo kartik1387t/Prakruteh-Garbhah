@@ -13,31 +13,30 @@ const ProfileAvatar: React.FC = () => {
   if (!userProfile) return null;
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      if (!e.target.files) return;
+  try {
+    if (!e.target.files) return;
 
-      setUploading(true);
-      const file = e.target.files[0];
+    setUploading(true);
+    const file = e.target.files[0];
 
-      const publicUrl = await storageService.uploadProfileImage(
-        userProfile.id,
-        file
-      );
+    const publicUrl = await storageService.uploadProfileImage(
+      userProfile.id,
+      file
+    );
 
-      await supabase
-        .from("users_profile")
-        .update({ profile_image_url: publicUrl })
-        .eq("id", userProfile.id);
+    await supabase
+      .from("users_profile")
+      .update({ profile_image_url: publicUrl })
+      .eq("id", userProfile.id);
 
-      window.location.reload(); // we improve later
-    } catch (err: any) {
-  console.error(err);
-  alert(err.message || "Upload failed");
-    };
-    } finally {
-      setUploading(false);
-    }
-  };
+    window.location.reload(); // improve later
+  } catch (err: any) {
+    console.error(err);
+    alert(err.message || "Upload failed");
+  } finally {
+    setUploading(false);
+  }
+};
 
   return (
     <div className="relative w-28 h-28">
@@ -49,7 +48,7 @@ const ProfileAvatar: React.FC = () => {
           `https://ui-avatars.com/api/?name=${userProfile.name}`
         }
         alt="Avatar"
-        className="w-10 h-10 sm:w-24 sm:h-24"-full object-cover border border-saffron/50 cursor-pointer"
+        className="w-10 h-10 sm:w-24 sm:h-24 rounded-full object-cover border border-saffron/50 cursor-pointer"
         onClick={() => setShowEdit(!showEdit)}
       />
 
