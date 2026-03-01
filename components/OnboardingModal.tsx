@@ -41,18 +41,6 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
   setUploadedImage(e.target.files[0]);
 };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await completeOnboarding(name, vibe);
-    } catch (err) {
-      alert("Error completing onboarding");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   if (!e.target.files) return;
 
