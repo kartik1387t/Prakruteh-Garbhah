@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './src/context/AuthContext';
+import ProfileAvatar from "./components/ProfileAvatar";
 import OnboardingModal from './components/OnboardingModal';
 import CosmicIntro from './components/CosmicIntro';
 import MirrorSearch from './components/MirrorSearch';
@@ -67,9 +68,7 @@ const SmartSearchBar: React.FC<SmartSearchBarProps> = ({ searchTerm, onSearch, u
            className="px-3 py-1 flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-white transition-colors"
          >
             {userProfile ? (
-              <div className="w-6 h-6 rounded-full bg-saffron text-black flex items-center justify-center font-serif">
-                 {userProfile.name.charAt(0)}
-              </div>
+              {userProfile && <ProfileAvatar />}
             ) : (
               <>
                  <User size={14} /> Join
