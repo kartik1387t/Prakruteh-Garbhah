@@ -30,8 +30,10 @@ const ProfileAvatar: React.FC = () => {
         .eq("id", userProfile.id);
 
       window.location.reload(); // we improve later
-    } catch (err) {
-      alert("Upload failed");
+    } catch (err: any) {
+  console.error(err);
+  alert(err.message || "Upload failed");
+    }
     } finally {
       setUploading(false);
     }
