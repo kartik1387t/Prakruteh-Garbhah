@@ -2,31 +2,15 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "../src/context/AuthContext";
 import { storageService } from "../src/services/storageService";
 import { supabase } from "../src/lib/supabaseClient";
+import { Pencil } from "lucide-react";
 
 const ProfileAvatar: React.FC = () => {
   const { userProfile } = useAuth();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  const timerRef = useRef<number | null>(null);
-  const [showOption, setShowOption] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   if (!userProfile) return null;
-
-  // 🔵 Start long press
-  const startPress = () => {
-    timerRef.current = window.setTimeout(() => {
-      setShowOption(true);
-    }, 3000); // 3 seconds
-  };
-
-  // 🔵 Cancel long press
-  const cancelPress = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  };
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -45,9 +29,7 @@ const ProfileAvatar: React.FC = () => {
         .update({ profile_image_url: publicUrl })
         .eq("id", userProfile.id);
 
-      setShowOption(false);
-      window.location.reload(); // we'll remove this later
-
+      window.location.reload(); // we improve later
     } catch (err) {
       alert("Upload failed");
     } finally {
@@ -56,47 +38,42 @@ const ProfileAvatar: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="relative w-28 h-28">
 
+      {/* Avatar */}
       <img
-  src={
-    userProfile.profile_image_url ||
-    `https://ui-avatars.com/api/?name=${userProfile.name}`
-  }
-  alt="Avatar"
-  className="w-24 h-24 rounded-full object-cover border border-saffron/50 cursor-pointer"
-  onClick={() => fileInputRef.current?.click()} // single tap
-  onContextMenu={(e) => {
-    e.preventDefault(); // prevent browser menu
-    fileInputRef.current?.click(); // long press
-  }}
-/>
+        src={
+          userProfile.profile_image_url ||
+          `https://ui-avatars.com/api/?name=${userProfile.name}`
+        }
+        alt="Avatar"
+        className="w-28 h-28 rounded-full object-cover border border-saffron/50 cursor-pointer"
+        onClick={() => setShowEdit(!showEdit)}
+      />
 
-<input
-  type="file"
-  accept="image/*"
-  hidden
-  ref={fileInputRef}
-  onChange={handleUpload}
-/>
-      {showOption && (
-        <div className="text-center">
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="text-sm text-saffron mt-2"
-          >
-            {uploading ? "Uploading..." : "Change Photo"}
-          </button>
-
-          <input
-            type="file"
-            accept="image/*"
-            hidden
-            ref={fileInputRef}
-            onChange={handleUpload}
-          />
-        </div>
+      {/* Edit Button Overlay */}
+      {showEdit && (
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          className="absolute bottom-1 right-1 bg-saffron p-2 rounded-full shadow-lg"
+        >
+          {uploading ? (
+            <span className="text-xs">...</span>
+          ) : (
+            <Pencil size={14} className="text-black" />
+          )}
+        </button>
       )}
+
+      {/* Hidden File Input */}
+      <input
+        type="file"
+        accept="image/*"
+        hidden
+        ref={fileInputRef}
+        onChange={handleUpload}
+      />
+
     </div>
   );
 };
