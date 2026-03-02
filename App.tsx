@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useAuth } from './src/context/AuthContext';
 import ProfileAvatar from "./components/ProfileAvatar";
 import OnboardingModal from './components/OnboardingModal';
@@ -29,9 +30,6 @@ import {
   User
 } from 'lucide-react';
 import { Season, YatraItem, VibeType, UserProfile } from './types';
-
-// Define slide types
-type SlideType = 'home' | 'mirror' | 'map' | 'dashboard' | 'explore_states';
 
 // --- Extracted Components for Navigation (Moved OUTSIDE App to prevent re-renders) ---
 
@@ -169,7 +167,6 @@ const SideAccessPanel: React.FC<SideAccessPanelProps> = ({ toggleSlide, activeSl
 const App: React.FC = () => {
   // --- Global State ---
   const [showIntro, setShowIntro] = useState(true);
-  const [activeSlide, setActiveSlide] = useState<SlideType | null>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { needsOnboarding } = useAuth();
@@ -181,23 +178,7 @@ const App: React.FC = () => {
   const [globalSearchTerm, setGlobalSearchTerm] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [mirrorSearchProp, setMirrorSearchProp] = useState('');
-useEffect(() => {
-  const handlePopState = () => {
-    if (activeSlide) {
-      closeSlide();
-      setGlobalSearchTerm('');
-      setMirrorSearchProp('');
-      setIsSearching(false);
-    }
-  };
 
-  window.addEventListener('popstate', handlePopState);
-
-  return () => {
-    window.removeEventListener('popstate', handlePopState);
-  };
-}, [activeSlide]);
-  
   // Map Context State
   const [currentSeason, setCurrentSeason] = useState<Season>('spring');
   const [currentVibe, setCurrentVibe] = useState<VibeType>('nature');
@@ -224,7 +205,7 @@ const handleLogout = async () => {
   await signOut();
 };
 
-  const handleAddToYatra = (item: YatraItem) => {
+  const handlAddToYatra = (item: YatraItem) => {
     // Check if exists
     if (!yatraItems.find(i => i.id === item.id)) {
       setYatraItems(prev => [...prev, item]);
@@ -252,28 +233,6 @@ const handleLogout = async () => {
   else if (lowerTerm.includes('budget') || lowerTerm.includes('cost') || lowerTerm.includes('price')) {
      setActiveSlide('dashboard');
   }
-  if (term.length > 2) {
-  if (activeSlide !== 'mirror') {
-    setActiveSlide('mirror');
-    window.history.pushState({ slide: 'mirror' }, '');
-  }
-  setMirrorSearchProp(term);
-  }
-};
-
-  const closeSlide = () => {
-    setActiveSlide(null);
-    setNavOpen(false);
-  };
-
-  const toggleSlide = (slide: SlideType) => {
-    if (activeSlide === slide) {
-  setActiveSlide(null);
-} else {
-  setActiveSlide(slide);
-  window.history.pushState({ slide }, '');
-    }
-    setNavOpen(false); // Close radial menu after selection
   };
 
   return (
@@ -367,44 +326,6 @@ const handleLogout = async () => {
           {/* 6. Slide Panels (Overlays) */}
           <main className="relative z-30 w-full min-h-screen p-0 md:p-6 lg:p-12">
              
-             {/* Mirror Search Slide */}
-             <div className={`fixed inset-0 md:inset-10 bg-cosmos/95 md:bg-cosmos/90 glass-card md:rounded-3xl overflow-y-scroll pointer-events-auto ${activeSlide === 'mirror' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                 <button onClick={closeSlide} className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition-colors z-50">
-                   <X size={24} />
-                 </button>
-                 <div className="mt-16 md:mt-0">
-                   <MirrorSearch externalTerm={mirrorSearchProp} />
-                 </div>
-             </div>
-
-             {/* Living Map (Manchitra) Slide */}
-             <div className={`absolute inset-0 md:inset-10 bg-cosmos/95 md:bg-cosmos/90 glass-card md:rounded-3xl overflow-hidden pointer-events-auto slide-panel flex flex-col ${activeSlide === 'map' ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95 pointer-events-none'}`}>
-                 <button onClick={closeSlide} className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition-colors z-50 text-white">
-                    <X size={24} />
-                 </button>
-                 <div className="flex-1 h-full mt-16 md:mt-0">
-                    <LivingMap 
-                      currentSeason={currentSeason}
-                      setSeason={setCurrentSeason}
-                      currentVibe={currentVibe}
-                      setVibe={setCurrentVibe}
-                      isMuted={isMuted}
-                      toggleSound={() => setIsMuted(!isMuted)}
-                    />
-                 </div>
-             </div>
-             
-             {/* State Explorer (Deep Dive GIS) Slide */}
-             {activeSlide === 'explore_states' && (
-                <div className="absolute inset-0 z-50 pointer-events-auto bg-cosmos">
-                   <StateExplorer onClose={closeSlide} onAddToYatra={handleAddToYatra} />
-                </div>
-             )}
-
-             {/* Dashboard Slide */}
-             <div className={`absolute inset-0 md:inset-10 bg-cosmos/95 md:bg-cosmos/90 glass-card md:rounded-3xl overflow-y-auto pointer-events-auto slide-panel flex flex-col ${activeSlide === 'dashboard' ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-20 scale-95 pointer-events-none'}`}>
-                 <button onClick={closeSlide} className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition-colors z-50">
-                    <X size={24} />
                  </button>
                  <div className="flex-1 mt-16 md:mt-0">
                     {/* Quick Vocal for Local */}
