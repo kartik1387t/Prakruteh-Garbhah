@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from './src/context/AuthContext';
 import ProfileAvatar from "./components/ProfileAvatar";
 import OnboardingModal from './components/OnboardingModal';
@@ -90,7 +91,7 @@ const UniversalNavOrb: React.FC<UniversalNavOrbProps> = ({ navOpen, setNavOpen, 
      <div className={`absolute bottom-2 left-2 transition-all duration-300 ${navOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         {/* Mirror */}
         <button 
-           onClick={() => toggleSlide('mirror')}
+           onClick={() => navigate("/mirror")}
            className={`absolute transition-all duration-300 w-12 h-12 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center hover:bg-saffron hover:text-black hover:scale-110 shadow-lg ${navOpen ? '-translate-y-32 translate-x-0' : 'translate-y-0 translate-x-0'}`}
            title="Mirror Search"
         >
@@ -99,7 +100,7 @@ const UniversalNavOrb: React.FC<UniversalNavOrbProps> = ({ navOpen, setNavOpen, 
         
         {/* Map */}
         <button 
-           onClick={() => toggleSlide('map')}
+           onClick={() => navigate("/map")}
            className={`absolute transition-all duration-300 w-12 h-12 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center hover:bg-saffron hover:text-black hover:scale-110 shadow-lg ${navOpen ? '-translate-y-24 translate-x-24' : 'translate-y-0 translate-x-0'}`}
            title="Manchitra"
         >
@@ -108,7 +109,7 @@ const UniversalNavOrb: React.FC<UniversalNavOrbProps> = ({ navOpen, setNavOpen, 
 
         {/* Dashboard */}
         <button 
-           onClick={() => toggleSlide('dashboard')}
+           onClick={() => navigate("/dashboard")}
            className={`absolute transition-all duration-300 w-12 h-12 rounded-full bg-cosmos-light border border-white/20 flex items-center justify-center hover:bg-saffron hover:text-black hover:scale-110 shadow-lg ${navOpen ? 'translate-y-0 translate-x-32' : 'translate-y-0 translate-x-0'}`}
            title="Yatra Dashboard"
         >
@@ -170,6 +171,7 @@ const App: React.FC = () => {
   const [navOpen, setNavOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { needsOnboarding } = useAuth();
+  const navigate = useNavigate();
   
   // User Profile State
   const { userProfile } = useAuth();
@@ -236,8 +238,18 @@ const handleLogout = async () => {
   };
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden text-white font-sans relative transition-all duration-1000">
-      
+  <BrowserRouter>
+    <div className="min-h-screen w-full text-white font-sans relative">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/mirror" element={<MirrorPage />} />
+        <Route path="/map" element={<MapPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+      </Routes>
+    </div>
+  </BrowserRouter>
+);
+  
       {/* 1. Global Background */}
       {!showIntro && <CosmicBackground />}
 
