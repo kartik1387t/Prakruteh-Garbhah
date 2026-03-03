@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ArrowRight, Globe, MapPin, Sparkles } from 'lucide-react';
-import { fetchMirrorData } from '../src/services/csv.service';
+import { fetchMirrorData } from '../services/csv.service';
 import { MirrorLocation } from '../types';
 
 interface MirrorSearchProps {
