@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import HomePage from "../pages/HomePage";
-import MirrorPage from "../pages/MirrorPage";
-import MapPage from "../pages/MapPage";
-import DashboardPage from "../pages/DashboardPage";
+import HomePage from "./pages/HomePage";
+import MirrorPage from "./pages/MirrorPage";
+import MapPage from "./pages/MapPage";
+import DashboardPage from "./pages/DashboardPage";
 
 const App: React.FC = () => {
   return (
