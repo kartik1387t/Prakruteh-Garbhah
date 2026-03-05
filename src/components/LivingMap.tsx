@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, CloudRain, CloudSnow, Wind, Flower2, Music, Mountain, Waves, Volume2, VolumeX, Moon, Stars, History, Gem, Sparkles, PawPrint, Anchor, CloudFog, Tent, Bell, Ship, Calendar, Flame, PartyPopper, MessageCircle } from 'lucide-react';
 import { Season, VibeType } from '../types';
-import { SEASONS as SEASON_DATA, HISTORICAL_SITES, HIDDEN_GEMS, STATE_DATA } from '../constants';
+import { SEASONS as SEASON_DATA, HISTORICAL_SITES, HIDDEN_GEMS, STATE_DATA } from '../types/location.types.ts';
 import Reveal from './Reveal';
 
 interface LivingMapProps {
