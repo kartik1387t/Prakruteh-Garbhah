@@ -40,7 +40,7 @@ const CosmicIntro: React.FC<CosmicIntroProps> = ({ onExplore }) => {
           onClick={onExplore}
           className="group relative px-8 py-4 bg-transparent border border-saffron text-saffron font-display uppercase tracking-widest hover:bg-saffron hover:text-cosmos transition-all duration-300 rounded-sm"
         >
-          Enter the Womb
+          Enter
           <span className="absolute -bottom-2 left-1/2 w-0 h-0.5 bg-saffron transition-all group-hover:w-full group-hover:left-0 duration-300"></span>
         </button>
       </div>
