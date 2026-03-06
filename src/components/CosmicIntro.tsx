@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import { Volume2, VolumeX } from 'lucide-react';
 
 interface CosmicIntroProps {
@@ -7,7 +8,8 @@ interface CosmicIntroProps {
 
 const CosmicIntro: React.FC<CosmicIntroProps> = ({ onExplore }) => {
   const [zoomLevel, setZoomLevel] = useState(0);
-
+const navigate = useNavigate();
+  
   useEffect(() => {
     // Simulating the "Zoom" effect from Cosmos to Earth
     const timer = setTimeout(() => setZoomLevel(1), 500);
@@ -37,7 +39,7 @@ const CosmicIntro: React.FC<CosmicIntroProps> = ({ onExplore }) => {
         </p>
         
         <button 
-          onClick={onExplore}
+          onClick={() => navigate("/home")}
           className="group relative px-8 py-4 bg-transparent border border-saffron text-saffron font-display uppercase tracking-widest hover:bg-saffron hover:text-cosmos transition-all duration-300 rounded-sm"
         >
           Enter
