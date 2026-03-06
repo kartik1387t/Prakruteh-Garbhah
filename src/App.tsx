@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 import MainLayout from "./layout/MainLayout";
+import CosmicIntro from "./components/CosmicIntro";
 
 import HomePage from "./pages/HomePage";
 import MirrorPage from "./pages/MirrorPage";
@@ -8,6 +10,13 @@ import MapPage from "./pages/MapPage";
 import DashboardPage from "./pages/DashboardPage";
 
 export default function App() {
+
+  const [showIntro, setShowIntro] = useState(true);
+
+  if (showIntro) {
+    return <CosmicIntro onExplore={() => setShowIntro(false)} />;
+  }
+
   return (
     <BrowserRouter>
 
