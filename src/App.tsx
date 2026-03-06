@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 
-import MainLayout from "./layout/MainLayout";
 import CosmicIntro from "./components/CosmicIntro";
+import MainLayout from "./layout/MainLayout";
 
 import HomePage from "./pages/HomePage";
 import MirrorPage from "./pages/MirrorPage";
@@ -13,12 +13,15 @@ export default function App() {
 
   const [entered, setEntered] = useState(false);
 
+  // First visit → show intro
   if (!entered) {
     return <CosmicIntro onExplore={() => setEntered(true)} />;
   }
 
+  // After ENTER → show platform
   return (
     <BrowserRouter>
+
       <Routes>
 
         <Route element={<MainLayout />}>
@@ -31,6 +34,7 @@ export default function App() {
         </Route>
 
       </Routes>
+
     </BrowserRouter>
   );
 }
