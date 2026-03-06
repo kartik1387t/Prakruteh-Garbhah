@@ -11,27 +11,27 @@ import DashboardPage from "./pages/DashboardPage";
 
 export default function App() {
 
-  const [showIntro, setShowIntro] = useState(true);
-
-  if (showIntro) {
-    return <CosmicIntro onExplore={() => setShowIntro(false)} />;
-  }
+  const [entered, setEntered] = useState(false);
 
   return (
     <BrowserRouter>
 
-      <Routes>
+      {!entered ? (
+        <CosmicIntro onExplore={() => setEntered(true)} />
+      ) : (
+        <Routes>
 
-        <Route element={<MainLayout />}>
+          <Route element={<MainLayout />}>
 
-          <Route path="/" element={<HomePage />} />
-          <Route path="/mirror" element={<MirrorPage />} />
-          <Route path="/map" element={<MapPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/mirror" element={<MirrorPage />} />
+            <Route path="/map" element={<MapPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
 
-        </Route>
+          </Route>
 
-      </Routes>
+        </Routes>
+      )}
 
     </BrowserRouter>
   );
