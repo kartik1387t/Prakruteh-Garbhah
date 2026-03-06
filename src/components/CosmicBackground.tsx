@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
 
 const CosmicBackground: React.FC = () => {
   const [offsetY, setOffsetY] = useState(0);
-  const [stars, setStars] = useState<{top: number, left: number, size: number, delay: number}[]>([]);
-
+  const [stars, setStars] = useState<{top:number,left:number,size:number,delay:number}[]>([]);
+  
   // Generate random stars on mount
   useEffect(() => {
     const starArray = Array.from({ length: 100 }).map(() => ({
@@ -18,12 +17,18 @@ const CosmicBackground: React.FC = () => {
 
   // Listen for scroll/wheel to move the cosmos
   useEffect(() => {
-    const handleScroll = (e: WheelEvent) => {
+  const handleScroll = (e: any) => {
+    if (e.deltaY) {
       setOffsetY(prev => prev + e.deltaY * 0.5);
-    };
-    window.addEventListener('wheel', handleScroll);
-    return () => window.removeEventListener('wheel', handleScroll);
-  }, []);
+    }
+  };
+
+  window.addEventListener('wheel', handleScroll as EventListener);
+
+  return () => {
+    window.removeEventListener('wheel', handleScroll as EventListener);
+  };
+}, []);
 
   return (
     <div className="fixed inset-0 w-full h-full pointer-events-none z-0 bg-black overflow-hidden">
