@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import MainLayout from "./layout/MainLayout";
 
@@ -7,6 +8,8 @@ import MirrorPage from "./pages/MirrorPage";
 import MapPage from "./pages/MapPage";
 import DashboardPage from "./pages/DashboardPage";
 
+const navigate = useNavigate();
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -14,6 +17,7 @@ export default function App() {
       <Routes>
 
         <Route element={<MainLayout />}>
+          <CosmicIntro onExplore={() => navigate("/mirror")} />
 
           <Route path="/" element={<HomePage />} />
           <Route path="/mirror" element={<MirrorPage />} />
