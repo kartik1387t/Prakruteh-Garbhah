@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { Volume2, VolumeX } from 'lucide-react';
 
 interface CosmicIntroProps {
@@ -8,7 +7,6 @@ interface CosmicIntroProps {
 
 const CosmicIntro: React.FC<CosmicIntroProps> = ({ onExplore }) => {
   const [zoomLevel, setZoomLevel] = useState(0);
-const navigate = useNavigate();
   
   useEffect(() => {
     // Simulating the "Zoom" effect from Cosmos to Earth
