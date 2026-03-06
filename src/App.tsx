@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 import MainLayout from "./layout/MainLayout";
 import CosmicIntro from "./components/CosmicIntro";
@@ -9,18 +10,20 @@ import MapPage from "./pages/MapPage";
 import DashboardPage from "./pages/DashboardPage";
 
 export default function App() {
+
+  const [entered, setEntered] = useState(false);
+
+  if (!entered) {
+    return <CosmicIntro onExplore={() => setEntered(true)} />;
+  }
+
   return (
     <BrowserRouter>
-
       <Routes>
 
-        {/* Intro Page */}
-        <Route path="/" element={<CosmicIntro />} />
-
-        {/* Main Platform */}
         <Route element={<MainLayout />}>
 
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/mirror" element={<MirrorPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
@@ -28,7 +31,6 @@ export default function App() {
         </Route>
 
       </Routes>
-
     </BrowserRouter>
   );
 }
