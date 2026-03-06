@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 import { Volume2, VolumeX } from 'lucide-react';
 
 interface CosmicIntroProps {
@@ -39,7 +38,7 @@ const navigate = useNavigate();
         </p>
         
         <button 
-          onClick={() => navigate("/home")}
+          onClick={onExplore}
           className="group relative px-8 py-4 bg-transparent border border-saffron text-saffron font-display uppercase tracking-widest hover:bg-saffron hover:text-cosmos transition-all duration-300 rounded-sm"
         >
           Enter
