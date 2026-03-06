@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const CosmicBackground: React.FC = () => {
   const [offsetY, setOffsetY] = useState(0);
