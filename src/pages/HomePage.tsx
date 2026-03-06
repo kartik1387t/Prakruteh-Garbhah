@@ -1,5 +1,7 @@
-import CosmicIntro from "../components/CosmicIntro";
-
 export default function HomePage() {
-  return <CosmicIntro />;
+  return (
+    <div className="h-screen flex items-center justify-center text-white text-xl">
+      Welcome to Prakruteh Garbhah
+    </div>
+  );
 }
