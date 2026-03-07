@@ -1,3 +1,4 @@
+import CosmicBackground from "../components/CosmicBackground";
 import SmartSearchBar from "../components/SmartSearchBar";
 import UniversalNavOrb from "../components/UniversalNavOrb";
 import { Outlet } from "react-router-dom";
