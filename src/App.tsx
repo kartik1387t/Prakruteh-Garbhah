@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
 import MainLayout from "./layout/MainLayout";
@@ -10,29 +10,29 @@ import MapPage from "./pages/MapPage";
 import DashboardPage from "./pages/DashboardPage";
 
 export default function App() {
-
   const [entered, setEntered] = useState(false);
+
+  if (!entered) {
+    return <CosmicIntro onExplore={() => setEntered(true)} />;
+  }
 
   return (
     <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
 
-      {!entered ? (
-        <CosmicIntro onExplore={() => setEntered(true)} />
-      ) : (
-        <Routes>
+          {/* Default landing */}
+          <Route index element={<HomePage />} />
 
-          <Route element={<MainLayout />}>
+          <Route path="/mirror" element={<MirrorPage />} />
+          <Route path="/map" element={<MapPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
 
-            <Route path="/" element={<HomePage />} />
-            <Route path="/mirror" element={<MirrorPage />} />
-            <Route path="/map" element={<MapPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
 
-          </Route>
-
-        </Routes>
-      )}
-
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
