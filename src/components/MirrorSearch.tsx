@@ -65,7 +65,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
 
   const performSearch = (term: string) => {
     if (term.length > 2) {
-      const found = mirrorData.find(item =>
+      const found = mirrorData.filter(item =>
         item.worldName?.toLowerCase().includes(term.toLowerCase()) ||
         item.bharatName?.toLowerCase().includes(term.toLowerCase()) ||
         item.country?.toLowerCase().includes(term.toLowerCase())
