@@ -39,6 +39,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
             bharatPrice,
             savings: worldPrice - bharatPrice,
             mirrorVisitWindow: item.mirror_visit_window || "",
+            slug: item.slug || "",
             tags: item.target_audience
               ? item.target_audience.split(",").map((t: string) => t.trim())
               : []
