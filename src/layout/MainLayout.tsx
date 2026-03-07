@@ -5,12 +5,15 @@ import { Outlet } from "react-router-dom";
 
 export default function MainLayout() {
   return (
-    <div className="relative min-h-screen text-white">
+    <div className="relative min-h-screen text-white overflow-hidden">
 
-      {/* Top search */}
+      {/* Cosmic universe background */}
+      <CosmicBackground />
+
+      {/* Search bar */}
       <SmartSearchBar />
 
-      {/* Navigation orb */}
+      {/* Orb navigation */}
       <UniversalNavOrb />
 
       {/* Page content */}
