@@ -24,9 +24,9 @@ export default function App() {
           {/* Default landing */}
           <Route index element={<HomePage />} />
 
-          <Route path="/mirror" element={<MirrorPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/mirror/:slug" element={<MirrorPage />} />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
