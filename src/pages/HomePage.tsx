@@ -1,9 +1,10 @@
-import CosmicBackground from "../components/CosmicBackground";
+import MirrorSearch from "../components/MirrorSearch";
 
 export default function HomePage() {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      <CosmicBackground />
+    <div className="relative z-20">
+      <MirrorSearch />
     </div>
   );
 }
+
