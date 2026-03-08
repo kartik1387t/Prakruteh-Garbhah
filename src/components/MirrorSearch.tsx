@@ -14,7 +14,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   setIsSearchActive
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [match, setMatch] = useState<MirrorLocation | null>(null);
+  const [matches, setMatches] = useState<MirrorLocation[]>([]);
   const [mirrorData, setMirrorData] = useState<MirrorLocation[]>([]);
   const [loading, setLoading] = useState(true);
 const navigate = useNavigate();
@@ -67,19 +67,19 @@ const navigate = useNavigate();
   }, [externalTerm, mirrorData]);
 
   const performSearch = (term: string) => {
-    if (term.length > 2) {
-      const found = mirrorData.filter(item =>
-        item.worldName?.toLowerCase().includes(term.toLowerCase()) ||
-        item.bharatName?.toLowerCase().includes(term.toLowerCase()) ||
-        item.country?.toLowerCase().includes(term.toLowerCase())
-      );
+  if (term.length > 2) {
+    const found = mirrorData.filter(item =>
+      item.worldName?.toLowerCase().includes(term.toLowerCase()) ||
+      item.bharatName?.toLowerCase().includes(term.toLowerCase()) ||
+      item.country?.toLowerCase().includes(term.toLowerCase())
+    );
 
-      setMatch(found || null);
-    } else {
-      setMatch(null);
-    }
-  };
-
+    setMatches(found);
+  } else {
+    setMatches([]);
+  }
+};
+  
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -116,8 +116,11 @@ const navigate = useNavigate();
         <div className="py-32 text-center">
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-saffron mx-auto"></div>
         </div>
-      ) : match ? (
-        <div className="flex flex-col md:flex-row">
+      ) : matches.length > 0 ? (
+      <div className="space-y-20">
+  {matches.map((match, index) => (
+
+    <div key={index} className="flex flex-col md:flex-row">
 
           {/* LEFT — WORLD */}
           <div className="w-full md:w-1/2 relative">
