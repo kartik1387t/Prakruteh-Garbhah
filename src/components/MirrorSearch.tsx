@@ -67,17 +67,33 @@ const navigate = useNavigate();
   }, [externalTerm, mirrorData]);
 
   const performSearch = (term: string) => {
+
   if (term.length > 2) {
+
+    const t = term.toLowerCase();
+
     const found = mirrorData.filter(item =>
-      item.worldName?.toLowerCase().includes(term.toLowerCase()) ||
-      item.bharatName?.toLowerCase().includes(term.toLowerCase()) ||
-      item.country?.toLowerCase().includes(term.toLowerCase())
+
+      item.worldName?.toLowerCase().includes(t) ||
+      item.bharatName?.toLowerCase().includes(t) ||
+      item.country?.toLowerCase().includes(t) ||
+
+      item.experience?.toLowerCase().includes(t) ||
+
+      item.description?.toLowerCase().includes(t) ||
+
+      item.tags?.some(tag =>
+        tag.toLowerCase().includes(t)
+      )
+
     );
 
     setMatches(found);
+
   } else {
     setMatches([]);
   }
+
 };
   
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
