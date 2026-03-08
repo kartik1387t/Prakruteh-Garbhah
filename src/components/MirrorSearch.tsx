@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ArrowRight, Globe, MapPin, Sparkles } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 import { fetchMirrorData } from '../services/csv.service';
 import { MirrorLocation } from '../types';
 
@@ -16,7 +17,8 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   const [match, setMatch] = useState<MirrorLocation | null>(null);
   const [mirrorData, setMirrorData] = useState<MirrorLocation[]>([]);
   const [loading, setLoading] = useState(true);
-
+const navigate = useNavigate();
+  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -184,7 +186,9 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
                   </p>
                 </div>
 
-                <button className="px-6 py-3 bg-saffron text-black font-bold uppercase text-sm rounded-sm flex items-center gap-2">
+                <button
+                  onClick={() => navigate(`/mirror/${match.slug}`)}
+                  className="px-6 py-3 bg-saffron text-black font-bold uppercase text-sm rounded-sm flex items-center gap-2">
                   Plan Yatra <ArrowRight size={14} />
                 </button>
               </div>
