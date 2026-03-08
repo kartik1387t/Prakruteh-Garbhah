@@ -211,7 +211,9 @@ const navigate = useNavigate();
           </div>
 
         </div>
-      ) : (
+      ))}
+      </div>
+    ) : (
         <div className="py-32 text-center text-gray-400">
           Search a global destination to find its soul in Bharat.
         </div>
