@@ -21,24 +21,6 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   const [seoKeywords, setSeoKeywords] = useState<any[]>([]);
   const [searchIndex, setSearchIndex] = useState<any[]>([]);
   const navigate = useNavigate();
-    const index = transformed.map(item => ({
-  text: (
-    item.worldName +
-    " " +
-    item.bharatName +
-    " " +
-    item.country +
-    " " +
-    item.description +
-    " " +
-    item.experience +
-    " " +
-    item.tags.join(" ")
-  ).toLowerCase(),
-  item
-}));
-
-setSearchIndex(index);
   
   useEffect(() => {
     const loadData = async () => {
@@ -70,6 +52,27 @@ setSearchIndex(index);
         });
 
         setMirrorData(transformed);
+
+/* 🔹 ADD THIS PART HERE */
+const index = transformed.map(item => ({
+  text: (
+    item.worldName +
+    " " +
+    item.bharatName +
+    " " +
+    item.country +
+    " " +
+    item.description +
+    " " +
+    item.experience +
+    " " +
+    item.tags.join(" ")
+  ).toLowerCase(),
+  item
+}));
+
+setSearchIndex(index);
+        
       } catch (error) {
         console.error("Mirror CSV Error:", error);
       } finally {
