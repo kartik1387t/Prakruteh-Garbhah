@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, ArrowRight, Globe, MapPin, Sparkles } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
 import { fetchMirrorData } from '../services/csv.service';
+import { fetchSEOKeywords } from "../services/seo.service";
 import { MirrorLocation } from '../types';
 
 interface MirrorSearchProps {
@@ -17,6 +18,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   const [matches, setMatches] = useState<MirrorLocation[]>([]);
   const [mirrorData, setMirrorData] = useState<MirrorLocation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [seoKeywords, setSeoKeywords] = useState<any[]>([]);
 const navigate = useNavigate();
   
   useEffect(() => {
@@ -93,6 +95,48 @@ const navigate = useNavigate();
   } else {
     setMatches([]);
   }
+
+};
+
+  useEffect(() => {
+
+  const loadSEO = async () => {
+    const data = await fetchSEOKeywords();
+    setSeoKeywords(data);
+  };
+
+  loadSEO();
+
+}, []);
+
+  const performSearch = (term: string) => {
+
+  if (term.length < 3) {
+    setMatches([]);
+    return;
+  }
+
+  const t = term.toLowerCase();
+
+  // Search mirrors normally
+  const mirrorMatches = searchIndex
+    .filter(entry => entry.text.includes(t))
+    .map(entry => entry.item);
+
+  // Search SEO keywords
+  const seoMatches = seoKeywords
+    .filter(k => k.keyword?.toLowerCase().includes(t))
+    .map(k => mirrorData.find(m => m.slug === k.related_mirror))
+    .filter(Boolean);
+
+  const combined = [...mirrorMatches, ...seoMatches];
+
+  // Remove duplicates
+  const unique = Array.from(
+    new Map(combined.map(item => [item.slug, item])).values()
+  );
+
+  setMatches(unique);
 
 };
   
