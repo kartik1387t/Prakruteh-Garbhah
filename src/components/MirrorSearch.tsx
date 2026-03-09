@@ -19,6 +19,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   const [mirrorData, setMirrorData] = useState<MirrorLocation[]>([]);
   const [loading, setLoading] = useState(true);
   const [seoKeywords, setSeoKeywords] = useState<any[]>([]);
+  const [searchIndex, setSearchIndex] = useState<any[]>([]);
 const navigate = useNavigate();
   
   useEffect(() => {
@@ -61,6 +62,25 @@ const navigate = useNavigate();
     loadData();
   }, []);
 
+  const index = transformed.map(item => ({
+  text: (
+    item.worldName +
+    " " +
+    item.bharatName +
+    " " +
+    item.country +
+    " " +
+    item.description +
+    " " +
+    item.experience +
+    " " +
+    item.tags.join(" ")
+  ).toLowerCase(),
+  item
+}));
+
+setSearchIndex(index);
+
   useEffect(() => {
     if (externalTerm && mirrorData.length > 0) {
       setSearchTerm(externalTerm);
@@ -69,48 +89,6 @@ const navigate = useNavigate();
   }, [externalTerm, mirrorData]);
 
   const performSearch = (term: string) => {
-
-  if (term.length > 2) {
-
-    const t = term.toLowerCase();
-
-    const found = mirrorData.filter(item =>
-
-      item.worldName?.toLowerCase().includes(t) ||
-      item.bharatName?.toLowerCase().includes(t) ||
-      item.country?.toLowerCase().includes(t) ||
-
-      item.experience?.toLowerCase().includes(t) ||
-
-      item.description?.toLowerCase().includes(t) ||
-
-      item.tags?.some(tag =>
-        tag.toLowerCase().includes(t)
-      )
-
-    );
-
-    setMatches(found);
-
-  } else {
-    setMatches([]);
-  }
-
-};
-
-  useEffect(() => {
-
-  const loadSEO = async () => {
-    const data = await fetchSEOKeywords();
-    setSeoKeywords(data);
-  };
-
-  loadSEO();
-
-}, []);
-
-  const performSearch = (term: string) => {
-
   if (term.length < 3) {
     setMatches([]);
     return;
@@ -118,12 +96,15 @@ const navigate = useNavigate();
 
   const t = term.toLowerCase();
 
-  // Search mirrors normally
-  const mirrorMatches = searchIndex
-    .filter(entry => entry.text.includes(t))
-    .map(entry => entry.item);
+  const mirrorMatches = mirrorData.filter(item =>
+    item.worldName?.toLowerCase().includes(t) ||
+    item.bharatName?.toLowerCase().includes(t) ||
+    item.country?.toLowerCase().includes(t) ||
+    item.experience?.toLowerCase().includes(t) ||
+    item.description?.toLowerCase().includes(t) ||
+    item.tags?.some(tag => tag.toLowerCase().includes(t))
+  );
 
-  // Search SEO keywords
   const seoMatches = seoKeywords
     .filter(k => k.keyword?.toLowerCase().includes(t))
     .map(k => mirrorData.find(m => m.slug === k.related_mirror))
@@ -131,15 +112,17 @@ const navigate = useNavigate();
 
   const combined = [...mirrorMatches, ...seoMatches];
 
-  // Remove duplicates
   const unique = Array.from(
     new Map(combined.map(item => [item.slug, item])).values()
   );
 
   setMatches(unique);
-
 };
-  
+
+  const mirrorMatches = searchIndex
+  .filter(entry => entry.text.includes(t))
+  .map(entry => entry.item);
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
     setSearchTerm(term);
