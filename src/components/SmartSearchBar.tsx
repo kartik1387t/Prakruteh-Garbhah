@@ -19,7 +19,7 @@ const SmartSearchBar: React.FC<SmartSearchBarProps> = ({
   onDashboardClick
 }) => {
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [localSearchTerm, setLocalSearchTerm] = useState("");
   
   return (
     <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-lg px-4">
@@ -33,11 +33,11 @@ const SmartSearchBar: React.FC<SmartSearchBarProps> = ({
 
           <input
   type="text"
-  value={searchTerm}
+  value={localSearchTerm}
   onChange={(e) => {
     const value = e.target.value;
-    setSearchTerm(value);
-    performSearch(value);
+    setLocalSearchTerm(value);
+    onSearch?.(e);
   }}
   placeholder="Search a country, a vibe..."
   className="flex-1 bg-transparent outline-none text-white placeholder-gray-400"
