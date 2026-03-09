@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { Search, Mic, User } from "lucide-react";
 import ProfileAvatar from "./ProfileAvatar";
 
@@ -17,6 +18,9 @@ const SmartSearchBar: React.FC<SmartSearchBarProps> = ({
   onJoinClick,
   onDashboardClick
 }) => {
+
+  const [searchTerm, setSearchTerm] = useState("");
+  
   return (
     <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-lg px-4">
       <div className="relative group">
@@ -28,12 +32,16 @@ const SmartSearchBar: React.FC<SmartSearchBarProps> = ({
           <Search className="ml-4 text-saffron" size={18} />
 
           <input
-            type="text"
-            placeholder="Search a country, a vibe..."
-            className="w-full bg-transparent text-white px-4 py-2 focus:outline-none font-sans text-sm placeholder-gray-400"
-            value={searchTerm}
-            onChange={onSearch}
-          />
+  type="text"
+  value={searchTerm}
+  onChange={(e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    performSearch(value);
+  }}
+  placeholder="Search a country, a vibe..."
+  className="flex-1 bg-transparent outline-none text-white placeholder-gray-400"
+/>
 
           <button className="p-2 hover:bg-white/10 rounded-full transition-colors mx-1">
             <Mic size={16} className="text-gray-400 group-hover:text-white" />
