@@ -20,7 +20,25 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   const [loading, setLoading] = useState(true);
   const [seoKeywords, setSeoKeywords] = useState<any[]>([]);
   const [searchIndex, setSearchIndex] = useState<any[]>([]);
-const navigate = useNavigate();
+  const navigate = useNavigate();
+    const index = transformed.map(item => ({
+  text: (
+    item.worldName +
+    " " +
+    item.bharatName +
+    " " +
+    item.country +
+    " " +
+    item.description +
+    " " +
+    item.experience +
+    " " +
+    item.tags.join(" ")
+  ).toLowerCase(),
+  item
+}));
+
+setSearchIndex(index);
   
   useEffect(() => {
     const loadData = async () => {
@@ -62,25 +80,6 @@ const navigate = useNavigate();
     loadData();
   }, []);
 
-  const index = transformed.map(item => ({
-  text: (
-    item.worldName +
-    " " +
-    item.bharatName +
-    " " +
-    item.country +
-    " " +
-    item.description +
-    " " +
-    item.experience +
-    " " +
-    item.tags.join(" ")
-  ).toLowerCase(),
-  item
-}));
-
-setSearchIndex(index);
-
   useEffect(() => {
     if (externalTerm && mirrorData.length > 0) {
       setSearchTerm(externalTerm);
@@ -118,10 +117,6 @@ setSearchIndex(index);
 
   setMatches(unique);
 };
-
-  const mirrorMatches = searchIndex
-  .filter(entry => entry.text.includes(t))
-  .map(entry => entry.item);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value;
