@@ -11,6 +11,7 @@ import DashboardPage from "./pages/DashboardPage";
 
 export default function App() {
   const [entered, setEntered] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   if (!entered) {
     return <CosmicIntro onExplore={() => setEntered(true)} />;
