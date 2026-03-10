@@ -5,102 +5,90 @@ import { fetchMirrorData } from "../services/csv.service";
 export default function MirrorPage() {
 
   const { slug } = useParams();
-  const [mirror, setMirror] = useState<any>(null);
+  const [destination, setDestination] = useState<any>(null);
 
   useEffect(() => {
 
-    const loadMirror = async () => {
-
+    const load = async () => {
       const data = await fetchMirrorData();
 
-      const found = data.find(
-        (item: any) => item.slug === slug
-      );
+      const match = data.find((item:any) => item.slug === slug);
 
-      setMirror(found || null);
-
+      setDestination(match);
     };
 
-    loadMirror();
+    load();
 
   }, [slug]);
 
-  if (!mirror) {
+  if (!destination) {
     return (
-      <div className="text-white text-center pt-40">
-        Mirror not found
+      <div className="text-white text-center py-40">
+        Loading destination...
       </div>
     );
   }
 
   return (
 
-    <div className="relative z-20 text-white">
+    <div className="text-white">
 
-      {/* WORLD DESTINATION */}
-      <section className="h-[70vh] relative">
+      {/* HERO */}
+      <div className="relative h-[80vh]">
 
         <img
-          src={mirror.destination_image_link}
-          className="w-full h-full object-cover"
+          src={destination.image_link}
+          className="absolute inset-0 w-full h-full object-cover"
         />
 
-        <div className="absolute bottom-10 left-10">
+        <div className="absolute inset-0 bg-black/60"></div>
 
-          <p className="text-gray-400 uppercase text-sm">
-            The Illusion
-          </p>
+        <div className="absolute bottom-20 left-10 z-20">
 
           <h1 className="text-5xl font-serif">
-            {mirror.world_destination}
+            {destination.bharat_twin}
           </h1>
 
           <p className="text-gray-300">
-            {mirror.country}
+            {destination.bharat_state}
           </p>
 
         </div>
 
-      </section>
+      </div>
 
-      {/* BHARAT MIRROR */}
-      <section className="h-[70vh] relative">
+      {/* INFO */}
+      <div className="max-w-4xl mx-auto px-6 py-20 space-y-8">
 
-        <img
-          src={mirror.image_link}
-          className="w-full h-full object-cover"
-        />
+        <p className="text-xl text-gray-300">
+          {destination.description}
+        </p>
 
-        <div className="absolute bottom-10 left-10">
+        <div>
 
-          <p className="text-saffron uppercase text-sm">
-            The Reality
-          </p>
-
-          <h2 className="text-5xl font-serif text-saffron">
-            {mirror.bharat_twin}
+          <h2 className="text-2xl mb-2 text-saffron">
+            Experience
           </h2>
 
-          <p className="text-gray-300">
-            {mirror.bharat_state}
+          <p>
+            {destination.experience}
           </p>
 
         </div>
 
-      </section>
+        <div>
 
-      {/* DESCRIPTION */}
-      <section className="max-w-4xl mx-auto py-20 px-6 text-center">
+          <h2 className="text-2xl mb-2 text-saffron">
+            Best Time
+          </h2>
 
-        <p className="text-xl italic text-gray-300">
-          {mirror.description}
-        </p>
+          <p>
+            {destination.mirror_visit_window}
+          </p>
 
-        <p className="mt-6 text-gray-400">
-          Best Time: {mirror.mirror_visit_window}
-        </p>
+        </div>
 
-      </section>
+      </div>
 
     </div>
 
