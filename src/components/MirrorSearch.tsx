@@ -15,7 +15,6 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   externalTerm = '',
   setIsSearchActive
 }) => {
-  const [searchTerm, setSearchTerm] = useState('');
   const [matches, setMatches] = useState<MirrorLocation[]>([]);
   const [mirrorData, setMirrorData] = useState<MirrorLocation[]>([]);
   const [loading, setLoading] = useState(true);
