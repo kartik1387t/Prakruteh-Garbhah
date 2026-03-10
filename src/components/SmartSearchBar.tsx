@@ -66,5 +66,3 @@ export default function SmartSearchBar({
     </div>
   );
 };
-
-export default SmartSearchBar;
