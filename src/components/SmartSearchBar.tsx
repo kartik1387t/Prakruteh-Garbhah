@@ -11,15 +11,10 @@ interface SmartSearchBarProps {
   onDashboardClick?: () => void;
 }
 
-const SmartSearchBar: React.FC<SmartSearchBarProps> = ({
-  searchTerm = "",
-  onSearch,
-  userProfile,
-  onJoinClick,
-  onDashboardClick
-}) => {
-
-  const [localSearchTerm, setLocalSearchTerm] = useState("");
+export default function SmartSearchBar({
+  searchTerm,
+  setSearchTerm
+}: any) {
   
   return (
     <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-lg px-4">
@@ -31,16 +26,12 @@ const SmartSearchBar: React.FC<SmartSearchBarProps> = ({
 
           <Search className="ml-4 text-saffron" size={18} />
 
-          <input
+<input
   type="text"
-  value={localSearchTerm}
-  onChange={(e) => {
-    const value = e.target.value;
-    setLocalSearchTerm(value);
-    onSearch?.(e);
-  }}
+  value={searchTerm}
+  onChange={(e) => setSearchTerm(e.target.value)}
   placeholder="Search a country, a vibe..."
-  className="flex-1 bg-transparent outline-none text-white placeholder-gray-400"
+  className="flex-1 bg-transparent outline-none text-white"
 />
 
           <button className="p-2 hover:bg-white/10 rounded-full transition-colors mx-1">
