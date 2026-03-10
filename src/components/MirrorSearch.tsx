@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ArrowRight, Globe, MapPin, Sparkles } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { fetchMirrorData } from '../services/csv.service';
 import { fetchSEOKeywords } from "../services/seo.service";
 import { MirrorLocation } from '../types';
@@ -20,6 +21,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   const [loading, setLoading] = useState(true);
   const [seoKeywords, setSeoKeywords] = useState<any[]>([]);
   const [searchIndex, setSearchIndex] = useState<any[]>([]);
+  const { searchTerm } = useOutletContext<any>();
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -82,12 +84,15 @@ setSearchIndex(index);
 
     loadData();
   }, []);
-
+  
   useEffect(() => {
     if (externalTerm && mirrorData.length > 0) {
       setSearchTerm(externalTerm);
       performSearch(externalTerm);
-    }
+      performSearch(searchTerm);
+}, [searchTerm]);
+    
+   }
   }, [externalTerm, mirrorData]);
 
   const performSearch = (term: string) => {
