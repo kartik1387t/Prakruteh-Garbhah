@@ -238,7 +238,7 @@ setSearchIndex(index);
                 </div>
 
                 <button
-                  onClick=() => addToYatra(match)
+                  onClick={() => addToYatra(match)}
                   className="px-6 py-3 bg-saffron text-black font-bold uppercase text-sm rounded-sm flex items-center gap-2">
                   Plan Yatra <ArrowRight size={14} />
                 </button>
