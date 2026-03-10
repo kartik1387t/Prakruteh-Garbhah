@@ -11,7 +11,12 @@ export default function MainLayout() {
       <CosmicBackground />
 
       {/* Search bar */}
-      <SmartSearchBar />
+      <SmartSearchBar
+  searchTerm={searchTerm}
+  setSearchTerm={setSearchTerm}
+/>
+
+<Outlet context={{ searchTerm }} />
 
       {/* Orb navigation */}
       <UniversalNavOrb />
