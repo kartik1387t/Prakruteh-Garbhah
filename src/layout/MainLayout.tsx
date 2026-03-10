@@ -9,7 +9,7 @@ export default function MainLayout({
 }: any) {
   
   return (
-    <div className="relative min-h-screen text-white overflow-hidden">
+    <div className="relative min-h-screen text-white">
 
       {/* Cosmic universe background */}
       <CosmicBackground />
