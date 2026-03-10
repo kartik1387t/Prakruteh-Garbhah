@@ -11,6 +11,14 @@ interface SmartSearchBarProps {
   onDashboardClick?: () => void;
 }
 
+const SmartSearchBar: React.FC<SmartSearchBarProps> = ({
+  searchTerm = "",
+  onSearch,
+  userProfile,
+  onJoinClick,
+  onDashboardClick
+}) => {
+  
 export default function SmartSearchBar({
   searchTerm,
   setSearchTerm
