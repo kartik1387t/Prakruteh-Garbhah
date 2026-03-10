@@ -1,6 +1,7 @@
 import CosmicBackground from "../components/CosmicBackground";
 import SmartSearchBar from "../components/SmartSearchBar";
 import UniversalNavOrb from "../components/UniversalNavOrb";
+import YatraPlanner from "../components/YatraPlanner";
 import { Outlet } from "react-router-dom";
 
 export default function MainLayout({
@@ -27,6 +28,11 @@ export default function MainLayout({
       <main className="relative z-20">
          <Outlet context={{ searchTerm }} />
       </main>
+      <YatraPlanner
+  items={yatraItems}
+  onRemove={(id)=>{}}
+  onScenicHover={()=>{}}
+/>
 
     </div>
   );
