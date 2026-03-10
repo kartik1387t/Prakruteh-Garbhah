@@ -20,7 +20,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout />}>
+        <Route element={
+  <MainLayout
+    searchTerm={searchTerm}
+    setSearchTerm={setSearchTerm}
+  />
+}>
 
           {/* Default landing */}
           <Route index element={<HomePage />} />
