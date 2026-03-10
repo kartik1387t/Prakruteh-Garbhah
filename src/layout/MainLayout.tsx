@@ -20,13 +20,12 @@ export default function MainLayout({
   setSearchTerm={setSearchTerm}
 />
 
-<Outlet context={{ searchTerm }} />
-
       {/* Orb navigation */}
       <UniversalNavOrb />
 
       {/* Page content */}
       <main className="relative z-20">
+         <Outlet context={{ searchTerm }} />
       </main>
 
     </div>
