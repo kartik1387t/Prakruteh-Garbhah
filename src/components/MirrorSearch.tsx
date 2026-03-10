@@ -21,7 +21,14 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   const [loading, setLoading] = useState(true);
   const [seoKeywords, setSeoKeywords] = useState<any[]>([]);
   const [searchIndex, setSearchIndex] = useState<any[]>([]);
+  const { searchTerm } = useOutletContext<any>();
   const navigate = useNavigate();
+  
+  useEffect(() => {
+  if (searchTerm) {
+    performSearch(searchTerm);
+  }
+}, [searchTerm]);
   
   useEffect(() => {
     const loadData = async () => {
