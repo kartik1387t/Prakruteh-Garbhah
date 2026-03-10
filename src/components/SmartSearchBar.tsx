@@ -3,25 +3,12 @@ import { useState } from "react";
 import { Search, Mic, User } from "lucide-react";
 import ProfileAvatar from "./ProfileAvatar";
 
-interface SmartSearchBarProps {
-  searchTerm?: string;
-  onSearch?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  userProfile?: any;
-  onJoinClick?: () => void;
-  onDashboardClick?: () => void;
-}
-
-const SmartSearchBar: React.FC<SmartSearchBarProps> = ({
-  searchTerm = "",
-  onSearch,
+export default function SmartSearchBar({
+  searchTerm,
+  setSearchTerm,
   userProfile,
   onJoinClick,
   onDashboardClick
-}) => {
-  
-export default function SmartSearchBar({
-  searchTerm,
-  setSearchTerm
 }: any) {
   
   return (
