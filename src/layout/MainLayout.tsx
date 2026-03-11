@@ -6,8 +6,9 @@ import { Outlet } from "react-router-dom";
 
 export default function MainLayout({
   searchTerm,
-  setSearchTerm
-}: any) {
+  setSearchTerm,
+  yatraItems
+}: any)
   
   return (
     <div className="relative min-h-screen text-white">
