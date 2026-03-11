@@ -27,9 +27,9 @@ export const fetchVocalData = async () => {
       .replace(/(^-|-$)/g, "");
 
     // Fallback image
-    if (!obj.image_link) {
-      obj.image_link =
-        "https://images.pexels.com/photos/4207908/pexels-photo-4207908.jpeg";
+    if (!obj.image_link || obj.image_link.trim() === "") {
+  obj.image_link =
+    "https://images.pexels.com/photos/4207908/pexels-photo-4207908.jpeg";
     }
 
     return obj;
