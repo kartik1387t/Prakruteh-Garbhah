@@ -103,6 +103,8 @@ setCrafts(relatedCrafts.slice(0,6));
 
     </div>
 
+    );
+(
     <div className="mt-16">
 
 <h2 className="text-2xl font-serif mb-6">
