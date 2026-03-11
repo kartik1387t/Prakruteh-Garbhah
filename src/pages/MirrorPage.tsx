@@ -19,17 +19,17 @@ export default function MirrorPage() {
       setDestination(match);
     };
 
-    load();
-
-  }, [slug]);
-  
-  const craftData = await fetchVocalData();
+    const craftData = await fetchVocalData();
 
 const relatedCrafts = craftData.filter(
   c => c.state === destination.bharat_state
 );
 
 setCrafts(relatedCrafts.slice(0,6));
+    
+    load();
+
+  }, [slug]);
 
   if (!destination) {
     return (
