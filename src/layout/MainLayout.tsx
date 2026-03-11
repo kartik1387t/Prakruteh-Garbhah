@@ -8,7 +8,7 @@ export default function MainLayout({
   searchTerm,
   setSearchTerm,
   yatraItems
-}: any)
+}: any) {
   
   return (
     <div className="relative min-h-screen text-white">
