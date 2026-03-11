@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function VocalForLocal() {
 
   const [items, setItems] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function VocalForLocal() {
 
           <div
             key={item.app_no}
-            onClick={() => navigate(`/loom/${item.slug}`)}
+            onClick={() => setSelectedProduct(item)}
             className="cursor-pointer group bg-black/40 border border-white/10 rounded-lg overflow-hidden hover:border-saffron transition-all"
           >
 
@@ -73,3 +74,9 @@ export default function VocalForLocal() {
   );
 
 }
+{selectedProduct && (
+  <KarigarStoryModal
+    product={selectedProduct}
+    onClose={() => setSelectedProduct(null)}
+  />
+)}
