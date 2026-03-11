@@ -11,7 +11,7 @@ export default function VocalForLocal() {
 
     const load = async () => {
       const data = await fetchVocalData();
-      setItems(data);
+      setItems(data.slice(0, 50));
     };
 
     load();
