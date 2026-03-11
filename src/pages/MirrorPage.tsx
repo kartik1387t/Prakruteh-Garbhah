@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchMirrorData } from "../services/csv.service";
+import { fetchVocalData } from "../services/vocal.service";
 
 export default function MirrorPage() {
 
   const { slug } = useParams();
   const [destination, setDestination] = useState<any>(null);
+  const [crafts, setCrafts] = useState([]);
 
   useEffect(() => {
 
@@ -20,6 +22,14 @@ export default function MirrorPage() {
     load();
 
   }, [slug]);
+  
+  const craftData = await fetchVocalData();
+
+const relatedCrafts = craftData.filter(
+  c => c.state === destination.bharat_state
+);
+
+setCrafts(relatedCrafts.slice(0,6));
 
   if (!destination) {
     return (
@@ -92,6 +102,45 @@ export default function MirrorPage() {
 
     </div>
 
+    <div className="mt-16">
+
+<h2 className="text-2xl font-serif mb-6">
+Crafts of {destination.bharat_state}
+</h2>
+
+<div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+
+{crafts.map(craft => (
+
+<div
+  key={craft.app_no}
+  className="bg-black/40 rounded-lg overflow-hidden border border-white/10"
+>
+
+<img
+  src={craft.image_link}
+  className="w-full h-32 object-cover"
+/>
+
+<div className="p-3">
+
+<h3 className="text-sm font-semibold">
+{craft.item_name}
+</h3>
+
+<p className="text-xs text-gray-400">
+{craft.category}
+</p>
+
+</div>
+
+</div>
+
+))}
+
+</div>
+
+</div>
   );
 
 }
