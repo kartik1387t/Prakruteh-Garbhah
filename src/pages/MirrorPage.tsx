@@ -7,25 +7,25 @@ export default function MirrorPage() {
 
   const { slug } = useParams();
   const [destination, setDestination] = useState<any>(null);
-  const [crafts, setCrafts] = useState([]);
+  const [crafts, setCrafts] = useState<any[]>([]);
 
   useEffect(() => {
 
     const load = async () => {
-      const data = await fetchMirrorData();
 
-      const match = data.find((item:any) => item.slug === slug);
+      const data = await fetchMirrorData();
+      const match = data.filter((item:any) => item.slug === slug);
 
       setDestination(match);
 
       const craftData = await fetchVocalData();
 
-const relatedCrafts = craftData.filter(
-  c => c.state === destination.bharat_state
-);
+      const relatedCrafts = craftData.filter(
+        (c:any) => c.state === match?.bharat_state
+      );
 
-setCrafts(relatedCrafts.slice(0,6));
-      
+      setCrafts(relatedCrafts.slice(0,6));
+
     };
 
     load();
@@ -76,7 +76,6 @@ setCrafts(relatedCrafts.slice(0,6));
         </p>
 
         <div>
-
           <h2 className="text-2xl mb-2 text-saffron">
             Experience
           </h2>
@@ -84,11 +83,9 @@ setCrafts(relatedCrafts.slice(0,6));
           <p>
             {destination.experience}
           </p>
-
         </div>
 
         <div>
-
           <h2 className="text-2xl mb-2 text-saffron">
             Best Time
           </h2>
@@ -96,6 +93,46 @@ setCrafts(relatedCrafts.slice(0,6));
           <p>
             {destination.mirror_visit_window}
           </p>
+        </div>
+
+        {/* Crafts Section */}
+        <div className="mt-16">
+
+          <h2 className="text-2xl font-serif mb-6">
+            Crafts of {destination.bharat_state}
+          </h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+
+            {crafts.map((craft:any) => (
+
+              <div
+                key={craft.app_no}
+                className="bg-black/40 rounded-lg overflow-hidden border border-white/10"
+              >
+
+                <img
+                  src={craft.image_link}
+                  className="w-full h-32 object-cover"
+                />
+
+                <div className="p-3">
+
+                  <h3 className="text-sm font-semibold">
+                    {craft.item_name}
+                  </h3>
+
+                  <p className="text-xs text-gray-400">
+                    {craft.category}
+                  </p>
+
+                </div>
+
+              </div>
+
+            ))}
+
+          </div>
 
         </div>
 
@@ -103,47 +140,6 @@ setCrafts(relatedCrafts.slice(0,6));
 
     </div>
 
-    );
-(
-    <div className="mt-16">
-
-<h2 className="text-2xl font-serif mb-6">
-Crafts of {destination.bharat_state}
-</h2>
-
-<div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-
-{crafts.map(craft => (
-
-<div
-  key={craft.app_no}
-  className="bg-black/40 rounded-lg overflow-hidden border border-white/10"
->
-
-<img
-  src={craft.image_link}
-  className="w-full h-32 object-cover"
-/>
-
-<div className="p-3">
-
-<h3 className="text-sm font-semibold">
-{craft.item_name}
-</h3>
-
-<p className="text-xs text-gray-400">
-{craft.category}
-</p>
-
-</div>
-
-</div>
-
-))}
-
-</div>
-
-</div>
   );
 
 }
