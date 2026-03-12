@@ -25,15 +25,23 @@ export default function MirrorPage() {
 
     const craftData = await fetchVocalData();
 
-    const relatedCrafts = craftData.filter(
-      (c:any) =>
-        c.state?.toLowerCase().trim() ===
-        match.bharat_state?.toLowerCase().trim()
-    );
+    let relatedCrafts = craftData.filter(
+  (c:any) =>
+    c.mirror_link?.toLowerCase().trim() ===
+    slug?.toLowerCase().trim()
+);
 
-    setCrafts(relatedCrafts.slice(0,6));
+if (relatedCrafts.length === 0) {
 
-  };
+  relatedCrafts = craftData.filter(
+    (c:any) =>
+      c.state?.toLowerCase().trim() ===
+      match.bharat_state?.toLowerCase().trim()
+  );
+
+}
+
+setCrafts(relatedCrafts.slice(0,6));
 
   load();
 
