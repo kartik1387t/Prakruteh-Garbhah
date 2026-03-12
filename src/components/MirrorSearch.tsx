@@ -33,6 +33,8 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
     const loadData = async () => {
       try {
         const rawData = await fetchMirrorData();
+        const keywords = await fetchSEOKeywords();
+setSeoKeywords(keywords);
 
         const transformed = rawData.map((item: any) => {
           const worldPrice = Number(item.price_world_inr) || 0;
@@ -104,15 +106,10 @@ setSearchIndex(index);
   }
 
   const t = term.toLowerCase();
-
-  const mirrorMatches = mirrorData.filter(item =>
-    item.worldName?.toLowerCase().includes(t) ||
-    item.bharatName?.toLowerCase().includes(t) ||
-    item.country?.toLowerCase().includes(t) ||
-    item.experience?.toLowerCase().includes(t) ||
-    item.description?.toLowerCase().includes(t) ||
-    item.tags?.some(tag => tag.toLowerCase().includes(t))
-  );
+    
+const mirrorMatches = searchIndex
+  .filter(entry => entry.text.includes(t))
+  .map(entry => entry.item);
 
   const seoMatches = seoKeywords
     .filter(k => k.keyword?.toLowerCase().includes(t))
@@ -129,11 +126,12 @@ setSearchIndex(index);
 };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    if (setIsSearchActive) setIsSearchActive(term.length > 0);
-    performSearch(term);
-  };
+  const term = e.target.value;
+
+  if (setIsSearchActive) setIsSearchActive(term.length > 0);
+
+  performSearch(term);
+};
 
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat('en-IN', {
@@ -238,7 +236,7 @@ setSearchIndex(index);
                 </div>
 
                 <button
-                  onClick={() => addToYatra?.(match)}
+                  onClick={() => navigate(`/mirror/${match.slug}`)}
                   className="px-6 py-3 bg-saffron text-black font-bold uppercase text-sm rounded-sm flex items-center gap-2">
                   Plan Yatra <ArrowRight size={14} />
                 </button>
