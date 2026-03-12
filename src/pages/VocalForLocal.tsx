@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { fetchVocalData } from "../services/vocal.service";
 import { useNavigate } from "react-router-dom";
+import KarigarStoryModal from "../components/KarigarStoryModal";
 
 export default function VocalForLocal() {
 
   const [items, setItems] = useState<any[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,14 +70,15 @@ export default function VocalForLocal() {
 
       </div>
 
+      {selectedProduct && (
+        <KarigarStoryModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
+
     </div>
 
   );
 
 }
-{selectedProduct && (
-  <KarigarStoryModal
-    product={selectedProduct}
-    onClose={() => setSelectedProduct(null)}
-  />
-)}
