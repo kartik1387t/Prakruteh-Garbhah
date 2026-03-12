@@ -142,15 +142,7 @@ Crafts of {destination.bharat_state}
   
           </div>
 
-        </div>
-
-      </div>
-
-    </div>
-  
-  );
-
-    {selectedCraft && (
+            {selectedCraft && (
   <KarigarStoryModal
     product={{
       name: selectedCraft.item_name,
@@ -164,5 +156,13 @@ Crafts of {destination.bharat_state}
     onClose={() => setSelectedCraft(null)}
   />
 )}
+  
+        </div>
+
+      </div>
+
+    </div>
+  
+  );
   
 }
