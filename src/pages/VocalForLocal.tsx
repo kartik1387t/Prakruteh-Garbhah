@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchVocalData } from "../services/vocal.service";
 import { useNavigate } from "react-router-dom";
+import KarigarStoryModal from "../components/KarigarStoryModal";
 
 export default function VocalForLocal() {
 
