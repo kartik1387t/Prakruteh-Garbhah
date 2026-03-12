@@ -13,26 +13,31 @@ export default function MirrorPage() {
 
   useEffect(() => {
 
-    const load = async () => {
+  const load = async () => {
 
-      const data = await fetchMirrorData();
-      const match = data.filter((item:any) => item.slug === slug);
+    const data = await fetchMirrorData();
 
-      setDestination(match);
+    const match = data.find((item:any) => item.slug === slug);
 
-     const craftData = await fetchVocalData();
+    setDestination(match);
 
-const relatedCrafts = craftData.filter(
-  c => c.state === destination.bharatState
-);
+    if (!match) return;
 
-setCrafts(relatedCrafts.slice(0, 6));
+    const craftData = await fetchVocalData();
 
-    };
+    const relatedCrafts = craftData.filter(
+      (c:any) =>
+        c.state?.toLowerCase().trim() ===
+        match.bharat_state?.toLowerCase().trim()
+    );
 
-    load();
+    setCrafts(relatedCrafts.slice(0,6));
 
-  }, [slug]);
+  };
+
+  load();
+
+}, [slug]);
 
   if (!destination) {
     return (
@@ -101,7 +106,7 @@ setCrafts(relatedCrafts.slice(0, 6));
         <div className="mt-20 px-6">
 
 <h2 className="text-3xl font-serif mb-8 text-center">
-Crafts of {destination.bharatState}
+Crafts of {destination.bharat_state}
 </h2>
 
 <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -134,8 +139,18 @@ Crafts of {destination.bharatState}
               </div>
 
             ))}
+  
+          </div>
 
-  {selectedCraft && (
+        </div>
+
+      </div>
+
+    </div>
+  
+  );
+
+    {selectedCraft && (
   <KarigarStoryModal
     product={{
       name: selectedCraft.item_name,
@@ -150,14 +165,4 @@ Crafts of {destination.bharatState}
   />
 )}
   
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  );
-
 }
