@@ -2,12 +2,14 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchMirrorData } from "../services/csv.service";
 import { fetchVocalData } from "../services/vocal.service";
+import KarigarStoryModal from "../components/KarigarStoryModal";
 
 export default function MirrorPage() {
 
   const { slug } = useParams();
   const [destination, setDestination] = useState<any>(null);
   const [crafts, setCrafts] = useState<any[]>([]);
+  const [selectedCraft, setSelectedCraft] = useState<any>(null);
 
   useEffect(() => {
 
@@ -108,7 +110,8 @@ Crafts of {destination.bharatState}
 
 <div
   key={craft.app_no}
-  className="bg-black/40 border border-white/10 rounded-lg overflow-hidden"
+  onClick={() => setSelectedCraft(craft)}
+  className="bg-black/40 border border-white/10 rounded-lg overflow-hidden cursor-pointer hover:border-saffron transition"
 >
 
 <img
@@ -132,6 +135,21 @@ Crafts of {destination.bharatState}
 
             ))}
 
+  {selectedCraft && (
+  <KarigarStoryModal
+    product={{
+      name: selectedCraft.item_name,
+      story: selectedCraft.cultural_note,
+      image: selectedCraft.image_link,
+      district: selectedCraft.district,
+      type: selectedCraft.category,
+      makerName: "Local Artisan",
+      makerVerified: true
+    }}
+    onClose={() => setSelectedCraft(null)}
+  />
+)}
+  
           </div>
 
         </div>
