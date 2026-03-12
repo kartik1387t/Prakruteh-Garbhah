@@ -45,7 +45,7 @@ setCrafts(relatedCrafts.slice(0,6));
 
   load();
 
-}, [slug]);
+}, [slug];
 
   if (!destination) {
     return (
