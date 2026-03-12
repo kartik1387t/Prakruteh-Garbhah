@@ -18,13 +18,13 @@ export default function MirrorPage() {
 
       setDestination(match);
 
-      const craftData = await fetchVocalData();
+     const craftData = await fetchVocalData();
 
-      const relatedCrafts = craftData.filter(
-        (c:any) => c.state === match?.bharat_state
-      );
+const relatedCrafts = craftData.filter(
+  c => c.state === destination.bharatState
+);
 
-      setCrafts(relatedCrafts.slice(0,6));
+setCrafts(relatedCrafts.slice(0, 6));
 
     };
 
@@ -96,35 +96,35 @@ export default function MirrorPage() {
         </div>
 
         {/* Crafts Section */}
-        <div className="mt-16">
+        <div className="mt-20 px-6">
 
-          <h2 className="text-2xl font-serif mb-6">
-            Crafts of {destination.bharat_state}
-          </h2>
+<h2 className="text-3xl font-serif mb-8 text-center">
+Crafts of {destination.bharatState}
+</h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+<div className="grid grid-cols-2 md:grid-cols-3 gap-6">
 
-            {crafts.map((craft:any) => (
+{crafts.map(craft => (
 
-              <div
-                key={craft.app_no}
-                className="bg-black/40 rounded-lg overflow-hidden border border-white/10"
-              >
+<div
+  key={craft.app_no}
+  className="bg-black/40 border border-white/10 rounded-lg overflow-hidden"
+>
 
-                <img
-                  src={craft.image_link}
-                  className="w-full h-32 object-cover"
-                />
+<img
+  src={craft.image_link}
+  className="w-full h-32 object-cover"
+/>
 
-                <div className="p-3">
+<div className="p-3">
 
-                  <h3 className="text-sm font-semibold">
-                    {craft.item_name}
-                  </h3>
+<h3 className="text-sm font-semibold text-white">
+{craft.item_name}
+</h3>
 
-                  <p className="text-xs text-gray-400">
-                    {craft.category}
-                  </p>
+<p className="text-xs text-gray-400">
+{craft.category}
+</p>
 
                 </div>
 
