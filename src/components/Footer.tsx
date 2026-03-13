@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="text-center text-gray-600 text-xs pt-4">
-           &copy; {new Date().getFullYear()} Womb of Mother Nature. All rights reserved. Made with Love & Tech in Bharat.
+           &copy; {new Date().getFullYear()} All rights reserved. Made with Love & Tech in Bharat.
         </div>
       </div>
     </footer>
