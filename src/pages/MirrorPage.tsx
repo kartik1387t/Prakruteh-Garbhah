@@ -10,6 +10,7 @@ export default function MirrorPage() {
   const [destination, setDestination] = useState<any>(null);
   const [crafts, setCrafts] = useState<any[]>([]);
   const [selectedCraft, setSelectedCraft] = useState<any>(null);
+  const [relatedMirrors, setRelatedMirrors] = useState<any[]>([]);
 
   useEffect(() => {
 
@@ -43,6 +44,15 @@ export default function MirrorPage() {
       }
 
       setCrafts(relatedCrafts.slice(0, 6));
+
+      const related = data.filter(
+  (item:any) =>
+    item.experience?.toLowerCase() ===
+    match.experience?.toLowerCase() &&
+    item.slug !== match.slug
+);
+
+setRelatedMirrors(related.slice(0,4));
 
     };
 
@@ -139,7 +149,38 @@ export default function MirrorPage() {
                   <p className="text-xs text-gray-400">
                     {craft.category}
                   </p>
+                  
+<div className="mt-24">
 
+<h2 className="text-3xl font-serif text-center mb-10">
+Explore More Reflections
+</h2>
+
+<div className="grid md:grid-cols-2 gap-8">
+
+{relatedMirrors.map((mirror:any) => (
+
+<div
+key={mirror.slug}
+onClick={() => navigate(`/mirror/${mirror.slug}`)}
+className="cursor-pointer bg-black/40 border border-white/10 rounded-lg overflow-hidden hover:border-saffron transition"
+>
+
+<img
+src={mirror.bharatImage}
+className="w-full h-40 object-cover"
+/>
+
+<div className="p-4">
+
+<h3 className="text-lg font-serif">
+{mirror.bharatName}
+</h3>
+
+<p className="text-sm text-gray-400">
+{mirror.bharatState}
+</p>
+  
                 </div>
 
               </div>
