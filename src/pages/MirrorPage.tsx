@@ -11,7 +11,8 @@ export default function MirrorPage() {
   const [crafts, setCrafts] = useState<any[]>([]);
   const [selectedCraft, setSelectedCraft] = useState<any>(null);
   const [relatedMirrors, setRelatedMirrors] = useState<any[]>([]);
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
 
     const load = async () => {
@@ -149,8 +150,8 @@ setRelatedMirrors(related.slice(0,4));
                   <p className="text-xs text-gray-400">
                     {craft.category}
                   </p>
-                  
-<div className="mt-24">
+
+                  <div className="mt-24">
 
 <h2 className="text-3xl font-serif text-center mb-10">
 Explore More Reflections
@@ -180,7 +181,17 @@ className="w-full h-40 object-cover"
 <p className="text-sm text-gray-400">
 {mirror.bharatState}
 </p>
-  
+
+</div>
+
+</div>
+
+))}
+
+</div>
+
+</div>
+                  
                 </div>
 
               </div>
