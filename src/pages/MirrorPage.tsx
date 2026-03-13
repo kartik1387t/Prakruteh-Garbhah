@@ -16,7 +16,11 @@ export default function MirrorPage() {
     const load = async () => {
 
       const data = await fetchMirrorData();
-      const match = data.find((item: any) => item.slug === slug);
+      const match = data.find(
+  (item:any) =>
+    item.slug?.toLowerCase().trim() ===
+    slug?.toLowerCase().trim()
+);
 
       setDestination(match);
 
