@@ -13,41 +13,38 @@ export default function MirrorPage() {
 
   useEffect(() => {
 
-  const load = async () => {
+    const load = async () => {
 
-    const data = await fetchMirrorData();
+      const data = await fetchMirrorData();
+      const match = data.find((item: any) => item.slug === slug);
 
-    const match = data.find((item:any) => item.slug === slug);
+      setDestination(match);
 
-    setDestination(match);
+      if (!match) return;
 
-    if (!match) return;
+      const craftData = await fetchVocalData();
 
-    const craftData = await fetchVocalData();
-
-    let relatedCrafts = craftData.filter(
-      (c:any) =>
-        c.mirror_link?.toLowerCase().trim() ===
-        slug?.toLowerCase().trim()
-    );
-
-    if (relatedCrafts.length === 0) {
-
-      relatedCrafts = craftData.filter(
-        (c:any) =>
-          c.state?.toLowerCase().trim() ===
-          match.bharat_state?.toLowerCase().trim()
+      let relatedCrafts = craftData.filter(
+        (c: any) =>
+          c.mirror_link?.toLowerCase().trim() ===
+          slug?.toLowerCase().trim()
       );
 
-    }
+      if (relatedCrafts.length === 0) {
+        relatedCrafts = craftData.filter(
+          (c: any) =>
+            c.state?.toLowerCase().trim() ===
+            match.bharat_state?.toLowerCase().trim()
+        );
+      }
 
-    setCrafts(relatedCrafts.slice(0,6));
+      setCrafts(relatedCrafts.slice(0, 6));
 
-  };
+    };
 
-  load();
+    load();
 
-}, [slug]);
+  }, [slug]);
 
   if (!destination) {
     return (
@@ -58,7 +55,6 @@ export default function MirrorPage() {
   }
 
   return (
-
     <div className="text-white">
 
       {/* HERO */}
@@ -72,7 +68,6 @@ export default function MirrorPage() {
         <div className="absolute inset-0 bg-black/60"></div>
 
         <div className="absolute bottom-20 left-10 z-20">
-
           <h1 className="text-5xl font-serif">
             {destination.bharat_twin}
           </h1>
@@ -80,7 +75,6 @@ export default function MirrorPage() {
           <p className="text-gray-300">
             {destination.bharat_state}
           </p>
-
         </div>
 
       </div>
@@ -96,7 +90,6 @@ export default function MirrorPage() {
           <h2 className="text-2xl mb-2 text-saffron">
             Experience
           </h2>
-
           <p>
             {destination.experience}
           </p>
@@ -106,7 +99,6 @@ export default function MirrorPage() {
           <h2 className="text-2xl mb-2 text-saffron">
             Best Time
           </h2>
-
           <p>
             {destination.mirror_visit_window}
           </p>
@@ -115,64 +107,63 @@ export default function MirrorPage() {
         {/* Crafts Section */}
         <div className="mt-20 px-6">
 
-<h2 className="text-3xl font-serif mb-8 text-center">
-Crafts of {destination.bharat_state}
-</h2>
+          <h2 className="text-3xl font-serif mb-8 text-center">
+            Crafts of {destination.bharat_state}
+          </h2>
 
-<div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
 
-{crafts.map(craft => (
+            {crafts.map((craft: any) => (
 
-<div
-  key={craft.app_no}
-  onClick={() => setSelectedCraft(craft)}
-  className="bg-black/40 border border-white/10 rounded-lg overflow-hidden cursor-pointer hover:border-saffron transition"
->
+              <div
+                key={craft.app_no}
+                onClick={() => setSelectedCraft(craft)}
+                className="bg-black/40 border border-white/10 rounded-lg overflow-hidden cursor-pointer hover:border-saffron transition"
+              >
 
-<img
-  src={craft.image_link}
-  className="w-full h-32 object-cover"
-/>
+                <img
+                  src={craft.image_link}
+                  className="w-full h-32 object-cover"
+                />
 
-<div className="p-3">
+                <div className="p-3">
 
-<h3 className="text-sm font-semibold text-white">
-{craft.item_name}
-</h3>
+                  <h3 className="text-sm font-semibold text-white">
+                    {craft.item_name}
+                  </h3>
 
-<p className="text-xs text-gray-400">
-{craft.category}
-</p>
+                  <p className="text-xs text-gray-400">
+                    {craft.category}
+                  </p>
 
                 </div>
 
               </div>
 
             ))}
-  
+
           </div>
 
-            {selectedCraft && (
-  <KarigarStoryModal
-    product={{
-      name: selectedCraft.item_name,
-      story: selectedCraft.cultural_note,
-      image: selectedCraft.image_link,
-      district: selectedCraft.district,
-      type: selectedCraft.category,
-      makerName: "Local Artisan",
-      makerVerified: true
-    }}
-    onClose={() => setSelectedCraft(null)}
-  />
-)}
-  
+          {selectedCraft && (
+            <KarigarStoryModal
+              product={{
+                name: selectedCraft.item_name,
+                story: selectedCraft.cultural_note,
+                image: selectedCraft.image_link,
+                district: selectedCraft.district,
+                type: selectedCraft.category,
+                makerName: "Local Artisan",
+                makerVerified: true
+              }}
+              onClose={() => setSelectedCraft(null)}
+            />
+          )}
+
         </div>
 
       </div>
 
     </div>
-  
   );
-  
+
 }
