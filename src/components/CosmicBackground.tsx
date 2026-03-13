@@ -30,6 +30,15 @@ const CosmicBackground: React.FC = () => {
   };
 }, []);
 
+  // Inside CosmicBackground.tsx
+useEffect(() => {
+  const handleScroll = () => {
+    setOffsetY(window.scrollY); // Use actual page scroll position
+  };
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, []);
+  
   return (
     <div className="fixed inset-0 w-full h-full pointer-events-none z-0 bg-black overflow-hidden">
       
