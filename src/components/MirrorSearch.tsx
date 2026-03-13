@@ -20,7 +20,7 @@ const MirrorSearch: React.FC<MirrorSearchProps> = ({
   const [loading, setLoading] = useState(true);
   const [seoKeywords, setSeoKeywords] = useState<any[]>([]);
   const [searchIndex, setSearchIndex] = useState<any[]>([]);
-  const { searchTerm } = useOutletContext<any>();
+  const { searchTerm, setSearchTerm } = useOutletContext<any>();
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -127,9 +127,8 @@ const mirrorMatches = searchIndex
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
   const term = e.target.value;
-
+  setSearchTerm(term); // Now this will work
   if (setIsSearchActive) setIsSearchActive(term.length > 0);
-
   performSearch(term);
 };
 
