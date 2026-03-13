@@ -27,7 +27,7 @@ export default function MainLayout({
 
       {/* Page content */}
       <main className="relative z-20">
-         <Outlet context={{ searchTerm }} />
+<Outlet context={{ searchTerm, setSearchTerm }} />
       </main>
       <YatraPlanner
   items={yatraItems}
