@@ -17,14 +17,19 @@ export default function MirrorPage() {
 
     const load = async () => {
 
-      const data = await fetchMirrorData();
-      const match = data.find(
-  (item:any) =>
-    item.slug?.toLowerCase().trim() ===
-    slug?.toLowerCase().trim()
-);
+       // Debugging: Log this to your console to see what the app "sees"
+  console.log("Current URL Slug:", slug);
+  console.log("Available Data:", data);
 
-      setDestination(match);
+  const match = data.find((item: any) => {
+    const csvSlug = String(item.slug || "").toLowerCase().trim();
+    const urlSlug = String(slug || "").toLowerCase().trim();
+    return csvSlug === urlSlug;
+  });
+
+  setDestination(match);
+  // ... rest of your code
+    };
 
       if (!match) return;
 
