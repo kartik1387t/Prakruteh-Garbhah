@@ -16,6 +16,7 @@ export default function MirrorPage() {
   useEffect(() => {
 
     const load = async () => {
+      const data = await fetchMirrorData();
 
        // Debugging: Log this to your console to see what the app "sees"
   console.log("Current URL Slug:", slug);
