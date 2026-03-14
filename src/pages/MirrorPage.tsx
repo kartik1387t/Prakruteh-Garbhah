@@ -30,7 +30,7 @@ export default function MirrorPage() {
 
   setDestination(match);
   // ... rest of your code
-    };
+  
 
       if (!match) return;
 
