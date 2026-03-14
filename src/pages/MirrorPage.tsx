@@ -76,7 +76,7 @@ setRelatedMirrors(related.slice(0,4));
       <div className="relative h-[80vh]">
 
         <img
-          src={destination.image_link}
+          src={destination.image_link || destination.destination_image_link}
           className="absolute inset-0 w-full h-full object-cover"
         />
 
