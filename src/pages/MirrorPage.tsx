@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"; // Added useNavigate 
 import { useEffect, useState } from "react";
 import { fetchMirrorData } from "../services/csv.service";
 import { fetchVocalData } from "../services/vocal.service";
+import { fetchSEOKeywords } from "../services/seo.service";
 import KarigarStoryModal from "../components/KarigarStoryModal";
 
 export default function MirrorPage() {
@@ -11,6 +12,7 @@ export default function MirrorPage() {
   const [crafts, setCrafts] = useState<any[]>([]);
   const [selectedCraft, setSelectedCraft] = useState<any>(null);
   const [relatedMirrors, setRelatedMirrors] = useState<any[]>([]);
+  const [relatedKeywords, setRelatedKeywords] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,6 +60,15 @@ export default function MirrorPage() {
       } finally {
         setLoading(false);
       }
+
+      // Fetch SEO Keyword Data
+      const seoData = await fetchSEOKeywords();
+
+const related = seoData.filter(
+  (k:any) => k.related_mirror === slug
+);
+
+setRelatedKeywords(related.slice(0,6));
     };
 
     load();
@@ -159,6 +170,31 @@ export default function MirrorPage() {
             ))}
           </div>
         </div>
+
+        {/* EXPLORE MORE KEYWORDS (Mapping) */}
+        <div className="mt-20 text-center">
+
+<h2 className="text-3xl font-serif mb-6">
+People Also Searched
+</h2>
+
+<div className="flex flex-wrap justify-center gap-3">
+
+{relatedKeywords.map((k:any)=>(
+<button
+key={k.keyword}
+onClick={()=>navigate(`/mirror/${k.related_mirror}`)}
+className="px-4 py-2 bg-black/40 border border-white/10 rounded-full text-sm hover:border-saffron transition"
+>
+
+{k.keyword}
+
+</button>
+))}
+
+</div>
+
+</div>
       </div>
 
       {selectedCraft && (
